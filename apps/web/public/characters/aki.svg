@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Aki avatar">
+  <rect width="96" height="96" rx="24" fill="#f97316"/>
+  <circle cx="48" cy="52" r="30" fill="#ffd7b5"/>
+  <path d="M19 43c5-20 22-31 42-26 11 3 18 13 18 26-12-7-24-9-36-6-8 2-16 4-24 6z" fill="#92400e"/>
+  <path d="M25 29h46v12H25z" fill="#0f172a"/>
+  <circle cx="36" cy="55" r="4" fill="#111827"/>
+  <circle cx="60" cy="55" r="4" fill="#111827"/>
+  <path d="M39 68c6 4 12 4 18 0" fill="none" stroke="#111827" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="73" cy="29" r="8" fill="#38bdf8"/>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Yui avatar">
+  <rect width="96" height="96" rx="24" fill="#a78bfa"/>
+  <circle cx="48" cy="51" r="31" fill="#fde2c7"/>
+  <path d="M20 44c2-18 17-30 37-29 13 1 23 12 23 29-11-8-22-11-34-9-8 1-16 4-26 9z" fill="#7c3aed"/>
+  <circle cx="36" cy="54" r="4" fill="#111827"/>
+  <circle cx="60" cy="54" r="4" fill="#111827"/>
+  <path d="M34 49h28" stroke="#111827" stroke-width="2" stroke-linecap="round"/>
+  <path d="M41 68c5 3 9 3 14 0" fill="none" stroke="#111827" stroke-width="4" stroke-linecap="round"/>
+  <path d="M25 25h16v5H25zM55 25h16v5H55z" fill="#f8fafc"/>
+</svg>
