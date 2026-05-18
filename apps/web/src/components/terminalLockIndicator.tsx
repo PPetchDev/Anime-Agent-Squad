@@ -7,9 +7,7 @@ export type LockIndicatorDescriptor = {
   tone: LockIndicatorTone;
 };
 
-export const deriveLockIndicator = (
-  state: AgentRuntimeState,
-): LockIndicatorDescriptor | null => {
+export const deriveLockIndicator = (state: AgentRuntimeState): LockIndicatorDescriptor | null => {
   switch (state) {
     case "processing":
       return { label: "CASTING", tone: "mint" };

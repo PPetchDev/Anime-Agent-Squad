@@ -13,8 +13,7 @@
 }
 
 body {
-  background:
-    radial-gradient(ellipse at 18% 0%, rgba(255, 216, 236, 0.06) 0%, transparent 45%),
+  background: radial-gradient(ellipse at 18% 0%, rgba(255, 216, 236, 0.06) 0%, transparent 45%),
     radial-gradient(ellipse at 82% 100%, rgba(168, 139, 250, 0.05) 0%, transparent 45%),
     radial-gradient(circle at top right, #1a0f2e 0%, var(--bg-canvas) 50%);
 }

@@ -3,9 +3,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { FileText, X } from "lucide-react";
 import { buildTerminalSocketUrl } from "../runtime/runtimeEndpoints";
 import { type AgentRuntimeState, AgentStateBadge, isAgentRuntimeState } from "./AgentStateBadge";
-import { LockIndicator } from "./terminalLockIndicator";
 import { TerminalPromptPicker } from "./TerminalPromptPicker";
 import { CharacterAvatar } from "./character";
+import { LockIndicator } from "./terminalLockIndicator";
 import { replayTerminalHistory } from "./terminalReplay";
 import { wheelDeltaToScrollLines } from "./terminalWheel";
 

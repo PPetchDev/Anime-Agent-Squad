@@ -58,8 +58,8 @@ export const CharacterAvatar = ({
     >
       {hasSync ? (
         <span className={`mm-sync-avatar mm-sync-avatar--${size}`}>
-          <span className="mm-sync-avatar__ring-outer" aria-hidden="true"></span>
-          <span className="mm-sync-avatar__ring" aria-hidden="true"></span>
+          <span className="mm-sync-avatar__ring-outer" aria-hidden="true" />
+          <span className="mm-sync-avatar__ring" aria-hidden="true" />
           <span className="mm-sync-avatar__core">
             <img
               src={avatarPath}
@@ -91,10 +91,7 @@ export const CharacterAvatar = ({
           <span className="mm-sync-bar">
             <span className="mm-sync-bar__label">SYNC</span>
             <span className="mm-sync-bar__track">
-              <span
-                className="mm-sync-bar__fill"
-                style={{ width: `${clampedRatio}%` }}
-              ></span>
+              <span className="mm-sync-bar__fill" style={{ width: `${clampedRatio}%` }} />
             </span>
             <span className="mm-sync-bar__value">{Math.round(clampedRatio)}%</span>
           </span>

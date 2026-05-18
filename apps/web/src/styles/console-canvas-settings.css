@@ -232,10 +232,7 @@
 .settings-toggle-option {
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  transition:
-    background 200ms ease-out,
-    box-shadow 200ms ease-out,
-    border-color 200ms ease-out;
+  transition: background 200ms ease-out, box-shadow 200ms ease-out, border-color 200ms ease-out;
 }
 
 .settings-sound-option:hover,

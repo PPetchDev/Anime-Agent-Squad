@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
 import { CharacterAvatar } from "../src/components/character/CharacterAvatar";
 
 describe("CharacterAvatar — magical-mecha sync ring", () => {
@@ -18,9 +18,7 @@ describe("CharacterAvatar — magical-mecha sync ring", () => {
   });
 
   it("clamps syncRatio to [0, 100]", () => {
-    const { container, rerender } = render(
-      <CharacterAvatar characterId="mika" syncRatio={150} />,
-    );
+    const { container, rerender } = render(<CharacterAvatar characterId="mika" syncRatio={150} />);
     const fill = container.querySelector<HTMLElement>(".mm-sync-bar__fill");
     expect(fill?.style.width).toBe("100%");
 
@@ -30,11 +28,7 @@ describe("CharacterAvatar — magical-mecha sync ring", () => {
 
   it("renders provided bond traits as pill spans", () => {
     const { container } = render(
-      <CharacterAvatar
-        characterId="mika"
-        syncRatio={50}
-        bondTraits={["kind", "bold"]}
-      />,
+      <CharacterAvatar characterId="mika" syncRatio={50} bondTraits={["kind", "bold"]} />,
     );
     const traits = container.querySelectorAll(".mm-sync-trait");
     expect(traits).toHaveLength(2);

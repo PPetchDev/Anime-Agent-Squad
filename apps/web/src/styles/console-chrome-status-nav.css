@@ -444,10 +444,7 @@
 
 .console-primary-nav-tab {
   border-radius: var(--radius-md);
-  transition:
-    background 200ms ease-out,
-    box-shadow 200ms ease-out,
-    transform 200ms ease-out;
+  transition: background 200ms ease-out, box-shadow 200ms ease-out, transform 200ms ease-out;
 }
 
 .console-primary-nav-tab:hover {
@@ -472,7 +469,6 @@
 
 .console-shell .console-status-strip {
   border-bottom: 1px solid var(--border-subtle);
-  background:
-    var(--scanline-overlay),
+  background: var(--scanline-overlay),
     linear-gradient(180deg, var(--bg-surface-1), var(--bg-surface-2));
 }

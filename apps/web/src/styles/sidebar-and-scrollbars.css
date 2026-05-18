@@ -459,10 +459,7 @@
 }
 
 .active-agents-section-toggle {
-  transition:
-    background 200ms ease-out,
-    box-shadow 200ms ease-out,
-    color 200ms ease-out;
+  transition: background 200ms ease-out, box-shadow 200ms ease-out, color 200ms ease-out;
 }
 
 .active-agents-section-toggle:hover {
@@ -479,9 +476,7 @@
 }
 
 .active-agents-agent-row {
-  transition:
-    background 200ms ease-out,
-    box-shadow 200ms ease-out;
+  transition: background 200ms ease-out, box-shadow 200ms ease-out;
 }
 
 .active-agents-agent-row:hover {

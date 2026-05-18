@@ -133,10 +133,7 @@
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   padding: 8px;
-  transition:
-    transform 200ms ease-out,
-    box-shadow 200ms ease-out,
-    background 200ms ease-out;
+  transition: transform 200ms ease-out, box-shadow 200ms ease-out, background 200ms ease-out;
 }
 
 .character-picker__option:hover {
@@ -151,11 +148,7 @@
 }
 
 .character-picker__option--selected {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 216, 236, 0.16),
-    rgba(200, 168, 232, 0.1)
-  );
+  background: linear-gradient(135deg, rgba(255, 216, 236, 0.16), rgba(200, 168, 232, 0.1));
   border-color: var(--border-strong);
   box-shadow: var(--glow-strong);
 }

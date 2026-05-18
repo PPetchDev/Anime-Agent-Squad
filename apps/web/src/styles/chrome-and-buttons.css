@@ -280,9 +280,7 @@
   background: var(--action-button-bg);
   border-radius: var(--radius-md);
   box-shadow: var(--glow-soft);
-  transition:
-    transform 200ms ease-out,
-    box-shadow 200ms ease-out;
+  transition: transform 200ms ease-out, box-shadow 200ms ease-out;
 }
 
 .action-button--primary:hover {

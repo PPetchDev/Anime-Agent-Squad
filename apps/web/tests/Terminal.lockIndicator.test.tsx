@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
 
 /**
  * We test a small pure helper that derives the lock indicator label + tone

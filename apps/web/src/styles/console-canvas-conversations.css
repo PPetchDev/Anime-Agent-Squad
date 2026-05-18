@@ -729,9 +729,7 @@
 
 .conversations-session-item {
   border-radius: var(--radius-sm);
-  transition:
-    background 200ms ease-out,
-    box-shadow 200ms ease-out;
+  transition: background 200ms ease-out, box-shadow 200ms ease-out;
 }
 
 .conversations-session-item:hover {
