@@ -539,3 +539,48 @@
     padding: 0;
   }
 }
+
+/* === Magical mecha refinements: github tab === */
+
+.console-shell .github-view {
+  background: var(--bg-canvas);
+}
+
+.github-overview {
+  background: rgba(255, 216, 236, 0.02);
+}
+
+.github-overview-stat {
+  background: rgba(255, 216, 236, 0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  transition: box-shadow 200ms ease-out, border-color 200ms ease-out;
+}
+
+.github-overview-stat:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--glow-soft);
+}
+
+.github-overview-stat dt {
+  font-family: var(--font-mono);
+  letter-spacing: 1.5px;
+  color: var(--text-secondary);
+}
+
+.github-overview-stat dd {
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+}
+
+.github-overview-graph {
+  background: rgba(255, 216, 236, 0.03);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.github-overview-header h2 {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--accent-primary);
+}

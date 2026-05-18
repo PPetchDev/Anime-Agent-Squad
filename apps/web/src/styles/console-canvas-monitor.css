@@ -593,3 +593,59 @@
     transform: translateX(-50%);
   }
 }
+
+/* === Magical mecha refinements: monitor tab === */
+
+.console-shell .monitor-view {
+  background: var(--bg-canvas);
+  position: relative;
+}
+
+.console-shell .monitor-view::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--scanline-overlay);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.console-shell .monitor-view > * {
+  position: relative;
+  z-index: 1;
+}
+
+.monitor-header {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.monitor-provider-tab,
+.monitor-subtab {
+  border-radius: var(--radius-sm);
+  transition:
+    background 200ms ease-out,
+    box-shadow 200ms ease-out;
+}
+
+.monitor-provider-tab:hover,
+.monitor-subtab:hover {
+  box-shadow: var(--glow-soft);
+}
+
+.monitor-provider-tab[data-active="true"],
+.monitor-subtab[data-active="true"] {
+  background: linear-gradient(135deg, rgba(255, 216, 236, 0.16), rgba(200, 168, 232, 0.1));
+  border-color: var(--border-strong);
+}
+
+.monitor-panel {
+  background: rgba(255, 216, 236, 0.03);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.monitor-panel h3 {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--accent-primary);
+}

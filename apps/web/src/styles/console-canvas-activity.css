@@ -356,3 +356,55 @@
   border-radius: 2px;
   flex-shrink: 0;
 }
+
+/* === Magical mecha refinements: activity tab === */
+
+.console-shell .activity-view {
+  background: var(--bg-canvas);
+}
+
+.usage-heatmap {
+  background: rgba(255, 216, 236, 0.03);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.usage-chart-panel {
+  background: rgba(255, 216, 236, 0.03);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.usage-chart-stat {
+  border-color: var(--border-subtle);
+}
+
+.usage-chart-stat dt {
+  font-family: var(--font-mono);
+  letter-spacing: 1.5px;
+  color: var(--text-secondary);
+}
+
+.usage-chart-stat dd {
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+}
+
+.usage-heatmap-scope-btn,
+.usage-chart-bar-segment-btn {
+  border-radius: var(--radius-sm);
+  transition:
+    background 200ms ease-out,
+    box-shadow 200ms ease-out;
+}
+
+.usage-heatmap-scope-btn:hover,
+.usage-chart-bar-segment-btn:hover {
+  box-shadow: var(--glow-soft);
+}
+
+.usage-heatmap-scope-btn.is-active,
+.usage-chart-bar-segment-btn.is-active {
+  background: linear-gradient(135deg, rgba(255, 216, 236, 0.16), rgba(200, 168, 232, 0.1));
+  border-color: var(--border-strong);
+}
