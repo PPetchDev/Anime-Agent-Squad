@@ -1522,3 +1522,67 @@
     align-items: stretch;
   }
 }
+
+/* === Magical mecha refinements: deck tab === */
+
+.deck-view {
+  background: var(--bg-canvas);
+}
+
+.deck-empty-card {
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  transition:
+    transform 200ms ease-out,
+    box-shadow 200ms ease-out,
+    border-color 200ms ease-out;
+}
+
+.deck-empty-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--glow-soft);
+  border-color: var(--border-strong);
+}
+
+.deck-empty-card-title,
+.deck-empty-card-text {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--accent-primary);
+}
+
+.deck-empty-card-desc {
+  font-family: var(--font-main);
+  color: var(--text-secondary);
+}
+
+.deck-empty-agent-trigger,
+.deck-empty-agent-launch {
+  border-radius: var(--radius-md);
+  transition:
+    background 200ms ease-out,
+    box-shadow 200ms ease-out;
+}
+
+.deck-empty-agent-launch {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  color: var(--bg-canvas);
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--glow-soft);
+}
+
+.deck-empty-agent-launch:hover {
+  box-shadow: var(--glow-strong);
+  transform: translateY(-1px);
+}
+
+.deck-bottom-clear-btn--danger {
+  background: rgba(255, 95, 122, 0.12);
+  border-color: rgba(255, 95, 122, 0.5);
+  color: var(--accent-danger);
+}
+
+.deck-bottom-clear-btn--danger:hover {
+  background: rgba(255, 95, 122, 0.2);
+}

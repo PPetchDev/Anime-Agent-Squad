@@ -703,3 +703,77 @@
   outline: 1px solid #ff9a9a;
   outline-offset: 1px;
 }
+
+/* === Magical mecha refinements: conversations tab === */
+
+.console-shell .conversations-view {
+  background: var(--bg-canvas);
+}
+
+.conversations-header-copy h2 {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--accent-primary);
+}
+
+.conversations-header-copy p {
+  color: var(--text-secondary);
+}
+
+.conversations-sessions,
+.conversations-transcript {
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.conversations-session-item {
+  border-radius: var(--radius-sm);
+  transition:
+    background 200ms ease-out,
+    box-shadow 200ms ease-out;
+}
+
+.conversations-session-item:hover {
+  background: rgba(255, 216, 236, 0.05);
+}
+
+.conversations-session-item[data-active="true"] {
+  background: linear-gradient(135deg, rgba(255, 216, 236, 0.16), rgba(200, 168, 232, 0.1));
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--glow-soft);
+}
+
+.conversations-session-item:focus-visible {
+  outline: 2px solid var(--ring-focus);
+  outline-offset: 2px;
+}
+
+.conversations-transcript-header h3 {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--accent-primary);
+}
+
+.conversations-turn {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 10px 14px;
+  background: rgba(255, 216, 236, 0.04);
+}
+
+.conversations-turn[data-role="user"] {
+  background: linear-gradient(135deg, rgba(255, 216, 236, 0.12), rgba(200, 168, 232, 0.08));
+  border-color: var(--border-strong);
+}
+
+.conversations-turn[data-role="assistant"] {
+  background: rgba(168, 240, 200, 0.05);
+  border-color: rgba(168, 240, 200, 0.25);
+}
+
+.conversations-turn-time {
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  letter-spacing: 1.5px;
+}
