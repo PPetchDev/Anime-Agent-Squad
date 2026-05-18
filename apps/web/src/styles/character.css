@@ -33,6 +33,58 @@
   height: 48px;
 }
 
+/* Cross-fade stack: two stacked image layers fade between emotions. The
+   wrapper inherits the size box from --sm/--md/--lg; the layers absolutely
+   fill it so the wrapper stays the visual unit. */
+.character-avatar__image-stack {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+}
+
+.character-avatar--sm .character-avatar__image-stack {
+  width: 28px;
+  height: 28px;
+}
+
+.character-avatar--md .character-avatar__image-stack {
+  width: 36px;
+  height: 36px;
+}
+
+.character-avatar--lg .character-avatar__image-stack {
+  width: 48px;
+  height: 48px;
+}
+
+.character-avatar__layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 250ms ease;
+}
+
+.character-avatar__layer--prev {
+  opacity: 0;
+}
+
+.character-avatar__layer--active {
+  opacity: 1;
+}
+
+/* Inside mm-sync-avatar__core the stack still needs the absolute box. */
+.mm-sync-avatar__core .character-avatar__image-stack {
+  width: 100%;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .character-avatar__layer {
+    transition: none;
+  }
+}
+
 .character-avatar__details {
   display: flex;
   flex-direction: column;

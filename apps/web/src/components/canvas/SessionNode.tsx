@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
 import type { GraphNode } from "../../app/canvas/types";
-import { CharacterAvatar } from "../character";
+import { CharacterAvatar, useCharacterEmotion } from "../character";
 
 const LINE_MAX = 24;
 const PILL_HEIGHT = 16;
@@ -56,6 +56,12 @@ export const SessionNode = ({ node, isSelected, onPointerDown, onClick }: Sessio
   const isWorktree = node.workspaceMode === "worktree" && !node.parentTerminalId;
   const isSwarmWorker = !!node.parentTerminalId;
   const lines = useMemo(() => splitLabel(node.label), [node.label]);
+
+  const nodeEmotion = useCharacterEmotion({
+    characterId: node.characterId,
+    agentState: node.agentState,
+    agentRuntimeState: node.agentRuntimeState,
+  });
 
   const pillLabel = useMemo(() => {
     if (node.agentRuntimeState === "waiting_for_permission") {
@@ -166,6 +172,7 @@ export const SessionNode = ({ node, isSelected, onPointerDown, onClick }: Sessio
           characterId={node.characterId}
           customAvatarPath={node.customAvatarPath}
           size="lg"
+          emotion={nodeEmotion}
         />
       </foreignObject>
 
