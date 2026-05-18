@@ -439,9 +439,13 @@ describe("createApiServer", () => {
 
     while (Date.now() < timeoutAt) {
       if (existsSync(registryPath)) {
-        const document = JSON.parse(readFileSync(registryPath, "utf8")) as TDocument;
-        if (predicate(document)) {
-          return document;
+        try {
+          const document = JSON.parse(readFileSync(registryPath, "utf8")) as TDocument;
+          if (predicate(document)) {
+            return document;
+          }
+        } catch {
+          // File may be partially written during concurrent write; retry on next iteration
         }
       }
 
