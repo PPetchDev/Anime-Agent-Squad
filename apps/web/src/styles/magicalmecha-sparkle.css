@@ -1,0 +1,60 @@
+/* Sparkle layer — purely decorative ✦/✧ glyphs drifting on a 4-6s loop.
+   Always aria-hidden through CSS content (not user-visible to AT).
+   Usage: add .mm-sparkle-host to any positioned container. */
+
+.mm-sparkle-host {
+  position: relative;
+}
+
+.mm-sparkle-host::before,
+.mm-sparkle-host::after {
+  position: absolute;
+  font-family: serif;
+  color: rgba(255, 216, 236, 0.55);
+  z-index: var(--sparkle-z-index);
+  pointer-events: none;
+  animation: mm-drift 5s ease-in-out infinite;
+}
+
+.mm-sparkle-host::before {
+  content: "✦";
+  top: 8px;
+  right: 12px;
+  font-size: 13px;
+}
+
+.mm-sparkle-host::after {
+  content: "✧";
+  bottom: 10px;
+  left: 16px;
+  font-size: 10px;
+  color: rgba(200, 168, 232, 0.5);
+  animation-duration: 6s;
+  animation-delay: 1.5s;
+}
+
+/* Variant: dense — three sparkles instead of two, used for empty states. */
+.mm-sparkle-host--dense::before {
+  font-size: 18px;
+}
+
+.mm-sparkle-host--dense::after {
+  font-size: 14px;
+}
+
+.mm-sparkle-host--dense > .mm-sparkle-extra {
+  position: absolute;
+  top: 45%;
+  right: 28%;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  pointer-events: none;
+  animation: mm-drift 7s ease-in-out infinite;
+  animation-delay: 3s;
+}
+
+/* Variant: subtle — half alpha, used for cards behind text. */
+.mm-sparkle-host--subtle::before,
+.mm-sparkle-host--subtle::after {
+  opacity: 0.5;
+}
