@@ -472,3 +472,63 @@
   background: color-mix(in srgb, var(--accent-primary) 14%, #11161d);
   color: #e6ebf3;
 }
+
+/* === Magical mecha refinements: prompts tab === */
+
+.console-shell .prompts-view {
+  background: var(--bg-canvas);
+}
+
+.prompts-detail {
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.prompts-detail-name {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--accent-primary);
+}
+
+.prompts-detail-source-badge {
+  font-family: var(--font-mono);
+  letter-spacing: 1.5px;
+  border-radius: var(--radius-pill);
+}
+
+.prompts-detail-source-badge[data-source="user"] {
+  background: rgba(255, 216, 236, 0.1);
+  border-color: rgba(255, 216, 236, 0.45);
+  color: var(--accent-primary);
+}
+
+.prompts-detail-source-badge[data-source="builtin"] {
+  background: rgba(200, 168, 232, 0.1);
+  border-color: rgba(200, 168, 232, 0.45);
+  color: var(--accent-secondary);
+}
+
+.prompts-content {
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+}
+
+.prompts-edit-area {
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+  transition: border-color 200ms ease-out, box-shadow 200ms ease-out;
+}
+
+.prompts-edit-area:focus {
+  border-color: var(--border-strong);
+  box-shadow: var(--glow-soft);
+  outline: none;
+}
+
+.prompts-empty {
+  color: var(--text-secondary);
+}

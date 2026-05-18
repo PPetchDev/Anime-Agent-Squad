@@ -205,3 +205,63 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* === Magical mecha refinements: settings tab === */
+
+.console-shell .settings-view {
+  background: var(--bg-canvas);
+}
+
+.settings-panel {
+  background: rgba(255, 216, 236, 0.03);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.settings-panel-header h2 {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--accent-primary);
+}
+
+.settings-panel-header p {
+  color: var(--text-secondary);
+}
+
+.settings-sound-option,
+.settings-toggle-option {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  transition:
+    background 200ms ease-out,
+    box-shadow 200ms ease-out,
+    border-color 200ms ease-out;
+}
+
+.settings-sound-option:hover,
+.settings-toggle-option:hover {
+  box-shadow: var(--glow-soft);
+}
+
+.settings-sound-option[data-active="true"],
+.settings-toggle-option[data-active="true"] {
+  background: linear-gradient(135deg, rgba(255, 216, 236, 0.16), rgba(200, 168, 232, 0.1));
+  border-color: var(--border-strong);
+  box-shadow: var(--glow-soft);
+}
+
+.settings-sound-option:focus-visible,
+.settings-toggle-option:focus-visible {
+  outline: 2px solid var(--ring-focus);
+  outline-offset: 2px;
+}
+
+.settings-toggle-option[data-active="true"] .settings-toggle-switch {
+  background: var(--accent-primary);
+}
+
+.settings-saved-pill {
+  background: rgba(168, 240, 200, 0.12);
+  border-color: rgba(168, 240, 200, 0.45);
+  color: var(--accent-mint);
+}

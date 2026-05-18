@@ -225,3 +225,70 @@
   color: #d4a017;
   font-weight: 600;
 }
+
+/* === Magical mecha refinements: code intel tab === */
+
+.console-shell .code-intel-view {
+  background: var(--bg-canvas);
+}
+
+.code-intel-stat {
+  background: rgba(255, 216, 236, 0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  transition: box-shadow 200ms ease-out, border-color 200ms ease-out;
+}
+
+.code-intel-stat:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--glow-soft);
+}
+
+.code-intel-stat-value {
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+}
+
+.code-intel-stat-label {
+  font-family: var(--font-mono);
+  letter-spacing: 1.5px;
+  color: var(--text-secondary);
+}
+
+.code-intel-panel {
+  background: rgba(255, 216, 236, 0.03);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.code-intel-panel-header h2 {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--accent-primary);
+}
+
+.code-intel-panel-header p {
+  color: var(--text-secondary);
+}
+
+.code-intel-treemap-label,
+.code-intel-treemap-count {
+  font-family: var(--font-mono);
+  fill: var(--text-primary);
+}
+
+.code-intel-arc-label {
+  font-family: var(--font-mono);
+  fill: var(--text-secondary);
+}
+
+.code-intel-arc-label--active {
+  fill: var(--accent-primary);
+}
+
+.code-intel-tooltip {
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--glow-soft);
+}
