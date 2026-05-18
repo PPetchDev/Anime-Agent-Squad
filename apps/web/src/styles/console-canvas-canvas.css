@@ -1863,3 +1863,124 @@
   --action-button-padding-x: 0.4rem;
   --action-button-letter-spacing: 0.07em;
 }
+
+/* === Magical mecha refinements: canvas tab === */
+
+.console-shell .canvas-view {
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(255, 216, 236, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(200, 168, 232, 0.04) 0%, transparent 50%),
+    var(--bg-canvas);
+}
+
+.canvas-edge {
+  stroke: var(--accent-secondary);
+  stroke-opacity: 0.45;
+}
+
+.canvas-edge-activity-dot {
+  fill: var(--accent-primary);
+}
+
+.canvas-edge-activity-dot--trail {
+  fill: var(--accent-mint);
+}
+
+.canvas-node-bloom {
+  fill: var(--accent-primary);
+  fill-opacity: 0.18;
+}
+
+.canvas-node-focus-glow {
+  filter: drop-shadow(0 0 8px var(--accent-primary));
+  opacity: 0.7;
+}
+
+.canvas-node-ring {
+  stroke: var(--accent-primary);
+  stroke-opacity: 0.55;
+}
+
+.canvas-node-ring--worktree {
+  stroke: var(--accent-mint);
+}
+
+.canvas-node-ring--swarm,
+.canvas-node-ring--swarm-outer {
+  stroke: var(--accent-secondary);
+}
+
+.canvas-node-waiting-pill {
+  fill: var(--accent-warning);
+  fill-opacity: 0.15;
+  stroke: var(--accent-warning);
+  stroke-opacity: 0.6;
+}
+
+.canvas-node-waiting-label {
+  fill: var(--accent-warning);
+  font-family: var(--font-mono);
+}
+
+.canvas-node-label {
+  fill: var(--text-primary);
+  font-family: var(--font-display);
+  font-style: italic;
+}
+
+.canvas-toolbar {
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.canvas-toolbar-btn {
+  border-radius: var(--radius-sm);
+  transition:
+    background 200ms ease-out,
+    box-shadow 200ms ease-out;
+}
+
+.canvas-toolbar-btn:hover {
+  background: rgba(255, 216, 236, 0.08);
+  box-shadow: var(--glow-soft);
+}
+
+.canvas-toolbar-btn--active {
+  background: linear-gradient(135deg, rgba(255, 216, 236, 0.16), rgba(200, 168, 232, 0.1));
+  border-color: var(--border-strong);
+}
+
+.canvas-toolbar-btn:focus-visible {
+  outline: 2px solid var(--ring-focus);
+  outline-offset: 2px;
+}
+
+.detail-panel {
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glow-soft);
+}
+
+.detail-panel--focused {
+  border-color: var(--border-strong);
+  box-shadow: var(--glow-strong);
+}
+
+.detail-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--accent-primary);
+}
+
+.canvas-terminal-column {
+  border-color: var(--border-subtle);
+  border-radius: var(--radius-md);
+  transition: box-shadow 200ms ease-out;
+}
+
+.canvas-terminal-column--focused {
+  border-color: var(--border-strong);
+  box-shadow: var(--glow-soft);
+}
