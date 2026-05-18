@@ -1,3 +1,6 @@
+import type { AgentRuntimeState } from "./agentRuntime";
+import type { AgentState, TerminalLifecycleState } from "./terminal";
+
 export type AgentRole = "frontend" | "backend" | "review" | "devops";
 
 export type CharacterTemplate = {
@@ -13,6 +16,37 @@ export type CharacterTemplate = {
 export type TerminalCharacterIdentity = {
   characterId?: string | undefined;
   customAvatarPath?: string | undefined;
+};
+
+export type CharacterEmotion =
+  | "idle"
+  | "thinking"
+  | "listening"
+  | "happy"
+  | "excited"
+  | "victory"
+  | "love"
+  | "surprised"
+  | "angry"
+  | "crying"
+  | "sleepy"
+  | "snack"
+  | "done";
+
+export type IdleTier = "fresh" | "lingering" | "deep";
+
+export type CharacterEmotionContext = {
+  agentState?: AgentState | undefined;
+  lifecycleState?: TerminalLifecycleState | undefined;
+  agentRuntimeState?: AgentRuntimeState | undefined;
+  exitCode?: number | undefined;
+  idleTier?: IdleTier | undefined;
+};
+
+export type CharacterEmotionEntry = {
+  available: readonly CharacterEmotion[];
+  defaultEmotion: CharacterEmotion;
+  imageFile: Readonly<Partial<Record<CharacterEmotion, string>>>;
 };
 
 export const DEFAULT_CHARACTER_AVATAR_PATH = "/characters/default-agent.svg";
@@ -86,4 +120,269 @@ export const resolveCharacterAvatarPath = ({
   }
 
   return DEFAULT_CHARACTER_AVATAR_PATH;
+};
+
+// Logical states are the cross-character labels documented in todo.md.
+// Each character then maps these to its own emotion choice — the mapping is
+// per-character on purpose: e.g. aki expresses idle/fresh as "listening"
+// while mika expresses it as "idle".
+type LogicalEmotionState =
+  | "live"
+  | "waiting_for_permission"
+  | "waiting_for_user"
+  | "blocked"
+  | "queued"
+  | "stopped"
+  | "exited_success"
+  | "exited_failure"
+  | "stale"
+  | "idle_fresh"
+  | "idle_lingering"
+  | "idle_deep";
+
+export const CHARACTER_EMOTION_CATALOG: Readonly<Record<string, CharacterEmotionEntry>> = {
+  aki: {
+    available: [
+      "thinking",
+      "happy",
+      "excited",
+      "angry",
+      "crying",
+      "done",
+      "sleepy",
+      "snack",
+      "listening",
+    ],
+    defaultEmotion: "listening",
+    imageFile: {
+      thinking: "01-thinking",
+      happy: "02-happy",
+      excited: "03-excited",
+      angry: "04-angry",
+      crying: "05-crying",
+      done: "06-done",
+      sleepy: "07-sleepy",
+      snack: "08-snack",
+      listening: "09-listening",
+    },
+  },
+  mika: {
+    available: [
+      "idle",
+      "victory",
+      "crying",
+      "thinking",
+      "happy",
+      "angry",
+      "sleepy",
+      "excited",
+      "surprised",
+    ],
+    defaultEmotion: "idle",
+    imageFile: {
+      idle: "01-idle",
+      victory: "02-victory",
+      crying: "03-crying",
+      thinking: "04-thinking",
+      happy: "05-happy",
+      angry: "06-angry",
+      sleepy: "07-sleepy",
+      excited: "08-excited",
+      surprised: "09-surprised",
+    },
+  },
+  ren: {
+    available: [
+      "happy",
+      "thinking",
+      "angry",
+      "crying",
+      "love",
+      "idle",
+      "sleepy",
+      "excited",
+      "surprised",
+    ],
+    defaultEmotion: "idle",
+    imageFile: {
+      happy: "01-happy",
+      thinking: "02-thinking",
+      angry: "03-angry",
+      crying: "04-crying",
+      love: "05-love",
+      idle: "06-idle",
+      sleepy: "07-sleepy",
+      excited: "08-excited",
+      surprised: "09-surprised",
+    },
+  },
+  yui: {
+    available: [
+      "happy",
+      "thinking",
+      "angry",
+      "crying",
+      "love",
+      "idle",
+      "sleepy",
+      "excited",
+      "surprised",
+    ],
+    defaultEmotion: "idle",
+    imageFile: {
+      happy: "01-happy",
+      thinking: "02-thinking",
+      angry: "03-angry",
+      crying: "04-crying",
+      love: "05-love",
+      idle: "06-idle",
+      sleepy: "07-sleepy",
+      excited: "08-excited",
+      surprised: "09-surprised",
+    },
+  },
+};
+
+const LOGICAL_EMOTION_BY_CHARACTER: Readonly<
+  Record<string, Readonly<Record<LogicalEmotionState, CharacterEmotion>>>
+> = {
+  aki: {
+    live: "thinking",
+    waiting_for_permission: "listening",
+    waiting_for_user: "listening",
+    blocked: "angry",
+    queued: "listening",
+    stopped: "sleepy",
+    exited_success: "done",
+    exited_failure: "crying",
+    stale: "sleepy",
+    idle_fresh: "listening",
+    idle_lingering: "sleepy",
+    idle_deep: "snack",
+  },
+  mika: {
+    live: "thinking",
+    waiting_for_permission: "surprised",
+    waiting_for_user: "thinking",
+    blocked: "angry",
+    queued: "idle",
+    stopped: "sleepy",
+    exited_success: "victory",
+    exited_failure: "crying",
+    stale: "sleepy",
+    idle_fresh: "idle",
+    idle_lingering: "sleepy",
+    idle_deep: "sleepy",
+  },
+  ren: {
+    live: "thinking",
+    waiting_for_permission: "surprised",
+    waiting_for_user: "thinking",
+    blocked: "angry",
+    queued: "idle",
+    stopped: "sleepy",
+    exited_success: "happy",
+    exited_failure: "crying",
+    stale: "sleepy",
+    idle_fresh: "idle",
+    idle_lingering: "sleepy",
+    idle_deep: "love",
+  },
+  yui: {
+    live: "thinking",
+    waiting_for_permission: "surprised",
+    waiting_for_user: "thinking",
+    blocked: "angry",
+    queued: "idle",
+    stopped: "sleepy",
+    exited_success: "happy",
+    exited_failure: "crying",
+    stale: "sleepy",
+    idle_fresh: "idle",
+    idle_lingering: "sleepy",
+    idle_deep: "love",
+  },
+};
+
+const deriveLogicalState = (ctx: CharacterEmotionContext): LogicalEmotionState => {
+  // Priority: lifecycleState (exited/stopped/stale) → agentRuntimeState → agentState → idleTier.
+  if (ctx.lifecycleState === "exited") {
+    return ctx.exitCode === 0 ? "exited_success" : "exited_failure";
+  }
+  if (ctx.lifecycleState === "stopped") {
+    return "stopped";
+  }
+  if (ctx.lifecycleState === "stale") {
+    return "stale";
+  }
+
+  if (ctx.agentRuntimeState === "processing") {
+    return "live";
+  }
+  if (ctx.agentRuntimeState === "waiting_for_permission") {
+    return "waiting_for_permission";
+  }
+  if (ctx.agentRuntimeState === "waiting_for_user") {
+    return "waiting_for_user";
+  }
+
+  switch (ctx.agentState) {
+    case "live":
+      return "live";
+    case "blocked":
+      return "blocked";
+    case "queued":
+      return "queued";
+    case "stopped":
+      return "stopped";
+    case "stale":
+      return "stale";
+    case "exited":
+      return ctx.exitCode === 0 ? "exited_success" : "exited_failure";
+    case "idle":
+      if (ctx.idleTier === "deep") return "idle_deep";
+      if (ctx.idleTier === "lingering") return "idle_lingering";
+      return "idle_fresh";
+    default:
+      break;
+  }
+
+  if (ctx.idleTier === "deep") return "idle_deep";
+  if (ctx.idleTier === "lingering") return "idle_lingering";
+  return "idle_fresh";
+};
+
+export const resolveCharacterEmotion = (
+  characterId: string | undefined,
+  ctx: CharacterEmotionContext,
+): CharacterEmotion => {
+  if (!characterId) {
+    return "idle";
+  }
+  const characterMap = LOGICAL_EMOTION_BY_CHARACTER[characterId];
+  const entry = CHARACTER_EMOTION_CATALOG[characterId];
+  if (!characterMap || !entry) {
+    return "idle";
+  }
+  const logical = deriveLogicalState(ctx);
+  const candidate = characterMap[logical];
+  return entry.available.includes(candidate) ? candidate : entry.defaultEmotion;
+};
+
+export const resolveCharacterEmotionImagePath = (
+  characterId: string | undefined,
+  emotion: CharacterEmotion,
+): string => {
+  if (!characterId) {
+    return DEFAULT_CHARACTER_AVATAR_PATH;
+  }
+  const entry = CHARACTER_EMOTION_CATALOG[characterId];
+  if (!entry) {
+    return DEFAULT_CHARACTER_AVATAR_PATH;
+  }
+  const filename = entry.imageFile[emotion];
+  if (!filename) {
+    return DEFAULT_CHARACTER_AVATAR_PATH;
+  }
+  return `/characters/${characterId}/${filename}.jpg`;
 };

@@ -5,7 +5,7 @@ import type { GraphNode } from "../../app/canvas/types";
 import type { TerminalView } from "../../app/types";
 import { type AgentRuntimeState, AgentStateBadge } from "../AgentStateBadge";
 import { Terminal } from "../Terminal";
-import { CharacterAvatar } from "../character";
+import { CharacterAvatar, useCharacterEmotion } from "../character";
 
 type CanvasTerminalColumnProps = {
   node: GraphNode;
@@ -41,6 +41,17 @@ export const CanvasTerminalColumn = ({
   const characterId = terminal?.characterId ?? node.characterId;
   const customAvatarPath = terminal?.customAvatarPath ?? node.customAvatarPath;
 
+  const headerEmotion = useCharacterEmotion({
+    characterId,
+    agentState: terminal?.state,
+    lifecycleState: terminal?.lifecycleState,
+    lifecycleUpdatedAt: terminal?.lifecycleUpdatedAt,
+    startedAt: terminal?.startedAt,
+    createdAt: terminal?.createdAt,
+    agentRuntimeState: agentState,
+    exitCode: terminal?.exitCode,
+  });
+
   const handleFocus = useCallback(() => {
     onFocus?.();
   }, [onFocus]);
@@ -61,6 +72,7 @@ export const CanvasTerminalColumn = ({
             characterId={characterId}
             customAvatarPath={customAvatarPath}
             size="sm"
+            emotion={headerEmotion}
           />
           <h2>
             <span className="canvas-terminal-column-name">{tentacleName}</span>

@@ -5,7 +5,7 @@ import { buildTerminalSocketUrl } from "../runtime/runtimeEndpoints";
 import { type AgentRuntimeState, AgentStateBadge, isAgentRuntimeState } from "./AgentStateBadge";
 import { LockIndicator } from "./TerminalLockIndicator";
 import { TerminalPromptPicker } from "./TerminalPromptPicker";
-import { CharacterAvatar } from "./character";
+import { CharacterAvatar, useCharacterEmotion } from "./character";
 import { replayTerminalHistory } from "./terminalReplay";
 import { wheelDeltaToScrollLines } from "./terminalWheel";
 
@@ -109,6 +109,11 @@ export const Terminal = ({
 
   onTerminalActivityRef.current = onTerminalActivity;
   onTerminalRenamedRef.current = onTerminalRenamed;
+
+  const headerEmotion = useCharacterEmotion({
+    characterId,
+    agentRuntimeState: agentState,
+  });
 
   useEffect(() => {
     onAgentRuntimeStateChange?.(agentState);
@@ -464,6 +469,7 @@ export const Terminal = ({
             customAvatarPath={customAvatarPath}
             size="sm"
             showDetails
+            emotion={headerEmotion}
           />
           <span className="terminal-title">{terminalTitle}</span>
         </div>
