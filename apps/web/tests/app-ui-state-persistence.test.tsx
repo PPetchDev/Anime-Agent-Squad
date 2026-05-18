@@ -60,6 +60,7 @@ describe("App UI state persistence", () => {
           isRuntimeStatusStripVisible: false,
           isMonitorVisible: false,
           isBottomTelemetryVisible: false,
+          isClaudeDangerouslySkipPermissionsEnabled: true,
           terminalCompletionSound: "retro-beep",
         });
       }
@@ -98,9 +99,15 @@ describe("App UI state persistence", () => {
       "aria-checked",
       "false",
     );
+    expect(
+      screen.getByRole("switch", { name: "Run Claude with dangerous permission bypass" }),
+    ).toHaveAttribute("aria-checked", "true");
 
     fireEvent.click(screen.getByRole("switch", { name: "Show runtime status strip" }));
     fireEvent.click(screen.getByRole("switch", { name: "Enable X Monitor" }));
+    fireEvent.click(
+      screen.getByRole("switch", { name: "Run Claude with dangerous permission bypass" }),
+    );
     fireEvent.click(screen.getByRole("button", { name: /Double beep/i }));
 
     await waitFor(() => {
@@ -110,6 +117,86 @@ describe("App UI state persistence", () => {
       expect(uiStatePatchBodies.some((body) => body.isMonitorVisible === true)).toBe(true);
       expect(
         uiStatePatchBodies.some((body) => body.terminalCompletionSound === "double-beep"),
+      ).toBe(true);
+      expect(
+        uiStatePatchBodies.some((body) => body.isClaudeDangerouslySkipPermissionsEnabled === false),
+      ).toBe(true);
+    });
+  });
+
+  it("passes the Claude permission bypass setting when creating a terminal", async () => {
+    const terminalCreateBodies: Array<Record<string, unknown>> = [];
+
+    vi.spyOn(globalThis, "fetch").mockImplementation(async (input, init) => {
+      const url = String(input);
+      const method = init?.method ?? "GET";
+
+      if (url.endsWith("/api/terminal-snapshots") && method === "GET") {
+        return jsonResponse([]);
+      }
+
+      if (url.endsWith("/api/claude/usage") && method === "GET") {
+        return jsonResponse({
+          status: "unavailable",
+          fetchedAt: "2026-02-24T10:00:00.000Z",
+          source: "none",
+        });
+      }
+
+      if (url.endsWith("/api/codex/usage") && method === "GET") {
+        return jsonResponse({
+          status: "unavailable",
+          fetchedAt: "2026-02-24T10:00:00.000Z",
+          source: "none",
+        });
+      }
+
+      if (url.endsWith("/api/github/summary") && method === "GET") {
+        return jsonResponse({
+          status: "unavailable",
+          source: "none",
+          fetchedAt: "2026-02-24T10:00:00.000Z",
+          commitsPerDay: [],
+        });
+      }
+
+      if (url.includes("/api/analytics/usage-heatmap") && method === "GET") {
+        return jsonResponse({
+          days: [],
+          projects: [],
+          models: [],
+        });
+      }
+
+      if (url.endsWith("/api/ui-state") && method === "GET") {
+        return jsonResponse({
+          isClaudeDangerouslySkipPermissionsEnabled: true,
+        });
+      }
+
+      if (url.endsWith("/api/ui-state") && method === "PATCH") {
+        return jsonResponse({});
+      }
+
+      if (url.endsWith("/api/terminals") && method === "POST") {
+        const body = init?.body;
+        if (typeof body === "string") {
+          terminalCreateBodies.push(JSON.parse(body) as Record<string, unknown>);
+        }
+        return jsonResponse({ terminalId: "terminal-1", tentacleId: "terminal-1" }, 201);
+      }
+
+      return notFoundResponse();
+    });
+
+    render(<App />);
+
+    await screen.findByRole("toolbar", { name: "Canvas actions" });
+    fireEvent.click(screen.getByRole("button", { name: /^Terminal$/i }));
+
+    await waitFor(() => {
+      expect(
+        terminalCreateBodies.some((body) => body.claudeDangerouslySkipPermissions === true),
       ).toBe(true);
     });
   });

@@ -57,6 +57,7 @@ Options:
 - `--parent-terminal-id`: parent terminal ID for child terminals
 - `--prompt-template`: prompt template name
 - `--prompt-variables`: JSON object of prompt template variables
+- `--dangerously-skip-permissions`: for Claude Code terminals, launch `claude --dangerously-skip-permissions`
 
 ## List terminals
 

@@ -90,6 +90,11 @@ const parsePersistedUiState = (value: unknown): PersistedUiState => {
     nextState.isCodexUsageSectionExpanded = value.isCodexUsageSectionExpanded;
   }
 
+  if (typeof value.isClaudeDangerouslySkipPermissionsEnabled === "boolean") {
+    nextState.isClaudeDangerouslySkipPermissionsEnabled =
+      value.isClaudeDangerouslySkipPermissionsEnabled;
+  }
+
   const completionSoundValue = value.terminalCompletionSound;
   if (isTerminalCompletionSoundId(completionSoundValue)) {
     nextState.terminalCompletionSound = completionSoundValue;
@@ -267,6 +272,9 @@ const parseV3Terminals = (
     if (typeof entry.parentTerminalId === "string")
       terminal.parentTerminalId = entry.parentTerminalId;
     if (isTerminalAgentProvider(entry.agentProvider)) terminal.agentProvider = entry.agentProvider;
+    if (typeof entry.claudeDangerouslySkipPermissions === "boolean") {
+      terminal.claudeDangerouslySkipPermissions = entry.claudeDangerouslySkipPermissions;
+    }
     if (typeof entry.initialPrompt === "string") terminal.initialPrompt = entry.initialPrompt;
     if (typeof entry.initialInputDraft === "string") {
       terminal.initialInputDraft = entry.initialInputDraft;

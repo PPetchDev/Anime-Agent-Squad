@@ -132,6 +132,42 @@ export const parseTerminalAgentProvider = (payload: unknown) => {
   };
 };
 
+export const parseClaudeDangerouslySkipPermissions = (payload: unknown) => {
+  if (payload === null || payload === undefined) {
+    return {
+      claudeDangerouslySkipPermissions: undefined as boolean | undefined,
+      error: null as string | null,
+    };
+  }
+
+  if (typeof payload !== "object") {
+    return {
+      claudeDangerouslySkipPermissions: undefined as boolean | undefined,
+      error: "Expected a JSON object body.",
+    };
+  }
+
+  const rawValue = (payload as Record<string, unknown>).claudeDangerouslySkipPermissions;
+  if (rawValue === undefined) {
+    return {
+      claudeDangerouslySkipPermissions: undefined as boolean | undefined,
+      error: null as string | null,
+    };
+  }
+
+  if (typeof rawValue !== "boolean") {
+    return {
+      claudeDangerouslySkipPermissions: undefined as boolean | undefined,
+      error: "claudeDangerouslySkipPermissions must be a boolean.",
+    };
+  }
+
+  return {
+    claudeDangerouslySkipPermissions: rawValue,
+    error: null as string | null,
+  };
+};
+
 export const parseTerminalNameOrigin = (payload: unknown) => {
   if (payload === null || payload === undefined) {
     return {

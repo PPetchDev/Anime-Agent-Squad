@@ -16,6 +16,7 @@ import {
   writeNoContent,
 } from "./routeHelpers";
 import {
+  parseClaudeDangerouslySkipPermissions,
   parseTerminalAgentProvider,
   parseTerminalCharacterIdentity,
   parseTerminalName,
@@ -98,6 +99,12 @@ export const handleTerminalsCollectionRoute: ApiRouteHandler = async (
     return true;
   }
 
+  const claudePermissionsResult = parseClaudeDangerouslySkipPermissions(bodyReadResult.payload);
+  if (claudePermissionsResult.error) {
+    writeJson(response, 400, { error: claudePermissionsResult.error }, corsOrigin);
+    return true;
+  }
+
   const nameOriginResult = parseTerminalNameOrigin(bodyReadResult.payload);
   if (nameOriginResult.error) {
     writeJson(response, 400, { error: nameOriginResult.error }, corsOrigin);
@@ -118,6 +125,7 @@ export const handleTerminalsCollectionRoute: ApiRouteHandler = async (
       tentacleName?: string;
       workspaceMode: TentacleWorkspaceMode;
       agentProvider?: TerminalAgentProvider;
+      claudeDangerouslySkipPermissions?: boolean;
       nameOrigin?: TerminalNameOrigin;
       initialPrompt?: string;
       initialInputDraft?: string;
@@ -133,6 +141,10 @@ export const handleTerminalsCollectionRoute: ApiRouteHandler = async (
     }
     if (agentProviderResult.agentProvider !== undefined) {
       createTerminalInput.agentProvider = agentProviderResult.agentProvider;
+    }
+    if (claudePermissionsResult.claudeDangerouslySkipPermissions !== undefined) {
+      createTerminalInput.claudeDangerouslySkipPermissions =
+        claudePermissionsResult.claudeDangerouslySkipPermissions;
     }
     if (nameOriginResult.nameOrigin !== undefined) {
       createTerminalInput.nameOrigin = nameOriginResult.nameOrigin;

@@ -25,6 +25,7 @@ import {
   writeText,
 } from "./routeHelpers";
 import {
+  parseClaudeDangerouslySkipPermissions,
   parseTerminalAgentProvider,
   parseTerminalCharacterIdentity,
   parseTerminalWorkspaceMode,
@@ -429,6 +430,12 @@ export const handleDeckTodoSolveRoute: ApiRouteHandler = async (
     return true;
   }
 
+  const claudePermissionsResult = parseClaudeDangerouslySkipPermissions(body);
+  if (claudePermissionsResult.error) {
+    writeJson(response, 400, { error: claudePermissionsResult.error }, corsOrigin);
+    return true;
+  }
+
   const characterResult = parseTerminalCharacterIdentity(body);
   if (characterResult.error) {
     writeJson(response, 400, { error: characterResult.error }, corsOrigin);
@@ -494,6 +501,9 @@ export const handleDeckTodoSolveRoute: ApiRouteHandler = async (
       workspaceMode: "shared",
       ...(agentProviderResult.agentProvider
         ? { agentProvider: agentProviderResult.agentProvider }
+        : {}),
+      ...(claudePermissionsResult.claudeDangerouslySkipPermissions
+        ? { claudeDangerouslySkipPermissions: true }
         : {}),
       ...(characterResult.characterId ? { characterId: characterResult.characterId } : {}),
       ...(characterResult.customAvatarPath
@@ -569,6 +579,12 @@ export const handleDeckTentacleSwarmRoute: ApiRouteHandler = async (
   const agentProviderResult = parseTerminalAgentProvider(body);
   if (agentProviderResult.error) {
     writeJson(response, 400, { error: agentProviderResult.error }, corsOrigin);
+    return true;
+  }
+
+  const claudePermissionsResult = parseClaudeDangerouslySkipPermissions(body);
+  if (claudePermissionsResult.error) {
+    writeJson(response, 400, { error: claudePermissionsResult.error }, corsOrigin);
     return true;
   }
 
@@ -795,6 +811,9 @@ export const handleDeckTentacleSwarmRoute: ApiRouteHandler = async (
         ...(agentProviderResult.agentProvider
           ? { agentProvider: agentProviderResult.agentProvider }
           : {}),
+        ...(claudePermissionsResult.claudeDangerouslySkipPermissions
+          ? { claudeDangerouslySkipPermissions: true }
+          : {}),
         ...(characterResult.characterId ? { characterId: characterResult.characterId } : {}),
         ...(characterResult.customAvatarPath
           ? { customAvatarPath: characterResult.customAvatarPath }
@@ -854,6 +873,9 @@ export const handleDeckTentacleSwarmRoute: ApiRouteHandler = async (
             "--prompt-template swarm-worker",
             `--prompt-variables ${shellSingleQuote(promptVariables)}`,
           ];
+          if (claudePermissionsResult.claudeDangerouslySkipPermissions) {
+            commandParts.push("--dangerously-skip-permissions");
+          }
           if (characterResult.characterId) {
             commandParts.push(`--character-id ${shellSingleQuote(characterResult.characterId)}`);
           }
@@ -898,6 +920,9 @@ export const handleDeckTentacleSwarmRoute: ApiRouteHandler = async (
         workspaceMode: "shared",
         ...(agentProviderResult.agentProvider
           ? { agentProvider: agentProviderResult.agentProvider }
+          : {}),
+        ...(claudePermissionsResult.claudeDangerouslySkipPermissions
+          ? { claudeDangerouslySkipPermissions: true }
           : {}),
         ...(characterResult.characterId ? { characterId: characterResult.characterId } : {}),
         ...(characterResult.customAvatarPath

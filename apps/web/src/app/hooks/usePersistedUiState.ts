@@ -26,6 +26,7 @@ const DEFAULT_IS_CODEX_USAGE_VISIBLE = true;
 const DEFAULT_IS_CLAUDE_USAGE_VISIBLE = true;
 const DEFAULT_IS_CLAUDE_USAGE_SECTION_EXPANDED = true;
 const DEFAULT_IS_CODEX_USAGE_SECTION_EXPANDED = true;
+const DEFAULT_IS_CLAUDE_DANGEROUSLY_SKIP_PERMISSIONS_ENABLED = false;
 const DEFAULT_MINIMIZED_TERMINAL_IDS: string[] = [];
 const DEFAULT_TERMINAL_WIDTHS: Record<string, number> = {};
 const DEFAULT_CANVAS_OPEN_TERMINAL_IDS: string[] = [];
@@ -74,6 +75,7 @@ const buildPersistedUiStateSnapshot = ({
   isClaudeUsageVisible,
   isClaudeUsageSectionExpanded,
   isCodexUsageSectionExpanded,
+  isClaudeDangerouslySkipPermissionsEnabled,
   terminalCompletionSound,
   minimizedTerminalIds,
   terminalWidths,
@@ -92,6 +94,7 @@ const buildPersistedUiStateSnapshot = ({
   isClaudeUsageVisible: boolean;
   isClaudeUsageSectionExpanded: boolean;
   isCodexUsageSectionExpanded: boolean;
+  isClaudeDangerouslySkipPermissionsEnabled: boolean;
   terminalCompletionSound: TerminalCompletionSoundId;
   minimizedTerminalIds: string[];
   terminalWidths: Record<string, number>;
@@ -110,6 +113,7 @@ const buildPersistedUiStateSnapshot = ({
   isClaudeUsageVisible,
   isClaudeUsageSectionExpanded,
   isCodexUsageSectionExpanded,
+  isClaudeDangerouslySkipPermissionsEnabled,
   terminalCompletionSound,
   minimizedTerminalIds,
   terminalWidths,
@@ -134,6 +138,8 @@ const areUiStateSnapshotsEqual = (
   left.isClaudeUsageVisible === right.isClaudeUsageVisible &&
   left.isClaudeUsageSectionExpanded === right.isClaudeUsageSectionExpanded &&
   left.isCodexUsageSectionExpanded === right.isCodexUsageSectionExpanded &&
+  left.isClaudeDangerouslySkipPermissionsEnabled ===
+    right.isClaudeDangerouslySkipPermissionsEnabled &&
   left.terminalCompletionSound === right.terminalCompletionSound &&
   areStringArraysEqual(left.minimizedTerminalIds, right.minimizedTerminalIds) &&
   areNumberRecordMapsEqual(left.terminalWidths, right.terminalWidths) &&
@@ -167,6 +173,8 @@ type UsePersistedUiStateResult = {
   setIsClaudeUsageSectionExpanded: Dispatch<SetStateAction<boolean>>;
   isCodexUsageSectionExpanded: boolean;
   setIsCodexUsageSectionExpanded: Dispatch<SetStateAction<boolean>>;
+  isClaudeDangerouslySkipPermissionsEnabled: boolean;
+  setIsClaudeDangerouslySkipPermissionsEnabled: Dispatch<SetStateAction<boolean>>;
   terminalCompletionSound: TerminalCompletionSoundId;
   setTerminalCompletionSound: Dispatch<SetStateAction<TerminalCompletionSoundId>>;
   minimizedTerminalIds: string[];
@@ -214,6 +222,8 @@ export const usePersistedUiState = ({
   const [isCodexUsageSectionExpanded, setIsCodexUsageSectionExpanded] = useState(
     DEFAULT_IS_CODEX_USAGE_SECTION_EXPANDED,
   );
+  const [isClaudeDangerouslySkipPermissionsEnabled, setIsClaudeDangerouslySkipPermissionsEnabled] =
+    useState(DEFAULT_IS_CLAUDE_DANGEROUSLY_SKIP_PERMISSIONS_ENABLED);
   const [terminalCompletionSound, setTerminalCompletionSound] = useState<TerminalCompletionSoundId>(
     DEFAULT_TERMINAL_COMPLETION_SOUND,
   );
@@ -280,6 +290,8 @@ export const usePersistedUiState = ({
           isClaudeUsageVisible: DEFAULT_IS_CLAUDE_USAGE_VISIBLE,
           isClaudeUsageSectionExpanded: DEFAULT_IS_CLAUDE_USAGE_SECTION_EXPANDED,
           isCodexUsageSectionExpanded: DEFAULT_IS_CODEX_USAGE_SECTION_EXPANDED,
+          isClaudeDangerouslySkipPermissionsEnabled:
+            DEFAULT_IS_CLAUDE_DANGEROUSLY_SKIP_PERMISSIONS_ENABLED,
           terminalCompletionSound: DEFAULT_TERMINAL_COMPLETION_SOUND,
           minimizedTerminalIds: DEFAULT_MINIMIZED_TERMINAL_IDS,
           terminalWidths: DEFAULT_TERMINAL_WIDTHS,
@@ -326,6 +338,9 @@ export const usePersistedUiState = ({
           snapshot.isClaudeUsageSectionExpanded ?? DEFAULT_IS_CLAUDE_USAGE_SECTION_EXPANDED,
         isCodexUsageSectionExpanded:
           snapshot.isCodexUsageSectionExpanded ?? DEFAULT_IS_CODEX_USAGE_SECTION_EXPANDED,
+        isClaudeDangerouslySkipPermissionsEnabled:
+          snapshot.isClaudeDangerouslySkipPermissionsEnabled ??
+          DEFAULT_IS_CLAUDE_DANGEROUSLY_SKIP_PERMISSIONS_ENABLED,
         terminalCompletionSound:
           snapshot.terminalCompletionSound ?? DEFAULT_TERMINAL_COMPLETION_SOUND,
         minimizedTerminalIds: nextMinimizedTerminalIds,
@@ -383,6 +398,12 @@ export const usePersistedUiState = ({
         setIsClaudeUsageSectionExpanded(snapshot.isClaudeUsageSectionExpanded);
       }
 
+      if (snapshot.isClaudeDangerouslySkipPermissionsEnabled !== undefined) {
+        setIsClaudeDangerouslySkipPermissionsEnabled(
+          snapshot.isClaudeDangerouslySkipPermissionsEnabled,
+        );
+      }
+
       if (snapshot.terminalCompletionSound !== undefined) {
         setTerminalCompletionSound(snapshot.terminalCompletionSound);
       }
@@ -436,6 +457,7 @@ export const usePersistedUiState = ({
       isClaudeUsageVisible,
       isClaudeUsageSectionExpanded,
       isCodexUsageSectionExpanded,
+      isClaudeDangerouslySkipPermissionsEnabled,
       terminalCompletionSound,
       minimizedTerminalIds,
       terminalWidths,
@@ -485,6 +507,7 @@ export const usePersistedUiState = ({
     isClaudeUsageVisible,
     isClaudeUsageSectionExpanded,
     isCodexUsageSectionExpanded,
+    isClaudeDangerouslySkipPermissionsEnabled,
     isUiStateHydrated,
     minimizedTerminalIds,
     sidebarWidth,
@@ -518,6 +541,8 @@ export const usePersistedUiState = ({
     setIsClaudeUsageSectionExpanded,
     isCodexUsageSectionExpanded,
     setIsCodexUsageSectionExpanded,
+    isClaudeDangerouslySkipPermissionsEnabled,
+    setIsClaudeDangerouslySkipPermissionsEnabled,
     terminalCompletionSound,
     setTerminalCompletionSound,
     minimizedTerminalIds,

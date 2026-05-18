@@ -22,7 +22,7 @@ Most HTTP routes either read/write persisted files or create runtime records. We
 
 Terminal snapshots include `lifecycleState` when known. Supported lifecycle states are `registered`, `running`, `stopped`, `exited`, and `stale`. Stale terminals are records that were persisted as running but could not be reattached to a live Octogent PTY session after startup.
 
-Creating a terminal registers metadata first. A PTY starts immediately only when an initial prompt is provided, a WebSocket attaches, or an internal direct listener starts the session. Worktree terminals also create their worktree before the terminal record is exposed.
+Creating a terminal registers metadata first. A PTY starts immediately only when an initial prompt is provided, a WebSocket attaches, or an internal direct listener starts the session. Worktree terminals also create their worktree before the terminal record is exposed. Claude-backed terminals may set `claudeDangerouslySkipPermissions: true` in the create body to launch as `claude --dangerously-skip-permissions`.
 
 ## Git and worktrees
 

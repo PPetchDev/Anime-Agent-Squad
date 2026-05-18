@@ -13,6 +13,7 @@ import { SettingsPrimaryView } from "./SettingsPrimaryView";
 
 type PrimaryViewRouterProps = {
   activePrimaryNav: PrimaryNavIndex;
+  isClaudeDangerouslySkipPermissionsEnabled: boolean;
   deckPrimaryViewProps: ComponentProps<typeof DeckPrimaryView>;
   isMonitorVisible: boolean;
   activityPrimaryViewProps: ComponentProps<typeof ActivityPrimaryView>;
@@ -37,6 +38,7 @@ type PrimaryViewRouterProps = {
 
 export const PrimaryViewRouter = ({
   activePrimaryNav,
+  isClaudeDangerouslySkipPermissionsEnabled,
   deckPrimaryViewProps,
   isMonitorVisible,
   activityPrimaryViewProps,
@@ -87,7 +89,11 @@ export const PrimaryViewRouter = ({
 
   if (activePrimaryNav === 7) {
     return (
-      <PromptsPrimaryView enabled={promptsEnabled} onSidebarContent={onPromptsSidebarContent} />
+      <PromptsPrimaryView
+        enabled={promptsEnabled}
+        isClaudeDangerouslySkipPermissionsEnabled={isClaudeDangerouslySkipPermissionsEnabled}
+        onSidebarContent={onPromptsSidebarContent}
+      />
     );
   }
 

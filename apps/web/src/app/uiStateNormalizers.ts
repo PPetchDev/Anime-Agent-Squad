@@ -65,6 +65,11 @@ export const normalizeFrontendUiStateSnapshot = (
     nextState.isClaudeUsageSectionExpanded = record.isClaudeUsageSectionExpanded;
   }
 
+  if (typeof record.isClaudeDangerouslySkipPermissionsEnabled === "boolean") {
+    nextState.isClaudeDangerouslySkipPermissionsEnabled =
+      record.isClaudeDangerouslySkipPermissionsEnabled;
+  }
+
   const completionSoundValue = record.terminalCompletionSound;
   if (isTerminalCompletionSoundId(completionSoundValue)) {
     nextState.terminalCompletionSound = completionSoundValue;

@@ -382,6 +382,46 @@ describe("createSessionRuntime", () => {
     runtime.close();
   });
 
+  it("boots Claude with the permission bypass flag when the terminal opts in", () => {
+    const tentacleId = "tentacle-1";
+    const terminals = new Map<string, PersistedTerminal>([
+      [
+        tentacleId,
+        {
+          terminalId: tentacleId,
+          tentacleId,
+          tentacleName: tentacleId,
+          createdAt: new Date().toISOString(),
+          workspaceMode: "shared",
+          agentProvider: "claude-code",
+          claudeDangerouslySkipPermissions: true,
+        },
+      ],
+    ]);
+    const sessions = new Map<string, TerminalSession>();
+    const websocketServer = new FakeWebSocketServer();
+    const pty = new FakePty();
+    const transcriptDirectoryPath = createTemporaryDirectory();
+    spawnMock.mockReturnValue(pty);
+
+    const runtime = createSessionRuntime({
+      websocketServer: websocketServer as unknown as import("ws").WebSocketServer,
+      terminals,
+      sessions,
+      getTentacleWorkspaceCwd: () => process.cwd(),
+      isDebugPtyLogsEnabled: false,
+      ptyLogDir: process.cwd(),
+      transcriptDirectoryPath,
+      sessionIdleGraceMs: 60_000,
+      scrollbackMaxBytes: 1024,
+    });
+
+    expect(runtime.startSession(tentacleId)).toBe(true);
+    expect(pty.write).toHaveBeenNthCalledWith(1, "claude --dangerously-skip-permissions\r");
+
+    runtime.close();
+  });
+
   it("releases headless prompted sessions after keepalive is dropped", () => {
     vi.useFakeTimers();
 

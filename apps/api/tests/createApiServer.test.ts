@@ -445,7 +445,7 @@ describe("createApiServer", () => {
             return document;
           }
         } catch {
-          // File may be partially written during concurrent write; retry on next iteration
+          // The registry can be observed between truncate and write during debounced persistence.
         }
       }
 
@@ -1905,6 +1905,49 @@ describe("createApiServer", () => {
           terminalId: "terminal-1",
           tentacleId: "terminal-1",
           workspaceMode: "shared",
+        }),
+      ]),
+    );
+  });
+
+  it("persists the Claude permission bypass launch option for new terminals", async () => {
+    const workspaceCwd = mkdtempSync(join(tmpdir(), "octogent-api-test-"));
+    temporaryDirectories.push(workspaceCwd);
+    const baseUrl = await startServer({
+      workspaceCwd,
+    });
+
+    const createResponse = await fetch(`${baseUrl}/api/terminals`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: "planner",
+        agentProvider: "claude-code",
+        claudeDangerouslySkipPermissions: true,
+      }),
+    });
+    expect(createResponse.status).toBe(201);
+
+    const registryDocument = await waitForRegistryDocument<{
+      terminals: Array<{
+        terminalId: string;
+        claudeDangerouslySkipPermissions?: boolean;
+      }>;
+    }>(workspaceCwd, (document) =>
+      document.terminals.some(
+        (terminal) =>
+          terminal.terminalId === "terminal-1" &&
+          terminal.claudeDangerouslySkipPermissions === true,
+      ),
+    );
+    expect(registryDocument.terminals).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          terminalId: "terminal-1",
+          claudeDangerouslySkipPermissions: true,
         }),
       ]),
     );

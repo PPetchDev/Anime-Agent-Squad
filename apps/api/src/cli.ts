@@ -406,6 +406,9 @@ const terminalCreate = async () => {
   const promptVariables = parseJsonFlag("--prompt-variables");
   const characterId = parseFlag("--character-id");
   const customAvatarPath = parseFlag("--custom-avatar-path");
+  const claudeDangerouslySkipPermissions =
+    args.includes("--dangerously-skip-permissions") ||
+    args.includes("--claude-dangerously-skip-permissions");
   const apiBase = resolveRuntimeApiBase();
 
   const body: Record<string, unknown> = {};
@@ -422,6 +425,7 @@ const terminalCreate = async () => {
   if (promptVariables) body.promptVariables = promptVariables;
   if (characterId) body.characterId = characterId;
   if (customAvatarPath) body.customAvatarPath = customAvatarPath;
+  if (claudeDangerouslySkipPermissions) body.claudeDangerouslySkipPermissions = true;
 
   try {
     const response = await fetch(`${apiBase}/api/terminals`, {

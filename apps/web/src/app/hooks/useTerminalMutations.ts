@@ -15,6 +15,7 @@ type UseTerminalMutationsOptions = {
   setColumns: Dispatch<SetStateAction<TerminalView>>;
   setLoadError: Dispatch<SetStateAction<string | null>>;
   setMinimizedTerminalIds: Dispatch<SetStateAction<string[]>>;
+  isClaudeDangerouslySkipPermissionsEnabled?: boolean;
 };
 
 export type CreateTerminalCharacterOptions = {
@@ -56,6 +57,7 @@ export const useTerminalMutations = ({
   setColumns,
   setLoadError,
   setMinimizedTerminalIds,
+  isClaudeDangerouslySkipPermissionsEnabled = false,
 }: UseTerminalMutationsOptions): UseTerminalMutationsResult => {
   const [editingTerminalId, setEditingTerminalId] = useState<string | null>(null);
   const [terminalNameDraft, setTerminalNameDraft] = useState("");
@@ -138,6 +140,9 @@ export const useTerminalMutations = ({
           body: JSON.stringify({
             workspaceMode,
             agentProvider: agentProvider ?? "claude-code",
+            ...(isClaudeDangerouslySkipPermissionsEnabled
+              ? { claudeDangerouslySkipPermissions: true }
+              : {}),
             ...(tentacleId ? { tentacleId } : {}),
             ...(character?.characterId ? { characterId: character.characterId } : {}),
             ...(character?.customAvatarPath
@@ -179,7 +184,14 @@ export const useTerminalMutations = ({
         setIsCreatingTerminal(false);
       }
     },
-    [beginTerminalNameEdit, readColumns, setColumns, setLoadError, setMinimizedTerminalIds],
+    [
+      beginTerminalNameEdit,
+      isClaudeDangerouslySkipPermissionsEnabled,
+      readColumns,
+      setColumns,
+      setLoadError,
+      setMinimizedTerminalIds,
+    ],
   );
 
   const requestDeleteTerminal = useCallback(

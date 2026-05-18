@@ -8,6 +8,7 @@ import { MarkdownContent } from "./ui/MarkdownContent";
 
 type PromptsPrimaryViewProps = {
   enabled: boolean;
+  isClaudeDangerouslySkipPermissionsEnabled: boolean;
   onSidebarContent?: (content: ReactNode) => void;
 };
 
@@ -15,7 +16,11 @@ type NewPromptMode = {
   terminalId: string;
 } | null;
 
-export const PromptsPrimaryView = ({ enabled, onSidebarContent }: PromptsPrimaryViewProps) => {
+export const PromptsPrimaryView = ({
+  enabled,
+  isClaudeDangerouslySkipPermissionsEnabled,
+  onSidebarContent,
+}: PromptsPrimaryViewProps) => {
   const {
     prompts,
     selectedPromptName,
@@ -89,6 +94,9 @@ export const PromptsPrimaryView = ({ enabled, onSidebarContent }: PromptsPrimary
         body: JSON.stringify({
           workspaceMode: "shared",
           agentProvider: "claude-code",
+          ...(isClaudeDangerouslySkipPermissionsEnabled
+            ? { claudeDangerouslySkipPermissions: true }
+            : {}),
           promptTemplate: "meta-prompt-generator",
         }),
       });
@@ -103,7 +111,7 @@ export const PromptsPrimaryView = ({ enabled, onSidebarContent }: PromptsPrimary
     } finally {
       setIsCreatingTerminal(false);
     }
-  }, [onTerminalIdChange]);
+  }, [isClaudeDangerouslySkipPermissionsEnabled, onTerminalIdChange]);
 
   useEffect(() => {
     if (newPromptRequestCount > 0) {

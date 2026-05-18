@@ -84,6 +84,7 @@ type CanvasTentaclePanelProps = {
   panelRef?: Ref<HTMLDivElement> | undefined;
   tentacle: DeckTentacleSummary | null;
   sessions: ConversationSessionSummary[];
+  isClaudeDangerouslySkipPermissionsEnabled?: boolean;
   onCreateAgent?:
     | ((tentacleId: string, character?: CreateTerminalCharacterOptions) => void)
     | undefined;
@@ -122,6 +123,7 @@ export const CanvasTentaclePanel = ({
   panelRef,
   tentacle,
   sessions,
+  isClaudeDangerouslySkipPermissionsEnabled = false,
   onCreateAgent,
   onSolveTodoItem,
   onSpawnSwarm,
@@ -223,7 +225,12 @@ export const CanvasTentaclePanel = ({
         const response = await fetch(buildDeckTodoSolveUrl(node.tentacleId), {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ itemIndex }),
+          body: JSON.stringify({
+            itemIndex,
+            ...(isClaudeDangerouslySkipPermissionsEnabled
+              ? { claudeDangerouslySkipPermissions: true }
+              : {}),
+          }),
         });
         if (!response.ok) return;
         onSolveTodoItem?.(node.tentacleId, itemIndex);
@@ -233,7 +240,7 @@ export const CanvasTentaclePanel = ({
         setSolvingTodoIndex((current) => (current === itemIndex ? null : current));
       }
     },
-    [node.tentacleId, onSolveTodoItem],
+    [node.tentacleId, isClaudeDangerouslySkipPermissionsEnabled, onSolveTodoItem],
   );
 
   const progressPct =

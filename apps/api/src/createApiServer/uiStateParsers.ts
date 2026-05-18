@@ -127,6 +127,17 @@ export const parseUiStatePatch = (
     patch.isCodexUsageSectionExpanded = record.isCodexUsageSectionExpanded;
   }
 
+  if (record.isClaudeDangerouslySkipPermissionsEnabled !== undefined) {
+    if (typeof record.isClaudeDangerouslySkipPermissionsEnabled !== "boolean") {
+      return {
+        patch: null,
+        error: "isClaudeDangerouslySkipPermissionsEnabled must be a boolean.",
+      };
+    }
+    patch.isClaudeDangerouslySkipPermissionsEnabled =
+      record.isClaudeDangerouslySkipPermissionsEnabled;
+  }
+
   const completionSoundKey = record.terminalCompletionSound;
   if (completionSoundKey !== undefined) {
     if (!isTerminalCompletionSoundId(completionSoundKey)) {

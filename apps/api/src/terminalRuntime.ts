@@ -395,6 +395,7 @@ export const createTerminalRuntime = ({
     tentacleName,
     workspaceMode = "shared",
     agentProvider,
+    claudeDangerouslySkipPermissions,
     initialPrompt,
     initialInputDraft,
     characterId,
@@ -410,6 +411,7 @@ export const createTerminalRuntime = ({
     tentacleName?: string;
     workspaceMode?: TentacleWorkspaceMode;
     agentProvider?: TerminalAgentProvider;
+    claudeDangerouslySkipPermissions?: boolean;
     initialPrompt?: string;
     initialInputDraft?: string;
     characterId?: string;
@@ -464,6 +466,7 @@ export const createTerminalRuntime = ({
       createdAt: new Date().toISOString(),
       workspaceMode,
       agentProvider: agentProvider ?? DEFAULT_AGENT_PROVIDER,
+      ...(claudeDangerouslySkipPermissions ? { claudeDangerouslySkipPermissions: true } : {}),
       lifecycleState: "registered",
       lifecycleUpdatedAt: new Date().toISOString(),
       ...(initialPrompt ? { initialPrompt } : {}),
@@ -601,6 +604,10 @@ export const createTerminalRuntime = ({
       }
       if (patch.isCodexUsageSectionExpanded !== undefined) {
         uiState.isCodexUsageSectionExpanded = patch.isCodexUsageSectionExpanded;
+      }
+      if (patch.isClaudeDangerouslySkipPermissionsEnabled !== undefined) {
+        uiState.isClaudeDangerouslySkipPermissionsEnabled =
+          patch.isClaudeDangerouslySkipPermissionsEnabled;
       }
       if (patch.terminalCompletionSound !== undefined) {
         uiState.terminalCompletionSound = patch.terminalCompletionSound;

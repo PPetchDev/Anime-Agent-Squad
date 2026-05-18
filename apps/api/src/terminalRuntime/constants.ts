@@ -10,6 +10,22 @@ export const TERMINAL_BOOTSTRAP_COMMANDS: Record<string, string> = {
   codex: "codex",
   "claude-code": "claude",
 };
+
+export const resolveTerminalBootstrapCommand = (
+  provider: string,
+  options: { claudeDangerouslySkipPermissions?: boolean } = {},
+) => {
+  const bootstrapCommand =
+    TERMINAL_BOOTSTRAP_COMMANDS[provider] ??
+    TERMINAL_BOOTSTRAP_COMMANDS[DEFAULT_AGENT_PROVIDER] ??
+    "claude";
+
+  if (provider === "claude-code" && options.claudeDangerouslySkipPermissions === true) {
+    return `${bootstrapCommand} --dangerously-skip-permissions`;
+  }
+
+  return bootstrapCommand;
+};
 export const TERMINAL_SESSION_IDLE_GRACE_MS = 5 * 60 * 1000;
 export const TERMINAL_SCROLLBACK_MAX_BYTES = 512 * 1024;
 export const TERMINAL_MAX_CONCURRENT_SESSIONS = 32;

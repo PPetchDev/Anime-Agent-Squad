@@ -71,6 +71,7 @@ export const App = () => {
     isAgentsSidebarVisible,
     isBottomTelemetryVisible,
     isClaudeUsageSectionExpanded,
+    isClaudeDangerouslySkipPermissionsEnabled,
     isCodexUsageSectionExpanded,
     isMonitorVisible,
     isRuntimeStatusStripVisible,
@@ -81,6 +82,7 @@ export const App = () => {
     setIsAgentsSidebarVisible,
     setIsBottomTelemetryVisible,
     setIsClaudeUsageSectionExpanded,
+    setIsClaudeDangerouslySkipPermissionsEnabled,
     setIsCodexUsageSectionExpanded,
     setIsMonitorVisible,
     setIsRuntimeStatusStripVisible,
@@ -147,6 +149,7 @@ export const App = () => {
   } = useTerminalMutations({
     readColumns: async () => readColumns(),
     setColumns: setTerminals,
+    isClaudeDangerouslySkipPermissionsEnabled,
     setLoadError,
     setMinimizedTerminalIds,
   });
@@ -417,6 +420,10 @@ export const App = () => {
     [runWorkspaceSetupStep],
   );
 
+  const claudeLaunchOptions = isClaudeDangerouslySkipPermissionsEnabled
+    ? { claudeDangerouslySkipPermissions: true }
+    : {};
+
   return (
     <div className="page console-shell">
       {isRuntimeStatusStripVisible && (
@@ -464,7 +471,9 @@ export const App = () => {
 
           <PrimaryViewRouter
             activePrimaryNav={activePrimaryNav}
+            isClaudeDangerouslySkipPermissionsEnabled={isClaudeDangerouslySkipPermissionsEnabled}
             deckPrimaryViewProps={{
+              isClaudeDangerouslySkipPermissionsEnabled,
               onSidebarContent: setDeckSidebarContent,
               workspaceSetup,
               isWorkspaceSetupLoading,
@@ -501,8 +510,11 @@ export const App = () => {
             }}
             monitorRuntime={monitorRuntime}
             settingsPrimaryViewProps={{
+              isClaudeDangerouslySkipPermissionsEnabled,
               isMonitorVisible,
               isRuntimeStatusStripVisible,
+              onClaudeDangerouslySkipPermissionsChange:
+                setIsClaudeDangerouslySkipPermissionsEnabled,
               onMonitorVisibilityChange: setIsMonitorVisible,
               onRuntimeStatusStripVisibilityChange: setIsRuntimeStatusStripVisible,
               onPreviewTerminalCompletionSound: playCompletionSoundPreview,
@@ -513,6 +525,7 @@ export const App = () => {
               columns: terminals,
               runtimeStateStore,
               isUiStateHydrated,
+              isClaudeDangerouslySkipPermissionsEnabled,
               recentlyCreatedTerminal,
               canvasOpenTerminalIds,
               canvasOpenTentacleIds,
@@ -530,6 +543,7 @@ export const App = () => {
                     name: "tentacle-planner",
                     workspaceMode: "shared",
                     agentProvider: "claude-code",
+                    ...claudeLaunchOptions,
                     promptTemplate: "tentacle-planner",
                   }),
                 });
@@ -570,7 +584,7 @@ export const App = () => {
                   {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ workspaceMode }),
+                    body: JSON.stringify({ workspaceMode, ...claudeLaunchOptions }),
                   },
                 );
                 if (!response.ok) return;
@@ -582,6 +596,7 @@ export const App = () => {
                   body: JSON.stringify({
                     workspaceMode: "shared",
                     tentacleId: OCTOBOSS_ID,
+                    ...claudeLaunchOptions,
                     promptTemplate: action,
                   }),
                 });
@@ -597,6 +612,7 @@ export const App = () => {
                   body: JSON.stringify({
                     workspaceMode: "shared",
                     tentacleId,
+                    ...claudeLaunchOptions,
                     promptTemplate: action,
                     promptVariables: {
                       tentacleId,

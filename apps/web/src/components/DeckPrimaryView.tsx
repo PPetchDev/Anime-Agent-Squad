@@ -52,6 +52,7 @@ type FocusState =
 type EmptyViewMode = "idle" | "adding";
 
 type DeckPrimaryViewProps = {
+  isClaudeDangerouslySkipPermissionsEnabled: boolean;
   onSidebarContent?: ((content: ReactNode) => void) | undefined;
   workspaceSetup: WorkspaceSetupSnapshot | null;
   isWorkspaceSetupLoading: boolean;
@@ -62,6 +63,7 @@ type DeckPrimaryViewProps = {
 };
 
 export const DeckPrimaryView = ({
+  isClaudeDangerouslySkipPermissionsEnabled,
   onSidebarContent,
   workspaceSetup,
   isWorkspaceSetupLoading,
@@ -210,6 +212,9 @@ export const DeckPrimaryView = ({
           name: "tentacle-planner",
           workspaceMode: "shared",
           agentProvider: selectedAgent,
+          ...(isClaudeDangerouslySkipPermissionsEnabled
+            ? { claudeDangerouslySkipPermissions: true }
+            : {}),
           promptTemplate: "tentacle-planner",
         }),
       });
@@ -223,7 +228,7 @@ export const DeckPrimaryView = ({
     } finally {
       setIsLaunchingAgent(false);
     }
-  }, [selectedAgent, fetchTentacles]);
+  }, [selectedAgent, isClaudeDangerouslySkipPermissionsEnabled, fetchTentacles]);
 
   const handleRunSetupStep = useCallback(
     async (

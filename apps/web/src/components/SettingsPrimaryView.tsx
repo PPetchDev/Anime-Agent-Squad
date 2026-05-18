@@ -9,22 +9,43 @@ type SettingsPrimaryViewProps = {
   terminalCompletionSound: TerminalCompletionSoundId;
   isRuntimeStatusStripVisible: boolean;
   isMonitorVisible: boolean;
+  isClaudeDangerouslySkipPermissionsEnabled: boolean;
   onTerminalCompletionSoundChange: (soundId: TerminalCompletionSoundId) => void;
   onPreviewTerminalCompletionSound: (soundId: TerminalCompletionSoundId) => void;
   onRuntimeStatusStripVisibilityChange: (visible: boolean) => void;
   onMonitorVisibilityChange: (visible: boolean) => void;
+  onClaudeDangerouslySkipPermissionsChange: (enabled: boolean) => void;
 };
 
 export const SettingsPrimaryView = ({
   terminalCompletionSound,
   isRuntimeStatusStripVisible,
   isMonitorVisible,
+  isClaudeDangerouslySkipPermissionsEnabled,
   onTerminalCompletionSoundChange,
   onPreviewTerminalCompletionSound,
   onRuntimeStatusStripVisibilityChange,
   onMonitorVisibilityChange,
+  onClaudeDangerouslySkipPermissionsChange,
 }: SettingsPrimaryViewProps) => (
   <section className="settings-view" aria-label="Settings primary view">
+    <section className="settings-panel" aria-label="Agent launch settings">
+      <header className="settings-panel-header">
+        <h2>Agent launch settings</h2>
+        <p>Control how new Claude-backed terminal columns start.</p>
+      </header>
+
+      <div className="settings-toggle-grid">
+        <SettingsToggle
+          label="Claude permission bypass"
+          description="Start Claude Code as claude --dangerously-skip-permissions"
+          ariaLabel="Run Claude with dangerous permission bypass"
+          checked={isClaudeDangerouslySkipPermissionsEnabled}
+          onChange={onClaudeDangerouslySkipPermissionsChange}
+        />
+      </div>
+    </section>
+
     <section className="settings-panel" aria-label="Completion notification settings">
       <header className="settings-panel-header">
         <h2>Tentacle completion sound</h2>

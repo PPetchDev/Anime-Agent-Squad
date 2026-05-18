@@ -12,6 +12,7 @@ export type PersistedUiState = {
   isClaudeUsageVisible?: boolean;
   isClaudeUsageSectionExpanded?: boolean;
   isCodexUsageSectionExpanded?: boolean;
+  isClaudeDangerouslySkipPermissionsEnabled?: boolean;
   terminalCompletionSound?: TerminalCompletionSoundId;
   minimizedTerminalIds?: string[];
   terminalWidths?: Record<string, number>;

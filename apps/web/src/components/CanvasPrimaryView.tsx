@@ -58,6 +58,7 @@ type CanvasPrimaryViewProps = {
   columns: TerminalView;
   runtimeStateStore?: TerminalRuntimeStateStore;
   isUiStateHydrated?: boolean;
+  isClaudeDangerouslySkipPermissionsEnabled?: boolean;
   canvasOpenTerminalIds?: string[];
   canvasOpenTentacleIds?: string[];
   canvasTerminalsPanelWidth?: number | null;
@@ -201,6 +202,7 @@ export const CanvasPrimaryView = ({
   columns,
   runtimeStateStore: providedRuntimeStateStore,
   isUiStateHydrated,
+  isClaudeDangerouslySkipPermissionsEnabled = false,
   canvasOpenTerminalIds,
   canvasOpenTentacleIds,
   canvasTerminalsPanelWidth: persistedTerminalsPanelWidth,
@@ -1241,6 +1243,9 @@ export const CanvasPrimaryView = ({
                 panelRef={setPanelRef(nodeId)}
                 tentacle={tentacleById.get(node.tentacleId) ?? null}
                 sessions={sessionsByTentacleId.get(node.tentacleId) ?? []}
+                isClaudeDangerouslySkipPermissionsEnabled={
+                  isClaudeDangerouslySkipPermissionsEnabled
+                }
                 onClose={() => handleCloseTentacle(nodeId)}
                 onFocus={() => setSelectedNodeId(nodeId)}
                 onCreateAgent={(tentacleId, character) => {

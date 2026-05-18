@@ -9,10 +9,10 @@ import type { WebSocket, WebSocketServer } from "ws";
 import { type AgentRuntimeState, AgentStateTracker } from "../agentStateDetection";
 import {
   DEFAULT_AGENT_PROVIDER,
-  TERMINAL_BOOTSTRAP_COMMANDS,
   TERMINAL_MAX_CONCURRENT_SESSIONS,
   TERMINAL_SCROLLBACK_MAX_BYTES,
   TERMINAL_SESSION_IDLE_GRACE_MS,
+  resolveTerminalBootstrapCommand,
 } from "./constants";
 import {
   type ConversationTranscriptEvent,
@@ -480,8 +480,9 @@ export const createSessionRuntime = ({
     const terminal = terminals.get(session.terminalId);
     const provider = terminal?.agentProvider ?? DEFAULT_AGENT_PROVIDER;
 
-    const bootstrapCommand =
-      TERMINAL_BOOTSTRAP_COMMANDS[provider] ?? TERMINAL_BOOTSTRAP_COMMANDS[DEFAULT_AGENT_PROVIDER];
+    const bootstrapCommand = resolveTerminalBootstrapCommand(provider, {
+      claudeDangerouslySkipPermissions: terminal?.claudeDangerouslySkipPermissions,
+    });
     appendDebugLog(session, `bootstrap session=${sessionId} command=${bootstrapCommand}`);
     session.pty.write(`${bootstrapCommand}\r`);
 

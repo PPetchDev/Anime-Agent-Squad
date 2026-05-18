@@ -105,5 +105,8 @@ describe("App shell and navigation", () => {
     expect(screen.getByRole("button", { name: /Retro beep/i })).toBeInTheDocument();
     expect(screen.getByRole("switch", { name: "Show runtime status strip" })).toBeInTheDocument();
     expect(screen.getByRole("switch", { name: "Enable X Monitor" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("switch", { name: "Run Claude with dangerous permission bypass" }),
+    ).toBeInTheDocument();
   });
 });
