@@ -1,6 +1,13 @@
 /* Foundation */
 @import "./styles/foundation.css";
 
+/* Magical Mecha pattern primitives (must load before component CSS that uses them) */
+@import "./styles/magicalmecha-motion.css";
+@import "./styles/magicalmecha-hud-frame.css";
+@import "./styles/magicalmecha-sparkle.css";
+@import "./styles/magicalmecha-sync-ring.css";
+@import "./styles/magicalmecha-scanline.css";
+
 /* Shared UI primitives and surfaces */
 @import "./styles/chrome-and-buttons.css";
 @import "./styles/sidebar-and-scrollbars.css";
