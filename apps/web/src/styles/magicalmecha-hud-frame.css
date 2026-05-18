@@ -1,0 +1,92 @@
+/* HUD frame — corner-bracketed panel border with optional kana label.
+   Usage:
+     <div class="mm-hud-frame">
+       <span class="mm-hud-frame__label">アクティブ</span>
+       <!-- content -->
+     </div>
+*/
+
+.mm-hud-frame {
+  position: relative;
+  padding: 14px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(255, 216, 236, 0.02);
+  border-radius: var(--radius-md);
+}
+
+.mm-hud-frame::before,
+.mm-hud-frame::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: var(--accent-primary);
+  border-style: solid;
+  pointer-events: none;
+}
+
+.mm-hud-frame::before {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+  border-top-left-radius: var(--radius-md);
+}
+
+.mm-hud-frame::after {
+  top: -1px;
+  right: -1px;
+  border-width: 2px 2px 0 0;
+  border-top-right-radius: var(--radius-md);
+}
+
+.mm-hud-frame > .mm-hud-frame__corner-bl,
+.mm-hud-frame > .mm-hud-frame__corner-br {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: var(--accent-primary);
+  border-style: solid;
+  pointer-events: none;
+}
+
+.mm-hud-frame > .mm-hud-frame__corner-bl {
+  bottom: -1px;
+  left: -1px;
+  border-width: 0 0 2px 2px;
+  border-bottom-left-radius: var(--radius-md);
+}
+
+.mm-hud-frame > .mm-hud-frame__corner-br {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 2px 2px 0;
+  border-bottom-right-radius: var(--radius-md);
+}
+
+.mm-hud-frame__label {
+  position: absolute;
+  top: -8px;
+  left: 14px;
+  padding: 0 6px;
+  background: var(--bg-surface-1);
+  font-family: var(--font-kana);
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--accent-primary);
+  pointer-events: none;
+}
+
+.mm-hud-frame--warning {
+  border-color: rgba(255, 140, 66, 0.4);
+}
+
+.mm-hud-frame--warning::before,
+.mm-hud-frame--warning::after,
+.mm-hud-frame--warning > .mm-hud-frame__corner-bl,
+.mm-hud-frame--warning > .mm-hud-frame__corner-br {
+  border-color: var(--accent-warning);
+}
+
+.mm-hud-frame--warning .mm-hud-frame__label {
+  color: var(--accent-warning);
+}
