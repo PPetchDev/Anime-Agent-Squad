@@ -270,3 +270,114 @@
   font-size: 0.6rem;
   opacity: 0.8;
 }
+
+/* === Magical mecha refinements: buttons + pills === */
+
+.action-button--primary {
+  --action-button-border: var(--border-strong);
+  --action-button-bg: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  --action-button-color: var(--bg-canvas);
+  background: var(--action-button-bg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--glow-soft);
+  transition:
+    transform 200ms ease-out,
+    box-shadow 200ms ease-out;
+}
+
+.action-button--primary:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--glow-strong);
+}
+
+.action-button--accent {
+  --action-button-border: var(--border-subtle);
+  --action-button-bg: transparent;
+  --action-button-color: var(--accent-primary);
+  border-radius: var(--radius-md);
+}
+
+.action-button--accent:hover {
+  --action-button-border: var(--border-strong);
+  --action-button-bg: rgba(255, 216, 236, 0.05);
+  background: var(--action-button-bg);
+}
+
+.action-button--danger {
+  --action-button-border: rgba(255, 95, 122, 0.5);
+  --action-button-bg: rgba(255, 95, 122, 0.12);
+  --action-button-color: var(--accent-danger);
+  border-radius: var(--radius-md);
+}
+
+.action-button--danger:hover {
+  --action-button-bg: rgba(255, 95, 122, 0.2);
+  background: var(--action-button-bg);
+}
+
+.action-button:focus-visible {
+  outline: 2px solid var(--ring-focus);
+  outline-offset: 2px;
+}
+
+/* StatusBadge (pill) — magical mecha colors */
+
+.pill,
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  border: 1px solid;
+}
+
+.pill::before,
+.status-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 6px currentColor;
+}
+
+.console-shell .pill.idle,
+.console-shell .status-badge.idle,
+.console-shell .pill.queued,
+.console-shell .status-badge.queued {
+  color: var(--accent-secondary);
+  background: rgba(200, 168, 232, 0.08);
+  border-color: rgba(200, 168, 232, 0.4);
+}
+
+.console-shell .pill.live,
+.console-shell .status-badge.live,
+.console-shell .pill.processing,
+.console-shell .status-badge.processing {
+  color: var(--accent-mint);
+  background: rgba(168, 240, 200, 0.1);
+  border-color: rgba(168, 240, 200, 0.45);
+}
+
+.console-shell .pill.processing,
+.console-shell .status-badge.processing {
+  animation: mm-pulse-glow 2s ease-in-out infinite;
+}
+
+.console-shell .pill.warning,
+.console-shell .status-badge.warning {
+  color: var(--accent-warning);
+  background: rgba(255, 140, 66, 0.1);
+  border-color: rgba(255, 140, 66, 0.5);
+}
+
+.console-shell .pill.blocked,
+.console-shell .status-badge.blocked {
+  color: var(--accent-danger);
+  background: rgba(255, 95, 122, 0.1);
+  border-color: rgba(255, 95, 122, 0.5);
+}
