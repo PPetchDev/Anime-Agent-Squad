@@ -1,5 +1,5 @@
-import { type TerminalSnapshot, buildTerminalList, isAgentRuntimeState } from "@octogent/core";
-import { type ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { buildTerminalList } from "@octogent/core";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useBackendLivenessPolling } from "./app/hooks/useBackendLivenessPolling";
 import { OCTOBOSS_ID } from "./app/hooks/useCanvasGraphData";
@@ -11,16 +11,16 @@ import { useGithubSummaryPolling } from "./app/hooks/useGithubSummaryPolling";
 import { useInitialColumnsHydration } from "./app/hooks/useInitialColumnsHydration";
 import { useMonitorRuntime } from "./app/hooks/useMonitorRuntime";
 import { usePersistedUiState } from "./app/hooks/usePersistedUiState";
+import { useSidebarSlots } from "./app/hooks/useSidebarSlots";
 import { useTentacleGitLifecycle } from "./app/hooks/useTentacleGitLifecycle";
 import { useTerminalCompletionNotification } from "./app/hooks/useTerminalCompletionNotification";
+import { useTerminalEventsSocket } from "./app/hooks/useTerminalEventsSocket";
 import { useTerminalMutations } from "./app/hooks/useTerminalMutations";
 import { useTerminalStateReconciliation } from "./app/hooks/useTerminalStateReconciliation";
 import { useUsageHeatmapPolling } from "./app/hooks/useUsageHeatmapPolling";
-import { useWorkspaceSetup } from "./app/hooks/useWorkspaceSetup";
+import { useWorkspaceSetupRunner } from "./app/hooks/useWorkspaceSetupRunner";
 import {
   createTerminalRuntimeStateStore,
-  getTerminalRuntimeStateInfo,
-  stripTerminalRuntimeState,
   stripTerminalRuntimeStates,
 } from "./app/terminalRuntimeStateStore";
 import type { TerminalView } from "./app/types";
@@ -32,10 +32,7 @@ import { RuntimeStatusStrip } from "./components/RuntimeStatusStrip";
 import { SidebarActionPanel } from "./components/SidebarActionPanel";
 import { TelemetryTape } from "./components/TelemetryTape";
 import { HttpTerminalSnapshotReader } from "./runtime/HttpTerminalSnapshotReader";
-import {
-  buildTerminalEventsSocketUrl,
-  buildTerminalSnapshotsUrl,
-} from "./runtime/runtimeEndpoints";
+import { buildTerminalSnapshotsUrl } from "./runtime/runtimeEndpoints";
 
 export const App = () => {
   const [terminals, setTerminals] = useState<TerminalView>([]);
@@ -47,21 +44,9 @@ export const App = () => {
   const [hoveredGitHubOverviewPointIndex, setHoveredGitHubOverviewPointIndex] = useState<
     number | null
   >(null);
-  const [deckSidebarContent, setDeckSidebarContent] = useState<ReactNode>(null);
-  const [conversationsSidebarContent, setConversationsSidebarContent] = useState<ReactNode>(null);
-  const [conversationsActionPanel, setConversationsActionPanel] = useState<ReactNode>(null);
-  const [promptsSidebarContent, setPromptsSidebarContent] = useState<ReactNode>(null);
-  const terminalEventsRefreshTimerRef = useRef<number | null>(null);
+  const sidebarSlots = useSidebarSlots();
   const runtimeStateStoreRef = useRef(createTerminalRuntimeStateStore());
   const runtimeStateStore = runtimeStateStoreRef.current;
-
-  const sortTerminalSnapshots = useCallback(
-    (snapshots: TerminalView) =>
-      [...snapshots].sort((left, right) => {
-        return new Date(left.createdAt).getTime() - new Date(right.createdAt).getTime();
-      }),
-    [],
-  );
 
   const {
     activePrimaryNav,
@@ -105,16 +90,9 @@ export const App = () => {
     workspaceSetupError,
     refreshWorkspaceSetup,
     runWorkspaceSetupStep,
-  } = useWorkspaceSetup();
-  const [runningWorkspaceSetupStepId, setRunningWorkspaceSetupStepId] = useState<
-    | "initialize-workspace"
-    | "ensure-gitignore"
-    | "check-claude"
-    | "check-git"
-    | "check-curl"
-    | "create-tentacles"
-    | null
-  >(null);
+    runningWorkspaceSetupStepId,
+    runWorkspaceSetupStepTracked,
+  } = useWorkspaceSetupRunner();
 
   const readColumns = useCallback(
     async (signal?: AbortSignal) => {
@@ -188,104 +166,12 @@ export const App = () => {
     setIsUiStateHydrated,
   });
 
-  useEffect(() => {
-    return () => {
-      if (terminalEventsRefreshTimerRef.current !== null) {
-        window.clearTimeout(terminalEventsRefreshTimerRef.current);
-        terminalEventsRefreshTimerRef.current = null;
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    const socket = new WebSocket(buildTerminalEventsSocketUrl());
-
-    socket.addEventListener("message", (event) => {
-      if (typeof event.data !== "string") {
-        return;
-      }
-
-      try {
-        const payload = JSON.parse(event.data) as
-          | {
-              type?: unknown;
-              snapshot?: TerminalSnapshot;
-              terminalId?: string;
-              agentRuntimeState?: string;
-              toolName?: string;
-            }
-          | undefined;
-        if (!payload || typeof payload.type !== "string") {
-          return;
-        }
-
-        if (payload.type === "terminal-created" || payload.type === "terminal-updated") {
-          if (!payload.snapshot) {
-            return;
-          }
-          const runtimeState = getTerminalRuntimeStateInfo(payload.snapshot);
-          runtimeStateStore.setRuntimeState(payload.snapshot.terminalId, runtimeState);
-          const structuralSnapshot = stripTerminalRuntimeState(payload.snapshot);
-          if (payload.type === "terminal-created") {
-            setRecentlyCreatedTerminal(structuralSnapshot as TerminalView[number]);
-          }
-          setTerminals((current) =>
-            sortTerminalSnapshots([
-              ...current.filter(
-                (terminal) => terminal.terminalId !== structuralSnapshot.terminalId,
-              ),
-              structuralSnapshot,
-            ]),
-          );
-          return;
-        }
-
-        if (payload.type === "terminal-state-changed") {
-          if (!payload.terminalId || !isAgentRuntimeState(payload.agentRuntimeState)) {
-            return;
-          }
-          runtimeStateStore.setRuntimeState(payload.terminalId, {
-            state: payload.agentRuntimeState,
-            ...(payload.toolName ? { toolName: payload.toolName } : {}),
-          });
-          return;
-        }
-
-        if (payload.type === "terminal-deleted") {
-          if (!payload.terminalId) {
-            return;
-          }
-          runtimeStateStore.removeTerminal(payload.terminalId);
-          setTerminals((current) =>
-            current.filter((terminal) => terminal.terminalId !== payload.terminalId),
-          );
-          return;
-        }
-
-        if (payload.type !== "terminal-list-changed") {
-          return;
-        }
-      } catch {
-        return;
-      }
-
-      if (terminalEventsRefreshTimerRef.current !== null) {
-        window.clearTimeout(terminalEventsRefreshTimerRef.current);
-      }
-      terminalEventsRefreshTimerRef.current = window.setTimeout(() => {
-        terminalEventsRefreshTimerRef.current = null;
-        void refreshColumns();
-      }, 100);
-    });
-
-    return () => {
-      if (terminalEventsRefreshTimerRef.current !== null) {
-        window.clearTimeout(terminalEventsRefreshTimerRef.current);
-        terminalEventsRefreshTimerRef.current = null;
-      }
-      socket.close();
-    };
-  }, [refreshColumns, runtimeStateStore, sortTerminalSnapshots]);
+  useTerminalEventsSocket({
+    runtimeStateStore,
+    refreshColumns,
+    setTerminals,
+    setRecentlyCreatedTerminal,
+  });
 
   const { codexUsageSnapshot, refreshCodexUsage } = useCodexUsagePolling();
   const { claudeUsageSnapshot, isRefreshingClaudeUsage, refreshClaudeUsage } =
@@ -344,15 +230,15 @@ export const App = () => {
     setHoveredGitHubOverviewPointIndex,
   });
   const hasSidebarActionPanel =
-    conversationsActionPanel !== null ||
+    sidebarSlots.conversationsActionPanel !== null ||
     pendingDeleteTerminal !== null ||
     (openGitTentacleId !== null &&
       terminals.find((terminal) => terminal.tentacleId === openGitTentacleId)?.workspaceMode ===
         "worktree");
 
   const sidebarActionPanel = hasSidebarActionPanel ? (
-    conversationsActionPanel ? (
-      <>{conversationsActionPanel}</>
+    sidebarSlots.conversationsActionPanel ? (
+      <>{sidebarSlots.conversationsActionPanel}</>
     ) : (
       <SidebarActionPanel
         pendingDeleteTerminal={pendingDeleteTerminal}
@@ -400,26 +286,6 @@ export const App = () => {
     );
   }, []);
 
-  const handleRunWorkspaceSetupStep = useCallback(
-    async (
-      stepId:
-        | "initialize-workspace"
-        | "ensure-gitignore"
-        | "check-claude"
-        | "check-git"
-        | "check-curl"
-        | "create-tentacles",
-    ) => {
-      setRunningWorkspaceSetupStepId(stepId);
-      try {
-        await runWorkspaceSetupStep(stepId);
-      } finally {
-        setRunningWorkspaceSetupStepId(null);
-      }
-    },
-    [runWorkspaceSetupStep],
-  );
-
   const claudeLaunchOptions = isClaudeDangerouslySkipPermissionsEnabled
     ? { claudeDangerouslySkipPermissions: true }
     : {};
@@ -457,15 +323,7 @@ export const App = () => {
                   setSidebarWidth(clampSidebarWidth(width));
                 }}
                 actionPanel={sidebarActionPanel}
-                bodyContent={
-                  activePrimaryNav === 2
-                    ? (deckSidebarContent ?? undefined)
-                    : activePrimaryNav === 6
-                      ? (conversationsSidebarContent ?? undefined)
-                      : activePrimaryNav === 7
-                        ? (promptsSidebarContent ?? undefined)
-                        : undefined
-                }
+                bodyContent={sidebarSlots.resolveSidebarBody(activePrimaryNav)}
               />
             )}
 
@@ -474,7 +332,7 @@ export const App = () => {
             isClaudeDangerouslySkipPermissionsEnabled={isClaudeDangerouslySkipPermissionsEnabled}
             deckPrimaryViewProps={{
               isClaudeDangerouslySkipPermissionsEnabled,
-              onSidebarContent: setDeckSidebarContent,
+              onSidebarContent: sidebarSlots.setDeckSidebarContent,
               workspaceSetup,
               isWorkspaceSetupLoading,
               workspaceSetupError,
@@ -534,7 +392,7 @@ export const App = () => {
               isWorkspaceSetupLoading,
               workspaceSetupError,
               runningWorkspaceSetupStepId,
-              onRunWorkspaceSetupStep: handleRunWorkspaceSetupStep,
+              onRunWorkspaceSetupStep: runWorkspaceSetupStepTracked,
               onLaunchWorkspaceSetupPlanner: async () => {
                 const response = await fetch("/api/terminals", {
                   method: "POST",
@@ -652,10 +510,10 @@ export const App = () => {
               },
             }}
             conversationsEnabled={isUiStateHydrated && activePrimaryNav === 6}
-            onConversationsSidebarContent={setConversationsSidebarContent}
-            onConversationsActionPanel={setConversationsActionPanel}
+            onConversationsSidebarContent={sidebarSlots.setConversationsSidebarContent}
+            onConversationsActionPanel={sidebarSlots.setConversationsActionPanel}
             promptsEnabled={isUiStateHydrated && activePrimaryNav === 7}
-            onPromptsSidebarContent={setPromptsSidebarContent}
+            onPromptsSidebarContent={sidebarSlots.setPromptsSidebarContent}
           />
         </div>
       </section>
