@@ -6,6 +6,7 @@ import type {
   UseMonitorRuntimeResult,
 } from "../app/hooks/useMonitorRuntime";
 import { ActionButton } from "./ui/ActionButton";
+import { PrimaryViewState } from "./ui/PrimaryViewState";
 
 type MonitorPrimaryViewProps = {
   monitorRuntime: Pick<
@@ -266,9 +267,23 @@ export const MonitorPrimaryView = ({ monitorRuntime }: MonitorPrimaryViewProps) 
               <span className="monitor-config-chip">{`Max ${parsedMaxPosts ?? "--"}`}</span>
             </div>
 
-            {monitorError ? <p className="monitor-error">{monitorError}</p> : null}
+            {monitorError ? (
+              <PrimaryViewState
+                tone="error"
+                kanaLabel="エラー"
+                title="Monitor configuration failed"
+                description={monitorError}
+                testId="monitor-config-error"
+              />
+            ) : null}
             {monitorFeed?.lastError ? (
-              <p className="monitor-error">{monitorFeed.lastError}</p>
+              <PrimaryViewState
+                tone="error"
+                kanaLabel="エラー"
+                title="Last sync error"
+                description={monitorFeed.lastError}
+                testId="monitor-config-last-error"
+              />
             ) : null}
 
             <div className="monitor-config-layout">
@@ -427,12 +442,38 @@ export const MonitorPrimaryView = ({ monitorRuntime }: MonitorPrimaryViewProps) 
               <h3>Top posts by likes</h3>
               <span>{`${monitorFeed?.posts.length ?? 0} / ${configuredMaxPosts}`}</span>
             </header>
-            {monitorError ? <p className="monitor-error">{monitorError}</p> : null}
-            {monitorFeed?.lastError ? (
-              <p className="monitor-error">{monitorFeed.lastError}</p>
-            ) : null}
-            {monitorFeed && monitorFeed.posts.length === 0 ? (
-              <p className="monitor-empty">No posts available yet.</p>
+            {monitorError ? (
+              <PrimaryViewState
+                tone="error"
+                kanaLabel="エラー"
+                title="Monitor sync failed"
+                description={monitorError}
+                testId="monitor-feed-error"
+              />
+            ) : monitorFeed?.lastError ? (
+              <PrimaryViewState
+                tone="error"
+                kanaLabel="エラー"
+                title="Last sync error"
+                description={monitorFeed.lastError}
+                testId="monitor-feed-last-error"
+              />
+            ) : !monitorFeed && isRefreshingMonitorFeed ? (
+              <PrimaryViewState
+                tone="loading"
+                kanaLabel="ロード中"
+                title="Loading monitor feed..."
+                description="Fetching the latest posts."
+                testId="monitor-feed-loading"
+              />
+            ) : monitorFeed && monitorFeed.posts.length === 0 ? (
+              <PrimaryViewState
+                tone="empty"
+                kanaLabel="エンプティ"
+                title="No posts yet"
+                description="Add a query term and refresh to populate the feed."
+                testId="monitor-feed-empty"
+              />
             ) : (
               <div className="monitor-feed-scroll">
                 <table>

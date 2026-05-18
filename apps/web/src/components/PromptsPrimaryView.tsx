@@ -5,6 +5,7 @@ import { SidebarPromptsList } from "./SidebarPromptsList";
 import { Terminal } from "./Terminal";
 import { ActionButton } from "./ui/ActionButton";
 import { MarkdownContent } from "./ui/MarkdownContent";
+import { PrimaryViewState } from "./ui/PrimaryViewState";
 
 type PromptsPrimaryViewProps = {
   enabled: boolean;
@@ -180,10 +181,24 @@ export const PromptsPrimaryView = ({
       {/* Prompt detail / empty state — shown when terminal is hidden or doesn't exist */}
       {showPromptDetail && (
         <>
-          {errorMessage ? <p className="prompts-error">{errorMessage}</p> : null}
+          {errorMessage ? (
+            <PrimaryViewState
+              tone="error"
+              kanaLabel="エラー"
+              title="Prompt library error"
+              description={errorMessage}
+              testId="prompts-error"
+            />
+          ) : null}
 
           {isLoadingDetail ? (
-            <p className="prompts-empty">Loading prompt...</p>
+            <PrimaryViewState
+              tone="loading"
+              kanaLabel="ロード中"
+              title="Loading prompt..."
+              description="Fetching prompt content."
+              testId="prompts-loading"
+            />
           ) : selectedPrompt ? (
             <div className="prompts-detail">
               <header className="prompts-detail-header">
@@ -239,9 +254,13 @@ export const PromptsPrimaryView = ({
             </div>
           ) : (
             <div className="prompts-empty-state">
-              <p className="prompts-empty">
-                Select a prompt from the sidebar, or create a new one.
-              </p>
+              <PrimaryViewState
+                tone="empty"
+                kanaLabel="エンプティ"
+                title="No prompt selected"
+                description="Pick a prompt from the sidebar, or create a new one."
+                testId="prompts-empty"
+              />
             </div>
           )}
         </>

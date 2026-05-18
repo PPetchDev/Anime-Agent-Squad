@@ -7,6 +7,7 @@
 @import "./styles/magicalmecha-sparkle.css";
 @import "./styles/magicalmecha-sync-ring.css";
 @import "./styles/magicalmecha-scanline.css";
+@import "./styles/magicalmecha-primary-state.css";
 
 /* Shared UI primitives and surfaces */
 @import "./styles/chrome-and-buttons.css";

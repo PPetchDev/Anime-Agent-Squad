@@ -502,6 +502,11 @@ export const App = () => {
                 githubStatusPill,
                 hoveredGitHubOverviewPointIndex,
                 isRefreshingGitHubSummary,
+                githubError:
+                  githubRepoSummary?.status === "error"
+                    ? (githubRepoSummary.message ?? "Unable to read GitHub summary.")
+                    : null,
+                isLoadingGitHubSummary: isRefreshingGitHubSummary && !githubRepoSummary,
                 onHoveredGitHubOverviewPointIndexChange: setHoveredGitHubOverviewPointIndex,
                 onRefresh: () => {
                   void refreshGitHubRepoSummary();
