@@ -1,138 +1,56 @@
 <div align="center">
 
-<img width="1500" height="500" alt="Octogent header" src="./static/images/octogent-header.png" />
-<br/>
-<br/>
+# ✦ Anime Agent Squad ✧
 
-<strong>too many terminals, not enough tentacles</strong>
-<br />
-<br />
+**Multi-agent terminal orchestration, re-skinned in pastel-mecha starlight.**
 
-![Last Update](https://img.shields.io/github/last-commit/hesamsheikh/octogent?label=Last%20Update&style=flat-square)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-22+-5FA04E?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org/)
-[![Follow on X](https://img.shields.io/badge/Follow%20on-X-000000?style=flat-square&logo=x)](https://x.com/Hesamation)
-[![Discord](https://img.shields.io/badge/Discord-Open%20Source%20AI%20Builders-5865F2?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/vtJykN3t)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-c8a8e8?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-22+-a8f0c8?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Aesthetic](https://img.shields.io/badge/aesthetic-magical%20mecha-ffd8ec?style=flat-square)](#the-magical-mecha-re-skin)
 
 </div>
 
-# Octogent
+---
 
-It's really not fun to have **ten Claude Code sessions open at once**, constantly switching between them and trying to remember what each one was supposed to do. *Things get blurry fast* when one agent is doing documentation, another is touching the database, another is changing the API, and another is somewhere in the frontend. **Octogent** tries to fix that by giving each job its own <u>scoped context, notes, and task list</u>, while also making it possible for Claude Code to **spawn other Claude Code agents**, assign them work, and communicate with them.
+Running ten coding agents in parallel shouldn't feel like juggling ten identical black rectangles. **Anime Agent Squad** dresses every terminal column in a magical-mecha HUD — corner brackets, kana labels, a `SYNC` ratio bar on each character, and a soft lock indicator that whispers `CASTING` / `PERMISSION` / `AWAITING` when an agent is mid-flight. Underneath the costume it is still a real orchestrator: scoped tentacle context, `todo.md` execution surface, multi-PTY runtime, worktree isolation, inter-agent messaging.
 
-## The Vision
+The point isn't to hide the agents behind decoration. The point is to give multi-agent work a visual rhythm you can actually read at a glance.
 
-This repo is a personal exploration of what an AI coding environment might look like when terminal coding agents are treated as parts of a bigger orchestration layer, not the final interface by themselves. The point is not to hide **Claude Code** behind abstractions. The point is to make *multi-agent work less chaotic for the developer* on a real codebase.
+## The Magical Mecha Re-skin
 
-## Screenshots
+This fork keeps the underlying multi-agent runtime intact and replaces every visible surface with a Symphogear-inspired aesthetic:
 
-<div align="center">
-<table>
-<tr>
-<td><img src="./static/images/preview_1.jpg" alt="Screenshot 1" width="100%"/></td>
-<td><img src="./static/images/preview_2.jpg" alt="Screenshot 2" width="100%"/></td>
-</tr>
-<tr>
-<td><img src="./static/images/preview_3.jpg" alt="Screenshot 3" width="100%"/></td>
-<td><img src="./static/images/preview_4.jpg" alt="Screenshot 4" width="100%"/></td>
-</tr>
-<tr>
-<td><img src="./static/images/preview_5.jpg" alt="Screenshot 5" width="100%"/></td>
-<td><img src="./static/images/preview_6.jpg" alt="Screenshot 6" width="100%"/></td>
-</tr>
-</table>
-</div>
+- **Palette** — dark cosmic backdrop, rose / lavender / mint pastels, technical orange for warnings
+- **HUD frames** — corner-bracketed panels with kana labels (`アクティブ`, `モニター`, `エラー`) on key surfaces
+- **Sparkle constellations** — ✦ / ✧ glyphs that drift across empty states and primary chrome
+- **Sync rings** — character avatars now expose `syncRatio` and `bondTraits` so the operator UI can show pilot↔mech bond at a glance
+- **Lock indicators** — terminal headers light up with `CASTING` (mint, mid-spell) / `PERMISSION` (warning, waiting for approval) / `AWAITING` (warning, waiting for human input)
+- **Reduced-motion safe** — every animation respects `prefers-reduced-motion: reduce`
 
-## What Octogent Does for You
+All re-skin work lives in `apps/web/src/styles/magicalmecha-*.css` as reusable CSS primitives (HUD frame, sparkle layer, sync ring, scanline overlay, motion keyframes) so future surfaces can opt in by adding a className — no JSX rewrites required.
 
-- **Creates tentacles as context layers** so agents can work with scoped markdown files instead of broad, messy chat context
-- **Uses `todo.md` as an execution surface** so tasks stay visible, trackable, and ready for delegation
-- **Runs multiple Claude Code terminals** so one developer can coordinate several coding sessions at once
-- **Spawns child agents from todo items** so parallel work has a concrete source of truth
-- **Supports inter-agent messaging** so workers and coordinators can report completion, blockers, and handoff notes
-- **Keeps agent-facing context in files** so the system is more durable than a single prompt thread
-- **Provides a local API and UI** for terminal lifecycle, persistence, websocket transport, and orchestration
+## What the Squad Actually Does
 
-A **tentacle** is a folder under `.octogent/tentacles/<tentacle-id>/` that holds agent-readable markdown such as `CONTEXT.md`, `todo.md`, and any extra notes needed for that slice of the codebase.
+- **Tentacles as context layers** — each agent gets a scoped folder under `.octogent/tentacles/<id>/` with `CONTEXT.md`, `todo.md`, and handoff notes
+- **`todo.md` as execution surface** — checkbox items become delegatable work units
+- **Multi-terminal runtime** — coordinate several Claude Code sessions from one operator UI
+- **Child agent spawning** — turn a todo item into a worker agent with its own scoped context
+- **Inter-agent messaging** — workers and coordinators report completion, blockers, and handoff notes
+- **Local API + WebSocket transport** — terminal lifecycle, persistence, monitor stream
+- **Optional worktree isolation** — agents that touch the tree can run under `.octogent/worktrees/<id>/` on isolated branches
 
-The octopus metaphor is literal: *one octopus, many tentacles, different work happening at the same time*.
+A **tentacle** is a folder. An **agent** is a PTY session attached to a tentacle. Several agents can share one tentacle during swarm work. The metaphor stays literal: one squad, many tentacles, different missions running in parallel.
 
-## Tentacles
-
-A **tentacle** is a scoped job container. It gives one slice of work its own files, notes, and `todo.md` so the agent is not forced to reconstruct the entire codebase context from chat history.
-
-What it does:
-
-- keeps context local to one area such as documentation, database work, API changes, or frontend work
-- gives agents durable files they can read and update
-- provides a natural source for delegation through todo items
-
-For the full model, see [Tentacles](docs/concepts/tentacles.md) and [Working With Todos](docs/guides/working-with-todos.md).
-
-## Context, Notes, and Task Lists
-
-In Octogent, a tentacle is not only a task bucket. It is also where the job keeps its local context. That can include notes about one part of the codebase, implementation details, handoff files, and a `todo.md` that tracks what still needs to happen. A Claude Code agent can read and update those files as the work moves forward.
-
-That means you can:
-
-- keep documentation, database, API, or frontend work separated into different job contexts
-- store the notes that help an agent understand that part of the codebase
-- spawn one agent for one specific item
-- break a larger job into multiple items
-- launch a swarm so several agents work through the list in parallel
-- use the files inside the tentacle as the shared source of truth for what is done and what is left
-
-For the full model, see [Tentacles](docs/concepts/tentacles.md) and [Working With Todos](docs/guides/working-with-todos.md).
-
-## Claude Code Managing Claude Code
-
-One of the main ideas here is that **Claude Code** should not only be treated as a single terminal session waiting for a human prompt. In Octogent, one Claude Code agent can coordinate other Claude Code agents, assign them specific jobs, and exchange short messages with them while the human stays at the orchestration layer.
-
-This is different from Claude Code's subagent spawning, since it allows you to directly see and control what each worker agent is doing.
-
-That means Octogent is not just a dashboard for multiple terminals. It is also a way to structure parent-worker behavior around scoped tasks and shared context files.
-
-For the current model, see [Orchestrating Child Agents](docs/guides/orchestrating-child-agents.md) and [Inter-Agent Messaging](docs/guides/inter-agent-messaging.md).
-
-## How It Works
-
-Octogent separates three concerns that usually get mixed together in a pile of terminals:
-
-1. **Context** lives in `.octogent/tentacles/<tentacle-id>/`. `CONTEXT.md` explains the area, `todo.md` supplies executable work items, and extra markdown files hold notes or handoffs.
-2. **Execution** lives in terminal records and PTY sessions managed by the local API. A terminal can attach to an existing tentacle, and several terminals can share one tentacle during swarm work.
-3. **Isolation** is optional. Shared terminals run in the main workspace; worktree terminals run under `.octogent/worktrees/<worktree-id>/` on `octogent/<worktree-id>` branches.
-
-Deck reads the tentacle files directly, parses checkbox items from `todo.md`, and uses incomplete items to generate worker prompts. Claude hooks feed the API with agent state, transcript, and idle events so the UI can show more than raw terminal output.
-
-## Quick start
-
-<details>
-<summary><strong>Local development</strong></summary>
+## Quick Start
 
 ```bash
 pnpm install
 pnpm dev
 ```
 
-This starts the API and web app for local development.
+This starts the API and web app for local development. The first run creates the local `.octogent/` scaffold, assigns a stable project ID, picks an available local API port starting at `8787`, and opens the UI unless `OCTOGENT_NO_OPEN=1` is set.
 
-</details>
-
-<details open>
-<summary><strong>Current install status</strong></summary>
-
-```bash
-Octogent is not published to the npm registry yet.
-```
-
-For local development:
-
-```bash
-pnpm install
-pnpm dev
-```
-
-For a local global CLI install from a clone:
+### Local global CLI install from a clone
 
 ```bash
 pnpm install
@@ -140,12 +58,6 @@ pnpm build
 npm install -g .
 octogent
 ```
-
-The registry install flow `npm install -g octogent` will only work after the package is published.
-
-</details>
-
-On first run, **Octogent** creates the local `.octogent/` scaffold automatically, assigns a stable project ID, picks an available local API port starting at `8787`, and opens the UI unless `OCTOGENT_NO_OPEN=1` is set.
 
 ## Requirements
 
@@ -155,15 +67,15 @@ On first run, **Octogent** creates the local `.octogent/` scaffold automatically
 - `gh` for GitHub pull request features
 - `curl` for the current Claude hook callback flow
 
-Startup fails if neither `claude` nor another supported provider binary is installed. The current docs only cover **Claude Code**.
+Startup fails if neither `claude` nor another supported provider binary is installed.
 
-## What persists
+## What Persists
 
 - `.octogent/` keeps project-local scaffold and worktrees
 - `~/.octogent/projects/<project-id>/state/` keeps runtime state, transcripts, monitor cache, and metadata
 - `.octogent/tentacles/<tentacle-id>/` keeps the context files and todos that agents read
 
-PTY sessions survive browser reloads during the idle grace period, but they do **not** survive an API restart. Octogent marks previously running terminal records as `stale` on startup when it cannot reattach them to a live PTY session; use `octogent terminal list`, `stop`, `kill`, and `prune` to inspect and clean them up. Octogent caps live PTY sessions at 32 by default to protect the host; set `OCTOGENT_MAX_TERMINAL_SESSIONS` to a positive integer to tune that limit for larger orchestration runs.
+PTY sessions survive browser reloads during the idle grace period, but they do **not** survive an API restart. Previously running terminal records are marked `stale` on startup when they cannot be reattached; use `octogent terminal list`, `stop`, `kill`, and `prune` to inspect and clean them up. Live PTY sessions are capped at 32 by default — tune `OCTOGENT_MAX_TERMINAL_SESSIONS` for larger orchestration runs.
 
 ## Docs
 
@@ -181,7 +93,11 @@ PTY sessions survive browser reloads during the idle grace period, but they do *
 - [API Reference](docs/reference/api.md)
 - [Experimental Features](docs/reference/experimental-features.md)
 - [Troubleshooting](docs/reference/troubleshooting.md)
-- [Contributing](CONTRIBUTING.md)
 
-## Contributor setup
-Octogent is not actively reviewing pull requests right now. If you still open one and any code was written with AI, disclose which coding agent and model were used. For contributor workflow and expectations, see [CONTRIBUTING.md](CONTRIBUTING.md).
+The magical-mecha CSS primitives are documented in [apps/web/AGENTS.md](apps/web/AGENTS.md) under "Magical Mecha Pattern Primitives".
+
+## Credits
+
+The underlying multi-agent orchestration runtime — tentacles, PTY session model, worktree lifecycle, monitor service, inter-agent messaging — comes from [**Octogent**](https://github.com/hesamsheikh/octogent) by [@hesamsheikh](https://github.com/hesamsheikh). The magical-mecha re-skin (palette, HUD primitives, sync rings, lock indicators, every `magicalmecha-*` module, plus the `CharacterAvatar` sync-ratio props and `TerminalLockIndicator` component) is the contribution of this fork.
+
+If you want the upstream operator experience without the anime layer, use Octogent directly. If you want pastel terminals that announce when they are casting a spell, you are in the right repo.
