@@ -439,3 +439,40 @@
   letter-spacing: 0.06em;
   white-space: nowrap;
 }
+
+/* === Magical mecha refinements: primary nav === */
+
+.console-primary-nav-tab {
+  border-radius: var(--radius-md);
+  transition:
+    background 200ms ease-out,
+    box-shadow 200ms ease-out,
+    transform 200ms ease-out;
+}
+
+.console-primary-nav-tab:hover {
+  background: rgba(255, 216, 236, 0.06);
+  box-shadow: var(--glow-soft);
+  transform: translateY(-1px);
+}
+
+.console-primary-nav-tab[data-active="true"] {
+  background: linear-gradient(135deg, rgba(255, 216, 236, 0.14), rgba(200, 168, 232, 0.08));
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--glow-soft);
+  color: var(--text-primary);
+}
+
+.console-primary-nav-tab:focus-visible {
+  outline: 2px solid var(--ring-focus);
+  outline-offset: 2px;
+}
+
+/* === Magical mecha refinements: runtime status strip === */
+
+.console-shell .console-status-strip {
+  border-bottom: 1px solid var(--border-subtle);
+  background:
+    var(--scanline-overlay),
+    linear-gradient(180deg, var(--bg-surface-1), var(--bg-surface-2));
+}
