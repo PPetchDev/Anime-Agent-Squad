@@ -1,0 +1,20 @@
+/* Scan-line overlay — atmospheric 4% alpha repeating gradient. Apply to
+   active panels and terminal header chrome via .mm-scanline. */
+
+.mm-scanline {
+  position: relative;
+}
+
+.mm-scanline::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--scanline-overlay);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.mm-scanline > * {
+  position: relative;
+  z-index: 1;
+}
