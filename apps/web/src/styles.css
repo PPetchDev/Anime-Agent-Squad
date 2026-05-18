@@ -1,21 +1,63 @@
-/* Foundation */
+/* =========================================================================
+   CSS Import Manifest — re-skin cascade layering rule
+   -------------------------------------------------------------------------
+   Order matters. Each new module MUST be imported into exactly one band
+   below, and bands MUST be loaded in this sequence:
+
+     1. Foundation
+        Global tokens, resets, base typography. Defines CSS custom
+        properties that every later module may consume.
+
+     2. Magical-mecha primitives  (magicalmecha-*.css)
+        Reusable visual primitives and shared keyframes
+        (mm-spin, mm-drift, mm-pulse-glow, mm-pulse-warning, mm-fade-in)
+        plus opt-in classNames (.mm-hud-frame, .mm-sparkle-host,
+        .mm-sync-avatar, .mm-scanline). MUST load before any module that
+        references mm-* keyframes or .mm-* classes. Never define new
+        mm-* keyframes outside this band.
+
+     3. Shared UI primitives & surfaces
+        Chrome, buttons, sidebars, scrollbars, terminal column shell,
+        character avatar surface. Consumes foundation tokens + magical-mecha
+        primitives. Framework-level UI, not view-specific.
+
+     4. Console theme tokens
+        (console-theme-tokens.css)
+        Per-console palette/variable layer. Loads BEFORE per-view overrides
+        so they can reference the tokens.
+
+     5. Per-view overrides
+        (console-chrome-status-nav.css, console-canvas-*.css,
+         console-overrides-*.css)
+        View-scoped tweaks that may consume any earlier band. No
+        console-canvas-*.css may be loaded before the magical-mecha
+        primitives it consumes — keep them strictly inside this band.
+
+   Each CSS module must be imported exactly once. When adding a new
+   stylesheet, locate the band it belongs in and append at the end of
+   that band; do not interleave bands.
+   ========================================================================= */
+
+/* 1. Foundation */
 @import "./styles/foundation.css";
 
-/* Magical Mecha pattern primitives (must load before component CSS that uses them) */
+/* 2. Magical-mecha primitives (must load before any consumer of mm-* keyframes/classes) */
 @import "./styles/magicalmecha-motion.css";
 @import "./styles/magicalmecha-hud-frame.css";
 @import "./styles/magicalmecha-sparkle.css";
 @import "./styles/magicalmecha-sync-ring.css";
 @import "./styles/magicalmecha-scanline.css";
 
-/* Shared UI primitives and surfaces */
+/* 3. Shared UI primitives and surfaces */
 @import "./styles/chrome-and-buttons.css";
 @import "./styles/sidebar-and-scrollbars.css";
 @import "./styles/terminal-and-status.css";
 @import "./styles/character.css";
 
-/* Console theme tokens and console-specific overrides */
+/* 4. Console theme tokens */
 @import "./styles/console-theme-tokens.css";
+
+/* 5. Per-view overrides (console chrome, canvas views, view-scoped overrides) */
 @import "./styles/console-chrome-status-nav.css";
 @import "./styles/console-canvas-activity.css";
 @import "./styles/console-canvas-github.css";
