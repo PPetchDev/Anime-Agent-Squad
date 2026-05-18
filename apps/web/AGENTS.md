@@ -36,3 +36,15 @@
 ## Testing
 - Add targeted component or runtime tests when changing view-model logic, state reconciliation, or destructive UI flows.
 - When modifying shared UI behavior, verify both the component surface and the normalizer/hook logic that feeds it.
+
+## Magical Mecha Pattern Primitives
+
+The `magicalmecha-*.css` modules in `src/styles/` provide five reusable visual patterns. Opt into them by adding classNames — no JS required.
+
+- `.mm-hud-frame` — corner-bracketed panel. Add `<span class="mm-hud-frame__corner-bl"></span><span class="mm-hud-frame__corner-br"></span>` as direct children for the bottom corners; optionally add `<span class="mm-hud-frame__label">アクティブ</span>` for a kana label. `--warning` variant for orange brackets.
+- `.mm-sparkle-host` — adds `::before`/`::after` ✦/✧ glyphs that drift. Variants: `--dense` (with a `.mm-sparkle-extra` child), `--subtle`.
+- `.mm-sync-avatar` + `.mm-sync-body` + `.mm-sync-bar` + `.mm-sync-traits` — character avatar with dashed rotating ring and sync ratio bar. Render through `CharacterAvatar` with `syncRatio` and `bondTraits` props.
+- `.mm-scanline` — 4%-alpha repeating gradient overlay via `::after`. Children automatically reflowed to `z-index: 1`.
+- `magicalmecha-motion.css` defines `mm-spin`, `mm-drift`, `mm-pulse-glow`, `mm-pulse-warning`, `mm-fade-in` keyframes and the global `prefers-reduced-motion` guard.
+
+All patterns honor `prefers-reduced-motion: reduce` automatically through the global guard. Decorative pseudo-elements and ring SVGs must be `aria-hidden` — never the sole source of meaning.
