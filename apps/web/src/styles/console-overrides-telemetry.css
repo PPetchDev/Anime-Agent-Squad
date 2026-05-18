@@ -318,3 +318,47 @@ a.console-telemetry-item:focus-visible {
     align-items: flex-start;
   }
 }
+
+/* === Magical mecha refinements: telemetry tape === */
+
+.console-telemetry-tape {
+  border-top: 1px solid var(--border-subtle);
+  background: var(--bg-surface-1);
+  position: relative;
+}
+
+.console-telemetry-tape::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--scanline-overlay);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.console-telemetry-track {
+  position: relative;
+  z-index: 1;
+}
+
+.console-telemetry-item {
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+}
+
+.console-telemetry-item strong {
+  color: var(--text-primary);
+}
+
+.console-telemetry-source {
+  color: var(--accent-primary);
+}
+
+.console-telemetry-likes {
+  color: var(--accent-mint);
+}
+
+a.console-telemetry-item:focus-visible {
+  outline: 2px solid var(--ring-focus);
+  outline-offset: 2px;
+}
