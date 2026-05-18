@@ -432,3 +432,50 @@
   border-color: rgba(255, 140, 66, 0.5);
   animation: mm-pulse-warning 2s ease-in-out infinite;
 }
+
+/* === Magical mecha refinements: prompt picker === */
+
+.prompt-picker-popover {
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glow-soft);
+}
+
+.prompt-picker-header {
+  font-family: var(--font-mono);
+  letter-spacing: 1.5px;
+  color: var(--accent-primary);
+}
+
+.prompt-picker-group-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.prompt-picker-item {
+  border-radius: var(--radius-pill);
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(255, 216, 236, 0.04);
+  color: var(--text-primary);
+  transition:
+    background 150ms ease-out,
+    border-color 150ms ease-out;
+}
+
+.prompt-picker-item:hover {
+  background: rgba(255, 216, 236, 0.1);
+  border-color: var(--border-strong);
+}
+
+.prompt-picker-item:focus-visible {
+  outline: 2px solid var(--ring-focus);
+  outline-offset: 2px;
+}
