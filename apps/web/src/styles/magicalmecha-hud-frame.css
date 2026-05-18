@@ -1,10 +1,36 @@
-/* HUD frame — corner-bracketed panel border with optional kana label.
-   Usage:
-     <div class="mm-hud-frame">
-       <span class="mm-hud-frame__label">アクティブ</span>
-       <!-- content -->
-     </div>
-*/
+/* =========================================================================
+   Magical-mecha primitive: .mm-hud-frame
+   -------------------------------------------------------------------------
+   Corner-bracketed panel border with optional kana label. Pure CSS opt-in
+   (add the className — no JS). Matches the primitive table in
+   apps/web/AGENTS.md "Magical Mecha Pattern Primitives".
+
+   Required / optional children
+   ----------------------------
+   - Top-left + top-right corners: pseudo-elements, no markup needed.
+   - Bottom-left corner:  <span class="mm-hud-frame__corner-bl"></span>  (required for bottom brackets)
+   - Bottom-right corner: <span class="mm-hud-frame__corner-br"></span>  (required for bottom brackets)
+   - Optional kana label: <span class="mm-hud-frame__label">アクティブ</span>
+   - All decorative children must remain aria-hidden — they must never be the
+     sole carrier of meaning (the label may stay visible because it is text,
+     but it is presentational, not semantic).
+
+   Variants (--variant modifiers)
+   ------------------------------
+   - .mm-hud-frame--warning  → swap accent-primary brackets/label for
+                               accent-warning (orange). Pair with the
+                               mm-pulse-warning keyframe when emphasis is
+                               needed.
+
+   One-line usage
+   --------------
+   <div class="mm-hud-frame mm-hud-frame--warning">
+     <span class="mm-hud-frame__label">アクティブ</span>
+     ...content...
+     <span class="mm-hud-frame__corner-bl" aria-hidden="true"></span>
+     <span class="mm-hud-frame__corner-br" aria-hidden="true"></span>
+   </div>
+   ========================================================================= */
 
 .mm-hud-frame {
   position: relative;

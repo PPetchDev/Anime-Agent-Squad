@@ -1,6 +1,34 @@
-/* Sparkle layer — purely decorative ✦/✧ glyphs drifting on a 4-6s loop.
-   Always aria-hidden through CSS content (not user-visible to AT).
-   Usage: add .mm-sparkle-host to any positioned container. */
+/* =========================================================================
+   Magical-mecha primitive: .mm-sparkle-host
+   -------------------------------------------------------------------------
+   Decorative ✦/✧ glyphs drifting on a 4–6s loop via the mm-drift keyframe
+   from magicalmecha-motion.css. Pure CSS opt-in (add the className — no
+   JS). Always purely presentational: sparkles must never be the sole
+   carrier of meaning. Matches the primitive table in apps/web/AGENTS.md
+   "Magical Mecha Pattern Primitives".
+
+   Required / optional children
+   ----------------------------
+   - Default two sparkles come from ::before / ::after — no markup needed.
+   - --dense variant ONLY: add a third sparkle as a direct child:
+       <span class="mm-sparkle-extra" aria-hidden="true">✦</span>
+   - The host becomes position: relative — do not override on the host.
+
+   Variants (--variant modifiers)
+   ------------------------------
+   - .mm-sparkle-host--dense   → larger glyphs + 3rd glyph slot
+                                 (.mm-sparkle-extra child). Used by empty
+                                 states.
+   - .mm-sparkle-host--subtle  → halves the sparkle opacity for cards that
+                                 sit behind text.
+
+   One-line usage
+   --------------
+   <div class="mm-sparkle-host mm-sparkle-host--dense">
+     ...content...
+     <span class="mm-sparkle-extra" aria-hidden="true">✦</span>
+   </div>
+   ========================================================================= */
 
 .mm-sparkle-host {
   position: relative;

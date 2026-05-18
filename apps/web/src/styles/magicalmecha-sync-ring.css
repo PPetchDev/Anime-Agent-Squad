@@ -1,6 +1,47 @@
-/* Sync ring — rotating dashed ring around a character avatar, plus a
-   horizontal sync bar. Activated by CharacterAvatar when a syncRatio prop
-   is provided. Pure CSS; no JS. */
+/* =========================================================================
+   Magical-mecha primitive: .mm-sync-avatar (+ .mm-sync-body, .mm-sync-bar,
+   .mm-sync-traits)
+   -------------------------------------------------------------------------
+   Rotating dashed ring around a character avatar plus a horizontal sync
+   ratio bar and optional bond-trait pills. Activated by the React
+   <CharacterAvatar /> component when a `syncRatio` prop is provided —
+   prefer using that component over hand-rolling the markup. The
+   underlying CSS contract is below for cases where JSX rewrites are
+   forbidden. Matches the primitive table in apps/web/AGENTS.md "Magical
+   Mecha Pattern Primitives".
+
+   Required child structure
+   ------------------------
+   .mm-sync                           (optional row wrapper: avatar + body)
+     └─ .mm-sync-avatar               (required ring host, position: relative)
+          ├─ .mm-sync-avatar__core    (required, holds <img> avatar)
+          │    └─ <img alt="...">
+          ├─ .mm-sync-avatar__ring        (required, dashed spinning ring,
+          │                                aria-hidden — decorative only)
+          └─ .mm-sync-avatar__ring-outer  (required, static outer hairline,
+                                           aria-hidden — decorative only)
+
+   .mm-sync-body                      (column: name + bar + traits)
+     ├─ .mm-sync-name                 (display font, italic 800)
+     ├─ .mm-sync-bar
+     │    ├─ .mm-sync-bar__label      ("SYNC" / kana label, mono caps)
+     │    ├─ .mm-sync-bar__track
+     │    │    └─ .mm-sync-bar__fill  (width: <ratio>% — set inline)
+     │    └─ .mm-sync-bar__value      ("078%" — mono, right-aligned)
+     └─ .mm-sync-traits
+          └─ .mm-sync-trait * N       (trait pill; max 2 by convention)
+
+   Variants (--variant modifiers)
+   ------------------------------
+   - .mm-sync-avatar--sm  → 32×32 (compact contexts: terminal columns)
+   - .mm-sync-avatar--lg  → 56×56 (deck pods, hero contexts)
+   - (default size)       → 44×44
+
+   One-line usage
+   --------------
+   <CharacterAvatar syncRatio={78} bondTraits={["集中", "閃光"]} />
+     // renders the full .mm-sync / .mm-sync-avatar / .mm-sync-body tree.
+   ========================================================================= */
 
 .mm-sync {
   display: inline-flex;

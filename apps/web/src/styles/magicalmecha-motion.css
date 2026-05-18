@@ -1,5 +1,39 @@
-/* Shared keyframes for all magical-mecha animations.
-   prefers-reduced-motion is honored by the global guard at the bottom. */
+/* =========================================================================
+   Magical-mecha primitive: shared motion keyframes
+   -------------------------------------------------------------------------
+   This module exposes the five animation keyframes used by every other
+   magical-mecha primitive. Never declare a new spin/drift/pulse keyframe
+   elsewhere — extend or re-tune these instead. Matches the primitive table
+   in apps/web/AGENTS.md "Magical Mecha Pattern Primitives".
+
+   Exported keyframes (referenced by other modules)
+   ------------------------------------------------
+   - @keyframes mm-spin         → 0→360deg linear rotation (sync rings).
+   - @keyframes mm-drift        → translateY+scale loop for sparkles.
+   - @keyframes mm-pulse-glow   → box-shadow pulse in accent-mint (success).
+   - @keyframes mm-pulse-warning→ box-shadow pulse in accent-warning (orange).
+   - @keyframes mm-fade-in      → opacity+translateY entrance.
+
+   Required child structure
+   ------------------------
+   None — this file only defines keyframes. Consumers reference them by
+   name in their own animation: shorthand.
+
+   Variants (--variant modifiers)
+   ------------------------------
+   None. Tune duration / easing / iteration at the call site.
+
+   Global guard
+   ------------
+   The bottom @media (prefers-reduced-motion: reduce) block clamps all
+   animation/transition durations across the document. Do NOT duplicate
+   this guard in other CSS modules — it is global on purpose so individual
+   primitives stay declarative.
+
+   One-line usage
+   --------------
+   .my-element { animation: mm-spin 16s linear infinite; }
+   ========================================================================= */
 
 @keyframes mm-spin {
   from {

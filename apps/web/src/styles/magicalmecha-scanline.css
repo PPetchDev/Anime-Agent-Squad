@@ -1,5 +1,27 @@
-/* Scan-line overlay — atmospheric 4% alpha repeating gradient. Apply to
-   active panels and terminal header chrome via .mm-scanline. */
+/* =========================================================================
+   Magical-mecha primitive: .mm-scanline
+   -------------------------------------------------------------------------
+   Atmospheric 4%-alpha repeating-gradient overlay. The host gains a
+   ::after pseudo at z-index: 0 and every direct child is auto-lifted to
+   z-index: 1 so content stays legible above the scanlines. Pure CSS
+   opt-in (add the className — no JS). Matches the primitive table in
+   apps/web/AGENTS.md "Magical Mecha Pattern Primitives".
+
+   Required child structure
+   ------------------------
+   None. Any direct child renders above the overlay automatically. The
+   host itself becomes position: relative — do not override it on the
+   same element.
+
+   Variants (--variant modifiers)
+   ------------------------------
+   None. Tune the gradient globally via the --scanline-overlay token in
+   foundation.css; do not fork the primitive with per-call variants.
+
+   One-line usage
+   --------------
+   <div class="mm-scanline">...content reflowed above the overlay...</div>
+   ========================================================================= */
 
 .mm-scanline {
   position: relative;
