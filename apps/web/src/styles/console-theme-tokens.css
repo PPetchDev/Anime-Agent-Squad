@@ -10,6 +10,7 @@
   --console-border: var(--border-subtle);
   --console-border-strong: var(--border-strong);
   --console-glow: var(--glow-soft);
+  --ui-base-font-size: 17px;
 }
 
 body {

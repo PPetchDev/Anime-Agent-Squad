@@ -36,6 +36,17 @@ describe("CharacterAvatar — magical-mecha sync ring", () => {
     expect(traits[1]?.textContent).toContain("bold");
   });
 
+  it("caps bond traits at two to protect the layout", () => {
+    const { container } = render(
+      <CharacterAvatar
+        characterId="mika"
+        syncRatio={50}
+        bondTraits={["kind", "bold", "loyal", "fierce"]}
+      />,
+    );
+    expect(container.querySelectorAll(".mm-sync-trait")).toHaveLength(2);
+  });
+
   it("exposes sync ratio via aria-label on the wrapper", () => {
     const { container } = render(<CharacterAvatar characterId="mika" syncRatio={73} />);
     const wrapper = container.querySelector<HTMLElement>(".character-avatar");

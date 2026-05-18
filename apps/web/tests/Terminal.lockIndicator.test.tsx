@@ -6,7 +6,7 @@ import { describe, expect, it } from "vitest";
  * from an AgentRuntimeState. This keeps the test decoupled from xterm /
  * WebSocket setup in Terminal.tsx.
  */
-import { deriveLockIndicator } from "../src/components/terminalLockIndicator";
+import { LockIndicator, deriveLockIndicator } from "../src/components/TerminalLockIndicator";
 
 describe("deriveLockIndicator", () => {
   it("returns null for idle", () => {
@@ -36,8 +36,7 @@ describe("deriveLockIndicator", () => {
 });
 
 describe("Terminal lock indicator rendering", () => {
-  it("renders the indicator span when state is non-idle", async () => {
-    const { LockIndicator } = await import("../src/components/terminalLockIndicator");
+  it("renders the indicator span when state is non-idle", () => {
     const { container } = render(<LockIndicator state="processing" />);
     const node = container.querySelector(".terminal-lock-indicator");
     expect(node).not.toBeNull();
@@ -45,8 +44,7 @@ describe("Terminal lock indicator rendering", () => {
     expect(node?.classList.contains("terminal-lock-indicator--mint")).toBe(true);
   });
 
-  it("renders nothing when state is idle", async () => {
-    const { LockIndicator } = await import("../src/components/terminalLockIndicator");
+  it("renders nothing when state is idle", () => {
     const { container } = render(<LockIndicator state="idle" />);
     expect(container.querySelector(".terminal-lock-indicator")).toBeNull();
   });

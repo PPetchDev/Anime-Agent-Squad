@@ -39,7 +39,7 @@ export const CharacterAvatar = ({
   const hasSync = typeof syncRatio === "number";
   const clampedRatio = hasSync ? clampRatio(syncRatio as number) : 0;
   const ariaLabel = hasSync
-    ? `${name}, sync ${Math.round(clampedRatio)}%`
+    ? `${name}, ${detailText}, sync ${Math.round(clampedRatio)}%`
     : `${name}: ${detailText}`;
 
   return (
@@ -97,7 +97,7 @@ export const CharacterAvatar = ({
           </span>
           {bondTraits && bondTraits.length > 0 ? (
             <span className="mm-sync-traits">
-              {bondTraits.map((trait) => (
+              {bondTraits.slice(0, 2).map((trait) => (
                 <span key={trait} className="mm-sync-trait">
                   {trait}
                 </span>
