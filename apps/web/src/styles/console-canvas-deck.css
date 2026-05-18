@@ -1586,3 +1586,53 @@
 .deck-bottom-clear-btn--danger:hover {
   background: rgba(255, 95, 122, 0.2);
 }
+
+/* === Magical mecha refinements: deck empty-state sparkle === */
+
+.deck-empty-state {
+  position: relative;
+}
+
+.deck-empty-state::before {
+  content: "✦";
+  position: absolute;
+  font-family: serif;
+  top: 18px;
+  right: 32px;
+  font-size: 22px;
+  color: rgba(255, 216, 236, 0.5);
+  z-index: var(--sparkle-z-index);
+  pointer-events: none;
+  animation: mm-drift 5s ease-in-out infinite;
+}
+
+.deck-empty-state::after {
+  content: "✧";
+  position: absolute;
+  font-family: serif;
+  bottom: 28px;
+  left: 36px;
+  font-size: 18px;
+  color: rgba(200, 168, 232, 0.45);
+  z-index: var(--sparkle-z-index);
+  pointer-events: none;
+  animation: mm-drift 6s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+.deck-empty-octopus {
+  position: relative;
+}
+
+.deck-empty-octopus::after {
+  content: "✦";
+  position: absolute;
+  font-family: serif;
+  top: 8px;
+  right: -8px;
+  font-size: 14px;
+  color: rgba(255, 216, 236, 0.55);
+  pointer-events: none;
+  animation: mm-drift 7s ease-in-out infinite;
+  animation-delay: 3s;
+}
