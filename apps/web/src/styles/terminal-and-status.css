@@ -375,3 +375,60 @@
     overflow-x: auto;
   }
 }
+
+/* === Magical mecha refinements: terminal header === */
+
+.terminal-header {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 216, 236, 0.1),
+    rgba(200, 168, 232, 0.06)
+  );
+  border-bottom: 1px solid var(--border-subtle);
+  position: relative;
+}
+
+.terminal-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--scanline-overlay);
+  pointer-events: none;
+}
+
+.terminal-header > * {
+  position: relative;
+  z-index: 1;
+}
+
+.terminal-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--accent-primary);
+}
+
+.terminal-lock-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  border: 1px solid;
+}
+
+.terminal-lock-indicator--mint {
+  color: var(--accent-mint);
+  background: rgba(168, 240, 200, 0.1);
+  border-color: rgba(168, 240, 200, 0.5);
+  animation: mm-pulse-glow 2s ease-in-out infinite;
+}
+
+.terminal-lock-indicator--warning {
+  color: var(--accent-warning);
+  background: rgba(255, 140, 66, 0.1);
+  border-color: rgba(255, 140, 66, 0.5);
+  animation: mm-pulse-warning 2s ease-in-out infinite;
+}
