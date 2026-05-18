@@ -100,3 +100,28 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* === Magical mecha refinements: character avatar === */
+
+.character-avatar {
+  align-items: center;
+}
+
+.character-avatar__name {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 800;
+  color: var(--accent-primary);
+}
+
+.character-avatar__title {
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  letter-spacing: 1.5px;
+}
+
+.character-avatar--with-sync {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+}
