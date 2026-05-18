@@ -125,3 +125,37 @@
   gap: 10px;
   align-items: center;
 }
+
+/* === Magical mecha refinements: character picker === */
+
+.character-picker__option {
+  background: rgba(255, 216, 236, 0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 8px;
+  transition:
+    transform 200ms ease-out,
+    box-shadow 200ms ease-out,
+    background 200ms ease-out;
+}
+
+.character-picker__option:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 216, 236, 0.08);
+  box-shadow: var(--glow-soft);
+}
+
+.character-picker__option:focus-visible {
+  outline: 2px solid var(--ring-focus);
+  outline-offset: 2px;
+}
+
+.character-picker__option--selected {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 216, 236, 0.16),
+    rgba(200, 168, 232, 0.1)
+  );
+  border-color: var(--border-strong);
+  box-shadow: var(--glow-strong);
+}
