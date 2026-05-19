@@ -162,6 +162,102 @@
   opacity: 0.3;
 }
 
+.canvas-squad-oracle-aura {
+  pointer-events: none;
+}
+
+.canvas-squad-oracle-aura__ring {
+  fill: none;
+  transform-origin: center;
+}
+
+.canvas-squad-oracle-aura__ring--outer {
+  stroke: rgba(255, 139, 216, 0.8);
+  stroke-width: 1.4;
+  stroke-dasharray: 4 5;
+  filter: drop-shadow(0 0 8px rgba(255, 139, 216, 0.85));
+  animation: canvas-squad-oracle-spin-cw 16s linear infinite;
+}
+
+.canvas-squad-oracle-aura__ring--inner {
+  stroke: rgba(171, 196, 255, 0.72);
+  stroke-width: 1.2;
+  stroke-dasharray: 3 4;
+  filter: drop-shadow(0 0 6px rgba(171, 196, 255, 0.8));
+  animation: canvas-squad-oracle-spin-ccw 10s linear infinite;
+}
+
+.canvas-squad-oracle-aura__sigil {
+  fill: rgba(255, 170, 228, 0.25);
+  stroke: rgba(255, 213, 245, 0.84);
+  stroke-width: 1;
+  filter: drop-shadow(0 0 12px rgba(255, 155, 224, 0.75));
+  animation: canvas-squad-oracle-pulse 2.6s ease-in-out infinite;
+}
+
+.canvas-squad-oracle-aura__spark {
+  fill: rgba(255, 239, 252, 0.95);
+  filter: drop-shadow(0 0 6px rgba(255, 190, 236, 0.95));
+  animation: canvas-squad-oracle-sparkle 1.9s ease-in-out infinite;
+}
+
+.canvas-squad-oracle-aura__spark--top {
+  transform: translate(0, -42px);
+  animation-delay: 0s;
+}
+
+.canvas-squad-oracle-aura__spark--left {
+  transform: translate(-37px, 20px);
+  animation-delay: 0.45s;
+}
+
+.canvas-squad-oracle-aura__spark--right {
+  transform: translate(37px, 20px);
+  animation-delay: 0.9s;
+}
+
+@keyframes canvas-squad-oracle-spin-cw {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes canvas-squad-oracle-spin-ccw {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes canvas-squad-oracle-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes canvas-squad-oracle-sparkle {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.7);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+}
+
 /* ─── Waiting indicator on session nodes ──────────────────────────────────── */
 
 .canvas-node-waiting-pill {

@@ -2,7 +2,7 @@ import { buildTerminalList } from "@octogent/core";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useBackendLivenessPolling } from "./app/hooks/useBackendLivenessPolling";
-import { OCTOBOSS_ID } from "./app/hooks/useCanvasGraphData";
+import { SQUAD_ORACLE_ID } from "./app/hooks/useCanvasGraphData";
 import { useClaudeUsagePolling } from "./app/hooks/useClaudeUsagePolling";
 import { useCodexUsagePolling } from "./app/hooks/useCodexUsagePolling";
 import { useConsoleKeyboardShortcuts } from "./app/hooks/useConsoleKeyboardShortcuts";
@@ -427,10 +427,10 @@ export const App = () => {
                 return await createTerminal("shared", undefined, tentacleId, character);
               },
               onCreateTerminal: async () => {
-                return await createTerminal("shared", undefined, OCTOBOSS_ID);
+                return await createTerminal("shared", undefined, SQUAD_ORACLE_ID);
               },
               onCreateWorktreeTerminal: async () => {
-                return await createTerminal("worktree", undefined, OCTOBOSS_ID);
+                return await createTerminal("worktree", undefined, SQUAD_ORACLE_ID);
               },
               onCreateTentacle: async () => {
                 const response = await fetch("/api/deck/tentacles", {
@@ -458,7 +458,7 @@ export const App = () => {
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({
                     workspaceMode: "shared",
-                    tentacleId: OCTOBOSS_ID,
+                    tentacleId: SQUAD_ORACLE_ID,
                     ...claudeLaunchOptions,
                     promptTemplate: action,
                   }),

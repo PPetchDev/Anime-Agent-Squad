@@ -36,7 +36,7 @@ const OCTOPUS_COLORS = [
   "#00fff7",
   "#ff9500",
 ];
-const ANIMATIONS: OctopusAnimation[] = ["sway", "walk", "jog", "bounce", "float", "swim-up"];
+const ANIMATIONS: OctopusAnimation[] = ["heroic", "sway", "walk", "jog", "bounce", "float", "swim-up"];
 const EXPRESSIONS: OctopusExpression[] = ["normal", "happy", "angry", "surprised"];
 const ACCESSORIES: OctopusAccessory[] = ["none", "none", "long", "mohawk", "side-sweep", "curly"];
 
@@ -324,14 +324,14 @@ export const CanvasTentaclePanel = ({
               className="detail-action-btn"
               onClick={() => onSpawnSwarm?.(node.tentacleId, "worktree")}
             >
-              &#x2263; Spawn Swarm (Worktrees)
+              ✦ Summon Squad (Worktrees)
             </button>
             <button
               type="button"
               className="detail-action-btn"
               onClick={() => onSpawnSwarm?.(node.tentacleId, "shared")}
             >
-              &#x2263; Spawn Swarm (Normal)
+              ✧ Summon Squad (Shared)
             </button>
           </div>
         </div>

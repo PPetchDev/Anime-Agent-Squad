@@ -31,7 +31,7 @@ const splitLabel = (label: string): [string] | [string, string] => {
   ];
 };
 
-const ANIMATIONS: OctopusAnimation[] = ["sway", "walk", "jog", "bounce", "float", "swim-up"];
+const ANIMATIONS: OctopusAnimation[] = ["heroic", "sway", "walk", "jog", "bounce", "float", "swim-up"];
 const EXPRESSIONS: OctopusExpression[] = ["normal", "happy", "angry", "surprised"];
 const ACCESSORIES: OctopusAccessory[] = ["none", "none", "long", "mohawk", "side-sweep", "curly"];
 
@@ -195,11 +195,11 @@ export const OctopusNode = ({
   const visuals = useMemo(
     () =>
       isOctoboss
-        ? ({ animation: "sway", expression: "normal", accessory: "none" } as OctopusVisuals)
+        ? ({ animation: "heroic", expression: "normal", accessory: "none" } as OctopusVisuals)
         : deriveOctopusVisuals(node),
     [node, isOctoboss],
   );
-  const glyphScale = isOctoboss ? 6 : GLYPH_SCALE;
+  const glyphScale = isOctoboss ? 5 : GLYPH_SCALE;
   const glyphW = Math.round(GLYPH_W * (glyphScale / GLYPH_SCALE));
   const glyphH = Math.round(GLYPH_H * (glyphScale / GLYPH_SCALE));
   const color = node.color;
@@ -257,6 +257,20 @@ export const OctopusNode = ({
       {/* Focused glow — same style as session nodes */}
       {showFocus && <circle className="canvas-node-focus-glow" r={node.radius - 4} fill={color} />}
 
+      {isOctoboss && (
+        <g className="canvas-squad-oracle-aura" aria-hidden="true">
+          <circle className="canvas-squad-oracle-aura__ring canvas-squad-oracle-aura__ring--outer" r={46} />
+          <circle className="canvas-squad-oracle-aura__ring canvas-squad-oracle-aura__ring--inner" r={34} />
+          <path
+            className="canvas-squad-oracle-aura__sigil"
+            d="M0 -28 L6 -6 L28 0 L6 6 L0 28 L-6 6 L-28 0 L-6 -6 Z"
+          />
+          <circle className="canvas-squad-oracle-aura__spark canvas-squad-oracle-aura__spark--top" r={2.2} />
+          <circle className="canvas-squad-oracle-aura__spark canvas-squad-oracle-aura__spark--left" r={1.8} />
+          <circle className="canvas-squad-oracle-aura__spark canvas-squad-oracle-aura__spark--right" r={1.8} />
+        </g>
+      )}
+
       {/* Octopus glyph via foreignObject */}
       <foreignObject
         x={-glyphW / 2}
@@ -291,7 +305,7 @@ export const OctopusNode = ({
         y={glyphH / 2 - 12}
         textAnchor="middle"
         className="canvas-node-label canvas-node-label--tentacle canvas-node-label--always"
-        fill={isOctoboss ? "var(--accent-primary, #d4a017)" : "#faa32c"}
+        fill={isOctoboss ? "#ff8bd8" : "#faa32c"}
       >
         <tspan x="0" dy="0">
           {lines[0]}

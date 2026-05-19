@@ -104,6 +104,92 @@ export const getCharacterTemplate = (
 export const isBuiltInCharacterId = (value: unknown): value is string =>
   typeof value === "string" && BUILT_IN_CHARACTER_TEMPLATES.some((t) => t.characterId === value);
 
+const ROLE_KEYWORDS: Readonly<Record<AgentRole, readonly string[]>> = {
+  frontend: [
+    "ui",
+    "ux",
+    "react",
+    "component",
+    "layout",
+    "style",
+    "css",
+    "animation",
+    "design",
+    "frontend",
+  ],
+  backend: [
+    "api",
+    "endpoint",
+    "backend",
+    "server",
+    "database",
+    "db",
+    "schema",
+    "query",
+    "runtime",
+    "worker",
+    "queue",
+  ],
+  review: [
+    "review",
+    "qa",
+    "test",
+    "audit",
+    "verify",
+    "validate",
+    "bug",
+    "docs",
+    "doc",
+    "typing",
+    "lint",
+  ],
+  devops: [
+    "devops",
+    "deploy",
+    "release",
+    "ci",
+    "cd",
+    "pipeline",
+    "infra",
+    "docker",
+    "kubernetes",
+    "monitor",
+    "logs",
+  ],
+};
+
+const DEFAULT_ROLE_FOR_TASK: AgentRole = "backend";
+
+const getCharacterIdForRole = (role: AgentRole): string =>
+  BUILT_IN_CHARACTER_TEMPLATES.find((template) => template.role === role)?.characterId ?? "ren";
+
+export const resolveCharacterIdForTask = (taskText: string | undefined): string => {
+  const normalized = (taskText ?? "").trim().toLowerCase();
+  if (normalized.length === 0) {
+    return getCharacterIdForRole(DEFAULT_ROLE_FOR_TASK);
+  }
+
+  let bestRole: AgentRole = DEFAULT_ROLE_FOR_TASK;
+  let bestScore = 0;
+
+  const roles: AgentRole[] = ["frontend", "backend", "review", "devops"];
+  for (const role of roles) {
+    const keywords = ROLE_KEYWORDS[role];
+    let score = 0;
+    for (const keyword of keywords) {
+      if (normalized.includes(keyword)) {
+        score += 1;
+      }
+    }
+    if (score > bestScore) {
+      bestScore = score;
+      bestRole = role;
+    }
+  }
+
+  return getCharacterIdForRole(bestRole);
+};
+
 export const resolveCharacterAvatarPath = ({
   characterId,
   customAvatarPath,

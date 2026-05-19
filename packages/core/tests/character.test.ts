@@ -14,6 +14,7 @@ import {
   getCharacterTemplate,
   isBuiltInCharacterId,
   resolveCharacterAvatarPath,
+  resolveCharacterIdForTask,
   resolveCharacterEmotion,
   resolveCharacterEmotionImagePath,
 } from "../src/domain/character";
@@ -339,6 +340,30 @@ describe("resolveCharacterAvatarPath", () => {
     expect(
       resolveCharacterAvatarPath({ characterId: "mika", customAvatarPath: "/override.png" }),
     ).toBe("/override.png");
+  });
+});
+
+describe("resolveCharacterIdForTask", () => {
+  it("maps UI/CSS tasks to the frontend character", () => {
+    expect(resolveCharacterIdForTask("Polish UI layout and CSS animation details")).toBe("mika");
+  });
+
+  it("maps API/backend tasks to the backend character", () => {
+    expect(resolveCharacterIdForTask("Implement API endpoint and database query")).toBe("ren");
+  });
+
+  it("maps review/docs/test tasks to the review character", () => {
+    expect(resolveCharacterIdForTask("Audit docs and verify tests for regressions")).toBe("yui");
+  });
+
+  it("maps deploy/infra tasks to the devops character", () => {
+    expect(resolveCharacterIdForTask("Fix CI pipeline and deployment logs")).toBe("aki");
+  });
+
+  it("falls back to backend character for empty or unknown tasks", () => {
+    expect(resolveCharacterIdForTask("")).toBe("ren");
+    expect(resolveCharacterIdForTask(undefined)).toBe("ren");
+    expect(resolveCharacterIdForTask("general implementation follow-up")).toBe("ren");
   });
 });
 

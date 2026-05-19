@@ -16,7 +16,7 @@ export const OCTOPUS_COLORS = [
   "#ff9500",
 ];
 
-export const ANIMATIONS: OctopusAnimation[] = ["sway", "walk", "jog", "bounce", "float", "swim-up"];
+export const ANIMATIONS: OctopusAnimation[] = ["heroic", "sway", "walk", "jog", "bounce", "float", "swim-up"];
 export const EXPRESSIONS: OctopusExpression[] = ["normal", "happy", "angry", "surprised"];
 export const ACCESSORIES: OctopusAccessory[] = [
   "none",

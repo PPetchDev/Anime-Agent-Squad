@@ -1438,7 +1438,7 @@ export const CanvasPrimaryView = ({
                   <span className="canvas-context-menu-icon">
                     <ListTodo size={14} />
                   </span>
-                  Update To-Do List
+                  Magical Todo Sync
                 </button>
                 <button
                   type="button"
@@ -1450,7 +1450,7 @@ export const CanvasPrimaryView = ({
                   <span className="canvas-context-menu-icon">
                     <Hexagon size={14} />
                   </span>
-                  Update Tentacle
+                  Update Squad
                 </button>
                 <button
                   type="button"
@@ -1460,7 +1460,7 @@ export const CanvasPrimaryView = ({
                   <span className="canvas-context-menu-icon">
                     <Layers size={14} />
                   </span>
-                  Spawn Swarm (Worktrees)
+                  Summon Squad (Worktrees)
                 </button>
                 <button
                   type="button"
@@ -1470,7 +1470,7 @@ export const CanvasPrimaryView = ({
                   <span className="canvas-context-menu-icon">
                     <Layers size={14} />
                   </span>
-                  Spawn Swarm (Normal)
+                  Summon Squad (Shared)
                 </button>
               </>
             )}
@@ -1484,7 +1484,7 @@ export const CanvasPrimaryView = ({
                   <span className="canvas-context-menu-icon">
                     <ListTodo size={14} />
                   </span>
-                  Reorganize To-Do's
+                  Magical Todo Sync
                 </button>
                 <button
                   type="button"
@@ -1494,7 +1494,7 @@ export const CanvasPrimaryView = ({
                   <span className="canvas-context-menu-icon">
                     <Hexagon size={14} />
                   </span>
-                  Reorganize Tentacles
+                  Reorganize Squad
                 </button>
                 <button
                   type="button"
@@ -1504,7 +1504,7 @@ export const CanvasPrimaryView = ({
                   <span className="canvas-context-menu-icon">
                     <Sparkles size={14} />
                   </span>
-                  Clean Tentacle Contexts
+                  Purify Context Notes
                 </button>
               </>
             )}

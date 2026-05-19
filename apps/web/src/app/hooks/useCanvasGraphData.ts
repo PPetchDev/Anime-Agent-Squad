@@ -12,8 +12,8 @@ const ACTIVE_SESSION_RADIUS = 12;
 const INACTIVE_SESSION_RADIUS = 10;
 
 const OCTOBOSS_RADIUS = 52;
-export const OCTOBOSS_ID = "__octoboss__";
-const OCTOBOSS_NODE_ID = `t:${OCTOBOSS_ID}`;
+export const SQUAD_ORACLE_ID = "__squad_oracle__";
+const SQUAD_ORACLE_NODE_ID = `t:${SQUAD_ORACLE_ID}`;
 
 const getAccentPrimary = (): string =>
   (typeof document !== "undefined"
@@ -340,10 +340,10 @@ export const useCanvasGraphData = ({
   }
 
   // Octoboss — synthetic always-present node
-  const prevBoss = prevNodes.get(OCTOBOSS_NODE_ID);
+  const prevBoss = prevNodes.get(SQUAD_ORACLE_NODE_ID);
   const octobossColor = getAccentPrimary();
   const octobossNode: GraphNode = {
-    id: OCTOBOSS_NODE_ID,
+    id: SQUAD_ORACLE_NODE_ID,
     type: "octoboss",
     x: prevBoss?.x ?? 0,
     y: prevBoss?.y ?? 0,
@@ -351,21 +351,21 @@ export const useCanvasGraphData = ({
     vy: prevBoss?.vy ?? 0,
     pinned: prevBoss?.pinned ?? false,
     radius: OCTOBOSS_RADIUS,
-    tentacleId: OCTOBOSS_ID,
-    label: "Octoboss",
+    tentacleId: SQUAD_ORACLE_ID,
+    label: "Squad Oracle",
     color: octobossColor,
   };
   nodes.push(octobossNode);
-  currentNodesById.set(OCTOBOSS_NODE_ID, octobossNode);
+  currentNodesById.set(SQUAD_ORACLE_NODE_ID, octobossNode);
 
   // Connect octoboss to every tentacle node
   for (const tentacleId of allTentacleIds) {
-    edges.push({ source: OCTOBOSS_NODE_ID, target: buildTentacleNodeId(tentacleId) });
+    edges.push({ source: SQUAD_ORACLE_NODE_ID, target: buildTentacleNodeId(tentacleId) });
   }
 
   // Link active terminals belonging to octoboss
   for (const terminal of columns) {
-    if (terminal.tentacleId !== OCTOBOSS_ID) continue;
+    if (terminal.tentacleId !== SQUAD_ORACLE_ID) continue;
     const sessionNodeId = buildActiveSessionNodeId(terminal.terminalId);
     const prevSession = prevNodes.get(sessionNodeId);
     const jitter = () => (Math.random() - 0.5) * 60;
@@ -380,7 +380,7 @@ export const useCanvasGraphData = ({
       vy: prevSession?.vy ?? 0,
       pinned: prevSession?.pinned ?? false,
       radius: ACTIVE_SESSION_RADIUS,
-      tentacleId: OCTOBOSS_ID,
+      tentacleId: SQUAD_ORACLE_ID,
       label: terminal.tentacleName || terminal.terminalId,
       color: octobossColor,
       sessionId: terminal.terminalId,
@@ -393,7 +393,7 @@ export const useCanvasGraphData = ({
     };
     nodes.push(sessionNode);
     currentNodesById.set(sessionNodeId, sessionNode);
-    edges.push({ source: OCTOBOSS_NODE_ID, target: sessionNodeId });
+    edges.push({ source: SQUAD_ORACLE_NODE_ID, target: sessionNodeId });
   }
 
   // Inactive sessions from conversations

@@ -192,6 +192,10 @@ type SpriteFrame = {
   bottom: string[][];
   /** Shift the sprite down by this many pixels (0..BOUNCE_PAD). */
   yOffset?: number;
+  /** Shift only the head horizontally by sprite pixels. */
+  headOffsetX?: number;
+  /** Shift only the head vertically by sprite pixels. */
+  headOffsetY?: number;
 };
 
 // Walk: lateral stepping — legs bend at a "knee" with feet kicking sideways.
@@ -310,6 +314,14 @@ const FLOAT_FRAMES: SpriteFrame[] = [
   { bottom: BOUNCE_STRAIGHT, yOffset: 1 },
 ];
 
+// Heroic: visible limb motion + head bob/tilt for an anime-like action loop.
+const HEROIC_FRAMES: SpriteFrame[] = [
+  { bottom: WALK_S0, yOffset: 1, headOffsetY: 1 },
+  { bottom: WALK_S1, yOffset: 0, headOffsetX: -1, headOffsetY: 0 },
+  { bottom: BOUNCE_CROUCH, yOffset: 1, headOffsetY: 0 },
+  { bottom: WALK_S3, yOffset: 0, headOffsetX: 1, headOffsetY: 0 },
+];
+
 // ─── Frame timing ────────────────────────────────────────────────────────────
 
 const JOG_FRAME_MS = 220;
@@ -328,7 +340,15 @@ const SPRITE_H =
   TENTACLE_TOP.length +
   TAIL_NEUTRAL.length;
 
-export type OctopusAnimation = "idle" | "sway" | "walk" | "jog" | "swim-up" | "bounce" | "float";
+export type OctopusAnimation =
+  | "idle"
+  | "sway"
+  | "walk"
+  | "jog"
+  | "swim-up"
+  | "bounce"
+  | "float"
+  | "heroic";
 // "sleepy" is reserved for idle/inactive tentacles — never assign it randomly on creation.
 export type OctopusExpression = "normal" | "happy" | "sleepy" | "angry" | "surprised";
 export type OctopusAccessory = "none" | "long" | "mohawk" | "side-sweep" | "curly";
@@ -358,15 +378,28 @@ function drawSprite(
   ctx.clearRect(0, 0, SPRITE_W * scale, (topPad + SPRITE_H + BOUNCE_PAD) * scale);
 
   const yOff = (frame.yOffset ?? 0) + topPad;
-  const layers = [...head, ...frame.bottom];
-  for (let y = 0; y < layers.length; y++) {
-    const row = layers[y];
+  const headOffsetX = frame.headOffsetX ?? 0;
+  const headOffsetY = frame.headOffsetY ?? 0;
+
+  for (let y = 0; y < head.length; y++) {
+    const row = head[y];
     if (!row) continue;
     for (let x = 0; x < row.length; x++) {
       const cell = row[x];
       if (!cell) continue;
       ctx.fillStyle = cell === E || cell === O ? "#000000" : accentColor;
-      ctx.fillRect(x * scale, (y + yOff) * scale, scale, scale);
+      ctx.fillRect((x + headOffsetX) * scale, (y + headOffsetY + yOff) * scale, scale, scale);
+    }
+  }
+
+  for (let y = 0; y < frame.bottom.length; y++) {
+    const row = frame.bottom[y];
+    if (!row) continue;
+    for (let x = 0; x < row.length; x++) {
+      const cell = row[x];
+      if (!cell) continue;
+      ctx.fillStyle = cell === E || cell === O ? "#000000" : accentColor;
+      ctx.fillRect(x * scale, (y + head.length + yOff) * scale, scale, scale);
     }
   }
 }
@@ -435,14 +468,16 @@ function drawAccessory(
   scale: number,
   yOff: number,
   hColor: string,
+  xOff = 0,
+  yHeadOff = 0,
 ) {
   if (accessory === "none") return;
 
   // Dome geometry in canvas pixels
-  const domeL = 4 * scale; // dome outline left edge (col 4)
-  const domeR = 12 * scale; // dome outline right edge (col 12)
-  const domeCX = 8 * scale; // dome center x
-  const domeTop = yOff * scale; // dome top y (row 0 of sprite)
+  const domeL = (4 + xOff) * scale; // dome outline left edge (col 4)
+  const domeR = (12 + xOff) * scale; // dome outline right edge (col 12)
+  const domeCX = (8 + xOff) * scale; // dome center x
+  const domeTop = (yOff + yHeadOff) * scale; // dome top y (row 0 of sprite)
   const domeW = domeR - domeL;
 
   ctx.save();
@@ -606,12 +641,15 @@ function buildFrameSequence(animation: OctopusAnimation): SpriteFrame[] {
       return BOUNCE_FRAMES;
     case "float":
       return FLOAT_FRAMES;
+    case "heroic":
+      return HEROIC_FRAMES;
     default:
       return SWAY_FRAMES_TAILS.map((tail) => ({ bottom: [...TENTACLE_TOP, ...tail] }));
   }
 }
 
 function animationFrameMs(animation: OctopusAnimation): number {
+  if (animation === "heroic") return 240;
   if (animation === "jog" || animation === "swim-up") return JOG_FRAME_MS;
   if (animation === "walk") return WALK_FRAME_MS;
   if (animation === "float") return FLOAT_FRAME_MS;
@@ -674,7 +712,7 @@ export const OctopusGlyph = ({
       drawSprite(ctx, accentColor, frame, head, scale, topPad);
       if (expression === "sleepy") drawZZZ(ctx, scale, zzzPhase);
       const yOff = (frame.yOffset ?? 0) + topPad;
-      drawAccessory(ctx, accessory, scale, yOff, hairColor);
+      drawAccessory(ctx, accessory, scale, yOff, hairColor, frame.headOffsetX, frame.headOffsetY);
     };
 
     // Idle with no ZZZ: static, no interval.

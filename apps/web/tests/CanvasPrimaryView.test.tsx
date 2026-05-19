@@ -400,10 +400,10 @@ describe("CanvasPrimaryView", () => {
 
     fireEvent.contextMenu(tentacleNode as Element, { clientX: 160, clientY: 120 });
 
-    expect(await screen.findByRole("button", { name: "Update To-Do List" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Update Tentacle" })).toBeInTheDocument();
+    expect(await screen.findByRole("button", { name: "Magical Todo Sync" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Update Squad" })).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "Update To-Do List" }));
+    fireEvent.click(screen.getByRole("button", { name: "Magical Todo Sync" }));
 
     await waitFor(() => {
       expect(onTentacleAction).toHaveBeenCalledWith("tentacle-a", "tentacle-reorganize-todos");

@@ -284,7 +284,7 @@ const COLORS = [
   "#00fff7",
   "#ff9500",
 ];
-const ANIMATIONS = ["sway", "walk", "jog", "bounce", "float", "swim-up"];
+const ANIMATIONS = ["heroic", "sway", "walk", "jog", "bounce", "float", "swim-up"];
 const EXPRESSIONS = ["normal", "happy", "angry", "surprised"];
 const ACCESSORIES = ["none", "none", "long", "mohawk", "side-sweep", "curly"];
 const HAIR_COLORS = [

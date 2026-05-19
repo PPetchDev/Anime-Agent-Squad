@@ -32,7 +32,7 @@ describe("CanvasTentaclePanel actions", () => {
     vi.restoreAllMocks();
   });
 
-  it("offers worktree and normal swarm options", async () => {
+  it("offers worktree and shared squad summon options", async () => {
     const onSpawnSwarm = vi.fn();
 
     render(
@@ -58,10 +58,10 @@ describe("CanvasTentaclePanel actions", () => {
     );
 
     const worktreeButton = await screen.findByRole("button", {
-      name: /spawn swarm \(worktrees\)/i,
+      name: /summon squad \(worktrees\)/i,
     });
     const normalButton = await screen.findByRole("button", {
-      name: /spawn swarm \(normal\)/i,
+      name: /summon squad \(shared\)/i,
     });
 
     fireEvent.click(worktreeButton);

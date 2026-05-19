@@ -1,5 +1,7 @@
 import { join } from "node:path";
 
+import { resolveCharacterIdForTask } from "@octogent/core";
+
 import {
   addTodoItem,
   createDeckTentacle,
@@ -460,6 +462,9 @@ export const handleDeckTodoSolveRoute: ApiRouteHandler = async (
     return true;
   }
 
+  const selectedCharacterId =
+    characterResult.characterId ?? resolveCharacterIdForTask(todoItem.text);
+
   const terminalId = `${tentacleId}-todo-${itemIndex}`;
   const existingTerminal = runtime
     .listTerminalSnapshots()
@@ -489,7 +494,7 @@ export const handleDeckTodoSolveRoute: ApiRouteHandler = async (
         terminalId,
         apiPort: getApiPort(),
       }),
-      characterResult.characterId,
+      selectedCharacterId,
     );
 
     const snapshot = runtime.createTerminal({
@@ -505,7 +510,7 @@ export const handleDeckTodoSolveRoute: ApiRouteHandler = async (
       ...(claudePermissionsResult.claudeDangerouslySkipPermissions
         ? { claudeDangerouslySkipPermissions: true }
         : {}),
-      ...(characterResult.characterId ? { characterId: characterResult.characterId } : {}),
+      ...(selectedCharacterId ? { characterId: selectedCharacterId } : {}),
       ...(characterResult.customAvatarPath
         ? { customAvatarPath: characterResult.customAvatarPath }
         : {}),
@@ -659,6 +664,7 @@ export const handleDeckTentacleSwarmRoute: ApiRouteHandler = async (
     terminalId: `${tentacleId}-swarm-${item.index}`,
     todoIndex: item.index,
     todoText: item.text,
+    characterId: characterResult.characterId ?? resolveCharacterIdForTask(item.text),
   }));
 
   const buildWorkerContextIntro = (): string =>
@@ -797,7 +803,7 @@ export const handleDeckTentacleSwarmRoute: ApiRouteHandler = async (
           parentTerminalId: "",
           parentSection: "",
         }),
-        characterResult.characterId,
+        worker.characterId,
       );
 
       runtime.createTerminal({
@@ -814,7 +820,7 @@ export const handleDeckTentacleSwarmRoute: ApiRouteHandler = async (
         ...(claudePermissionsResult.claudeDangerouslySkipPermissions
           ? { claudeDangerouslySkipPermissions: true }
           : {}),
-        ...(characterResult.characterId ? { characterId: characterResult.characterId } : {}),
+        ...(worker.characterId ? { characterId: worker.characterId } : {}),
         ...(characterResult.customAvatarPath
           ? { customAvatarPath: characterResult.customAvatarPath }
           : {}),
@@ -828,20 +834,19 @@ export const handleDeckTentacleSwarmRoute: ApiRouteHandler = async (
         .map((w) => `- \`${w.terminalId}\` — item #${w.todoIndex}: ${w.todoText}`)
         .join("\n");
 
-      const workerSpawnCommands = targetItems
-        .map((item) => {
-          const workerTerminalId = `${tentacleId}-swarm-${item.index}`;
+      const workerSpawnCommands = workers
+        .map((worker) => {
           const parentSection = [
             "## Communication",
             "",
             `Your parent coordinator is at terminal \`${parentTerminalId}\`.`,
             "When you complete your task, report back:",
             "```bash",
-            `node bin/octogent channel send ${parentTerminalId} "DONE: ${item.text}" --from ${workerTerminalId}`,
+            `node bin/octogent channel send ${parentTerminalId} "DONE: ${worker.todoText}" --from ${worker.terminalId}`,
             "```",
             "If you are blocked, ask for help:",
             "```bash",
-            `node bin/octogent channel send ${parentTerminalId} "BLOCKED: <describe what you need>" --from ${workerTerminalId}`,
+            `node bin/octogent channel send ${parentTerminalId} "BLOCKED: <describe what you need>" --from ${worker.terminalId}`,
             "```",
           ].join("\n");
 
@@ -849,11 +854,11 @@ export const handleDeckTentacleSwarmRoute: ApiRouteHandler = async (
             tentacleName,
             tentacleId,
             tentacleContextPath,
-            todoItemText: item.text,
-            terminalId: workerTerminalId,
+            todoItemText: worker.todoText,
+            terminalId: worker.terminalId,
             apiPort,
             workspaceContextIntro: buildWorkerContextIntro(),
-            workspaceGuidelines: buildWorkerGuidelines(workerTerminalId),
+            workspaceGuidelines: buildWorkerGuidelines(worker.terminalId),
             commitGuidance: buildWorkerCommitGuidance(),
             definitionOfDoneCommitStep: buildWorkerDefinitionOfDoneCommitStep(),
             workspaceReminder: buildWorkerReminder(),
@@ -863,21 +868,21 @@ export const handleDeckTentacleSwarmRoute: ApiRouteHandler = async (
 
           const commandParts = [
             "node bin/octogent terminal create",
-            `--terminal-id ${shellSingleQuote(workerTerminalId)}`,
+            `--terminal-id ${shellSingleQuote(worker.terminalId)}`,
             `--tentacle-id ${shellSingleQuote(tentacleId)}`,
             `--parent-terminal-id ${shellSingleQuote(parentTerminalId)}`,
             `--workspace-mode ${workerWorkspaceMode}`,
             `--name ${shellSingleQuote(tentacleName)}`,
             "--name-origin generated",
-            `--auto-rename-prompt-context ${shellSingleQuote(item.text)}`,
+            `--auto-rename-prompt-context ${shellSingleQuote(worker.todoText)}`,
             "--prompt-template swarm-worker",
             `--prompt-variables ${shellSingleQuote(promptVariables)}`,
           ];
           if (claudePermissionsResult.claudeDangerouslySkipPermissions) {
             commandParts.push("--dangerously-skip-permissions");
           }
-          if (characterResult.characterId) {
-            commandParts.push(`--character-id ${shellSingleQuote(characterResult.characterId)}`);
+          if (worker.characterId) {
+            commandParts.push(`--character-id ${shellSingleQuote(worker.characterId)}`);
           }
           if (characterResult.customAvatarPath) {
             commandParts.push(
@@ -885,11 +890,11 @@ export const handleDeckTentacleSwarmRoute: ApiRouteHandler = async (
             );
           }
           if (workerWorkspaceMode === "worktree") {
-            commandParts.splice(3, 0, `--worktree-id ${shellSingleQuote(workerTerminalId)}`);
+            commandParts.splice(3, 0, `--worktree-id ${shellSingleQuote(worker.terminalId)}`);
           }
           const command = commandParts.join(" ");
 
-          return `- \`${workerTerminalId}\`:\n  \`\`\`bash\n  ${command}\n  \`\`\``;
+          return `- \`${worker.terminalId}\`:\n  \`\`\`bash\n  ${command}\n  \`\`\``;
         })
         .join("\n");
 
@@ -910,7 +915,7 @@ export const handleDeckTentacleSwarmRoute: ApiRouteHandler = async (
           terminalId: parentTerminalId,
           apiPort,
         }),
-        characterResult.characterId,
+        characterResult.characterId ?? resolveCharacterIdForTask("review and coordinate swarm merge"),
       );
 
       runtime.createTerminal({
@@ -924,7 +929,9 @@ export const handleDeckTentacleSwarmRoute: ApiRouteHandler = async (
         ...(claudePermissionsResult.claudeDangerouslySkipPermissions
           ? { claudeDangerouslySkipPermissions: true }
           : {}),
-        ...(characterResult.characterId ? { characterId: characterResult.characterId } : {}),
+        ...(characterResult.characterId
+          ? { characterId: characterResult.characterId }
+          : { characterId: resolveCharacterIdForTask("review and coordinate swarm merge") }),
         ...(characterResult.customAvatarPath
           ? { customAvatarPath: characterResult.customAvatarPath }
           : {}),

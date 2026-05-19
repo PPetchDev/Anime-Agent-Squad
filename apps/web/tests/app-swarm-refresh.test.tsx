@@ -191,7 +191,7 @@ vi.mock("../src/components/PrimaryViewRouter", () => ({
         type="button"
         onClick={() => void canvasPrimaryViewProps.onSpawnSwarm?.("docs-knowledge", "shared")}
       >
-        Spawn Swarm
+        Summon Squad
       </button>
       <span>
         {canvasPrimaryViewProps.onSolveTodoItem
@@ -251,7 +251,7 @@ describe("App swarm actions", () => {
     render(<App />);
 
     expect(screen.getByText("solve callback omitted")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Spawn Swarm" }));
+    fireEvent.click(screen.getByRole("button", { name: "Summon Squad" }));
 
     await waitFor(() => {
       expect(
