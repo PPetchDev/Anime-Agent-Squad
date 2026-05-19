@@ -1,27 +1,15 @@
 import { describe, expect, it } from "vitest";
 
 import {
-  // adapters
-  InMemoryTerminalSnapshotReader,
-  // application
-  buildTerminalList,
-  // domain/agentRuntime
-  isAgentRuntimeState,
-  isTerminalAgentProvider,
-  TERMINAL_AGENT_PROVIDERS,
   // domain/channel
   // (ChannelMessage is type-only; verify the module loaded by using a type import below)
   // domain/character
   BUILT_IN_CHARACTER_TEMPLATES,
   CHARACTER_EMOTION_CATALOG,
   DEFAULT_CHARACTER_AVATAR_PATH,
-  getCharacterTemplate,
-  isBuiltInCharacterId,
-  resolveCharacterAvatarPath,
-  resolveCharacterEmotion,
-  resolveCharacterEmotionImagePath,
-  // domain/completionSound
-  isTerminalCompletionSoundId,
+  // adapters
+  InMemoryTerminalSnapshotReader,
+  TERMINAL_AGENT_PROVIDERS,
   TERMINAL_COMPLETION_SOUND_IDS,
   // domain/deck — type-only exports; verify via typeof check on a value below
   // domain/git — type-only exports
@@ -37,6 +25,18 @@ import {
   asNumber,
   asRecord,
   asString,
+  // application
+  buildTerminalList,
+  getCharacterTemplate,
+  // domain/agentRuntime
+  isAgentRuntimeState,
+  isBuiltInCharacterId,
+  isTerminalAgentProvider,
+  // domain/completionSound
+  isTerminalCompletionSoundId,
+  resolveCharacterAvatarPath,
+  resolveCharacterEmotion,
+  resolveCharacterEmotionImagePath,
 } from "../src/index";
 
 describe("barrel re-export completeness", () => {
@@ -85,6 +85,6 @@ describe("barrel re-export completeness", () => {
     expect(asString("hello")).toBe("hello");
     expect(asString(42)).toBeNull();
     expect(asNumber(3)).toBe(3);
-    expect(asNumber(NaN)).toBeNull();
+    expect(asNumber(Number.NaN)).toBeNull();
   });
 });
