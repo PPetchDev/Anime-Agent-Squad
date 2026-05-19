@@ -1,13 +1,21 @@
+import { existsSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
 import { describe, expect, it } from "vitest";
 
 import {
+  BUILT_IN_CHARACTER_TEMPLATES,
   CHARACTER_EMOTION_CATALOG,
+  type AgentRole,
   type CharacterEmotion,
   type CharacterEmotionContext,
   DEFAULT_CHARACTER_AVATAR_PATH,
   resolveCharacterEmotion,
   resolveCharacterEmotionImagePath,
 } from "../src/domain/character";
+
+const MONOREPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 
 type CharRow = {
   ctx: CharacterEmotionContext;
@@ -213,6 +221,46 @@ describe("resolveCharacterEmotionImagePath", () => {
     expect(resolveCharacterEmotionImagePath("mika", "listening")).toBe(
       DEFAULT_CHARACTER_AVATAR_PATH,
     );
+  });
+});
+
+describe("BUILT_IN_CHARACTER_TEMPLATES integrity", () => {
+  const REQUIRED_ROLES: AgentRole[] = ["frontend", "backend", "review", "devops"];
+
+  it("has all four roles represented", () => {
+    const roles = BUILT_IN_CHARACTER_TEMPLATES.map((t) => t.role);
+    for (const role of REQUIRED_ROLES) {
+      expect(roles, `role "${role}" must be present`).toContain(role);
+    }
+  });
+
+  it("has unique characterIds", () => {
+    const ids = BUILT_IN_CHARACTER_TEMPLATES.map((t) => t.characterId);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it("every template has a non-empty systemPrompt", () => {
+    for (const template of BUILT_IN_CHARACTER_TEMPLATES) {
+      expect(
+        template.systemPrompt.trim().length,
+        `${template.characterId} must have a non-empty systemPrompt`,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("every avatarPath matches a file the web app ships", () => {
+    for (const template of BUILT_IN_CHARACTER_TEMPLATES) {
+      expect(
+        template.avatarPath,
+        `${template.characterId} must have an avatarPath`,
+      ).toBeTruthy();
+      const relativePath = template.avatarPath!.replace(/^\//, "");
+      const filePath = resolve(MONOREPO_ROOT, "apps/web/public", relativePath);
+      expect(
+        existsSync(filePath),
+        `${template.characterId}: avatarPath "${template.avatarPath}" not found at ${filePath}`,
+      ).toBe(true);
+    }
   });
 });
 
