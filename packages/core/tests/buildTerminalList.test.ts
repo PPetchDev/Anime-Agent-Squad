@@ -11,6 +11,9 @@ describe("buildTerminalList", () => {
         label: "terminal-b",
         state: "blocked",
         tentacleId: "backend",
+        tentacleName: "backend-agent",
+        workspaceMode: "shared",
+        lifecycleState: "running",
         createdAt: "2026-02-24T10:05:00.000Z",
       },
       {
@@ -20,6 +23,7 @@ describe("buildTerminalList", () => {
         tentacleId: "backend",
         tentacleName: "planner",
         workspaceMode: "worktree",
+        lifecycleState: "running",
         createdAt: "2026-02-24T10:00:00.000Z",
       },
       {
@@ -27,6 +31,9 @@ describe("buildTerminalList", () => {
         label: "terminal-c",
         state: "live",
         tentacleId: "frontend",
+        tentacleName: "frontend-agent",
+        workspaceMode: "shared",
+        lifecycleState: "running",
         createdAt: "2026-02-24T10:10:00.000Z",
       },
     ]);
@@ -46,6 +53,7 @@ describe("buildTerminalList", () => {
         tentacleId: "backend",
         tentacleName: "Backend Dev",
         workspaceMode: "worktree",
+        lifecycleState: "running",
         createdAt: "2026-02-24T10:00:00.000Z",
       },
     ]);
@@ -64,6 +72,9 @@ describe("buildTerminalList", () => {
         label: "my-terminal",
         state: "live",
         tentacleId: "backend",
+        tentacleName: "backend-agent",
+        workspaceMode: "shared",
+        lifecycleState: "running",
         createdAt: "2026-02-24T10:00:00.000Z",
         characterId: "ren",
         customAvatarPath: "/custom/ren.png",
@@ -76,19 +87,22 @@ describe("buildTerminalList", () => {
     expect(result[0]?.customAvatarPath).toBe("/custom/ren.png");
   });
 
-  it("defaults workspaceMode to undefined when not provided", async () => {
+  it("passes through workspaceMode when provided", async () => {
     const reader = new InMemoryTerminalSnapshotReader([
       {
         terminalId: "terminal-1",
         label: "terminal-1",
         state: "idle",
         tentacleId: "general",
+        tentacleName: "general-agent",
+        workspaceMode: "shared",
+        lifecycleState: "registered",
         createdAt: "2026-02-24T10:00:00.000Z",
       },
     ]);
 
     const result = await buildTerminalList(reader);
 
-    expect(result[0]?.workspaceMode).toBeUndefined();
+    expect(result[0]?.workspaceMode).toBe("shared");
   });
 });

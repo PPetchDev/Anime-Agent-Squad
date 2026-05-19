@@ -8,6 +8,7 @@ const VALID_SNAPSHOT = {
   state: "stale",
   tentacleId: "tentacle-a",
   tentacleName: "planner",
+  workspaceMode: "shared",
   createdAt: "2026-02-24T10:00:00.000Z",
   lifecycleState: "stale",
   lifecycleReason: "missing_process",
@@ -41,7 +42,10 @@ describe("HttpTerminalSnapshotReader", () => {
     ["label", "label is missing"],
     ["state", "state is missing"],
     ["tentacleId", "tentacleId is missing"],
+    ["tentacleName", "tentacleName is missing"],
+    ["workspaceMode", "workspaceMode is missing"],
     ["createdAt", "createdAt is missing"],
+    ["lifecycleState", "lifecycleState is missing"],
   ])("drops snapshots when required field %s is absent", async (field) => {
     const broken = { ...VALID_SNAPSHOT } as Record<string, unknown>;
     delete broken[field];
@@ -186,10 +190,10 @@ describe("HttpTerminalSnapshotReader", () => {
 
     await expect(pending).rejects.toMatchObject({ name: "AbortError" });
     expect(fetcher).toHaveBeenCalledTimes(1);
-    const [, init] = fetcher.mock.calls[0];
-    expect(init.signal).toBe(controller.signal);
-    expect(init.method).toBe("GET");
-    expect(init.headers).toEqual({ Accept: "application/json" });
+    const [, init] = fetcher.mock.calls[0]! as [string, Record<string, unknown>];
+    expect(init["signal"]).toBe(controller.signal);
+    expect(init["method"]).toBe("GET");
+    expect(init["headers"]).toEqual({ Accept: "application/json" });
   });
 
   it("rejects synchronously when the signal is already aborted before the request starts", async () => {
@@ -215,7 +219,8 @@ describe("HttpTerminalSnapshotReader", () => {
       name: "AbortError",
     });
     expect(fetcher).toHaveBeenCalledTimes(1);
-    expect(fetcher.mock.calls[0][1].signal).toBe(controller.signal);
+    const call1 = fetcher.mock.calls[0]! as [string, Record<string, unknown>];
+    expect(call1[1]["signal"]).toBe(controller.signal);
   });
 
   it("omits the signal field from the request init when no signal is configured", async () => {
@@ -228,7 +233,7 @@ describe("HttpTerminalSnapshotReader", () => {
     await reader.listTerminalSnapshots();
 
     expect(fetcher).toHaveBeenCalledTimes(1);
-    const [, init] = fetcher.mock.calls[0];
+    const [, init] = fetcher.mock.calls[0]! as unknown as [string, Record<string, unknown>];
     expect(init).not.toHaveProperty("signal");
   });
 });

@@ -106,16 +106,16 @@ export const SidebarActionPanel = ({
         onCleanupWorktree={() => {
           requestDeleteTerminal(
             openGitTentacleTerminal.terminalId,
-            openGitTentacleTerminal.tentacleName ?? openGitTentacleTerminal.tentacleId,
+            openGitTentacleTerminal.tentacleName,
             {
-              workspaceMode: openGitTentacleTerminal.workspaceMode ?? "shared",
+              workspaceMode: openGitTentacleTerminal.workspaceMode,
               intent: "cleanup-worktree",
             },
           );
           closeTentacleGitActions();
         }}
         tentacleId={openGitTentacleTerminal.tentacleId}
-        tentacleName={openGitTentacleTerminal.tentacleName ?? openGitTentacleTerminal.tentacleId}
+        tentacleName={openGitTentacleTerminal.tentacleName}
       />
     );
   }

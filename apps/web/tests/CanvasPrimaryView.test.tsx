@@ -208,6 +208,7 @@ describe("CanvasPrimaryView", () => {
             tentacleId: "tentacle-a",
             tentacleName: "terminal one",
             workspaceMode: "shared",
+            lifecycleState: "running",
             createdAt: "2026-02-24T10:00:00.000Z",
           },
         ]}
@@ -247,6 +248,9 @@ describe("CanvasPrimaryView", () => {
             label: "terminal-1",
             state: "live",
             tentacleId: "tentacle-a",
+            tentacleName: "tentacle-a",
+            workspaceMode: "shared",
+            lifecycleState: "running",
             createdAt: "2026-02-24T10:00:00.000Z",
           },
         ]}
@@ -289,6 +293,9 @@ describe("CanvasPrimaryView", () => {
             label: "terminal-1",
             state: "live",
             tentacleId: "tentacle-a",
+            tentacleName: "tentacle-a",
+            workspaceMode: "shared",
+            lifecycleState: "running",
             createdAt: "2026-02-24T10:00:00.000Z",
           },
           {
@@ -299,6 +306,7 @@ describe("CanvasPrimaryView", () => {
             tentacleName: "tentacle-a",
             parentTerminalId: "terminal-1",
             workspaceMode: "shared",
+            lifecycleState: "running",
             createdAt: "2026-02-24T10:05:00.000Z",
             hasUserPrompt: true,
           },
@@ -312,6 +320,7 @@ describe("CanvasPrimaryView", () => {
           tentacleName: "tentacle-a",
           parentTerminalId: "terminal-1",
           workspaceMode: "shared",
+          lifecycleState: "running",
           createdAt: "2026-02-24T10:05:00.000Z",
           hasUserPrompt: true,
         }}
@@ -333,6 +342,8 @@ describe("CanvasPrimaryView", () => {
             state: "live",
             tentacleId: "tentacle-a",
             tentacleName: "tentacle-a",
+            workspaceMode: "shared",
+            lifecycleState: "running",
             createdAt: "2026-02-24T10:00:00.000Z",
           },
         ]}
@@ -361,6 +372,8 @@ describe("CanvasPrimaryView", () => {
             state: "live",
             tentacleId: "tentacle-a",
             tentacleName: "renamed-tentacle",
+            workspaceMode: "shared",
+            lifecycleState: "running",
             createdAt: "2026-02-24T10:00:00.000Z",
           },
         ]}
