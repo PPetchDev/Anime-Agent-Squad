@@ -1,10 +1,14 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  BUILT_IN_CHARACTER_TEMPLATES,
   CHARACTER_EMOTION_CATALOG,
   type CharacterEmotion,
   type CharacterEmotionContext,
   DEFAULT_CHARACTER_AVATAR_PATH,
+  getCharacterTemplate,
+  isBuiltInCharacterId,
+  resolveCharacterAvatarPath,
   resolveCharacterEmotion,
   resolveCharacterEmotionImagePath,
 } from "../src/domain/character";
@@ -235,5 +239,101 @@ describe("CHARACTER_EMOTION_CATALOG integrity", () => {
         `${characterId}.defaultEmotion=${entry.defaultEmotion} must appear in available`,
       ).toBe(true);
     }
+  });
+});
+
+describe("resolveCharacterAvatarPath", () => {
+  it("returns trimmed customAvatarPath when non-empty", () => {
+    expect(
+      resolveCharacterAvatarPath({ characterId: "mika", customAvatarPath: "/custom/avatar.png" }),
+    ).toBe("/custom/avatar.png");
+  });
+
+  it("trims whitespace from customAvatarPath before checking emptiness", () => {
+    expect(
+      resolveCharacterAvatarPath({ characterId: "mika", customAvatarPath: "  /custom/avatar.png  " }),
+    ).toBe("/custom/avatar.png");
+  });
+
+  it("ignores customAvatarPath that is only whitespace and falls back to template", () => {
+    expect(resolveCharacterAvatarPath({ characterId: "ren", customAvatarPath: "   " })).toBe(
+      "/characters/ren.svg",
+    );
+  });
+
+  it("ignores empty string customAvatarPath and falls back to template", () => {
+    expect(resolveCharacterAvatarPath({ characterId: "aki", customAvatarPath: "" })).toBe(
+      "/characters/aki.svg",
+    );
+  });
+
+  it("falls back to template avatarPath when customAvatarPath is absent", () => {
+    expect(resolveCharacterAvatarPath({ characterId: "mika" })).toBe("/characters/mika.svg");
+    expect(resolveCharacterAvatarPath({ characterId: "ren" })).toBe("/characters/ren.svg");
+    expect(resolveCharacterAvatarPath({ characterId: "yui" })).toBe("/characters/yui.svg");
+    expect(resolveCharacterAvatarPath({ characterId: "aki" })).toBe("/characters/aki.svg");
+  });
+
+  it("falls back to DEFAULT_CHARACTER_AVATAR_PATH when characterId is unknown and no custom path", () => {
+    expect(resolveCharacterAvatarPath({ characterId: "unknown" })).toBe(
+      DEFAULT_CHARACTER_AVATAR_PATH,
+    );
+  });
+
+  it("falls back to DEFAULT_CHARACTER_AVATAR_PATH when characterId is undefined and no custom path", () => {
+    expect(resolveCharacterAvatarPath({})).toBe(DEFAULT_CHARACTER_AVATAR_PATH);
+  });
+
+  it("prefers customAvatarPath over template even when characterId is valid", () => {
+    expect(
+      resolveCharacterAvatarPath({ characterId: "mika", customAvatarPath: "/override.png" }),
+    ).toBe("/override.png");
+  });
+});
+
+describe("getCharacterTemplate", () => {
+  it("returns the matching template for a known characterId", () => {
+    const template = getCharacterTemplate("mika");
+    expect(template).toBeDefined();
+    expect(template?.characterId).toBe("mika");
+    expect(template?.name).toBe("Mika");
+    expect(template?.role).toBe("frontend");
+  });
+
+  it("returns undefined for an unknown characterId", () => {
+    expect(getCharacterTemplate("nonexistent")).toBeUndefined();
+  });
+
+  it("returns undefined when characterId is undefined", () => {
+    expect(getCharacterTemplate(undefined)).toBeUndefined();
+  });
+
+  it("returns all four built-in characters", () => {
+    const ids = BUILT_IN_CHARACTER_TEMPLATES.map((t) => t.characterId);
+    for (const id of ids) {
+      expect(getCharacterTemplate(id)).toBeDefined();
+    }
+  });
+});
+
+describe("isBuiltInCharacterId", () => {
+  it("returns true for each built-in character id", () => {
+    expect(isBuiltInCharacterId("mika")).toBe(true);
+    expect(isBuiltInCharacterId("ren")).toBe(true);
+    expect(isBuiltInCharacterId("yui")).toBe(true);
+    expect(isBuiltInCharacterId("aki")).toBe(true);
+  });
+
+  it("returns false for unknown string values", () => {
+    expect(isBuiltInCharacterId("unknown")).toBe(false);
+    expect(isBuiltInCharacterId("")).toBe(false);
+  });
+
+  it("returns false for non-string types", () => {
+    expect(isBuiltInCharacterId(null)).toBe(false);
+    expect(isBuiltInCharacterId(undefined)).toBe(false);
+    expect(isBuiltInCharacterId(42)).toBe(false);
+    expect(isBuiltInCharacterId({})).toBe(false);
+    expect(isBuiltInCharacterId([])).toBe(false);
   });
 });
