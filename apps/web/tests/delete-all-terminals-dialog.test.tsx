@@ -39,6 +39,8 @@ describe("DeleteAllTerminalsDialog", () => {
             state: "live",
             tentacleId: "tentacle-a",
             tentacleName: "Tentacle A",
+            workspaceMode: "shared",
+            lifecycleState: "running",
             createdAt: "2026-02-24T10:00:00.000Z",
           },
         ]}

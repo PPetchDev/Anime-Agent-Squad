@@ -48,12 +48,10 @@ const isTerminalSnapshot = (value: unknown): value is TerminalSnapshot => {
     typeof snapshot.label === "string" &&
     isAgentState(snapshot.state) &&
     typeof snapshot.tentacleId === "string" &&
-    (snapshot.tentacleName === undefined || typeof snapshot.tentacleName === "string") &&
-    (snapshot.workspaceMode === undefined ||
-      snapshot.workspaceMode === "shared" ||
-      snapshot.workspaceMode === "worktree") &&
+    typeof snapshot.tentacleName === "string" &&
+    (snapshot.workspaceMode === "shared" || snapshot.workspaceMode === "worktree") &&
     typeof snapshot.createdAt === "string" &&
-    (snapshot.lifecycleState === undefined || isLifecycleState(snapshot.lifecycleState)) &&
+    isLifecycleState(snapshot.lifecycleState) &&
     (snapshot.characterId === undefined || typeof snapshot.characterId === "string") &&
     (snapshot.customAvatarPath === undefined || typeof snapshot.customAvatarPath === "string") &&
     (snapshot.lifecycleReason === undefined || typeof snapshot.lifecycleReason === "string") &&
