@@ -6,6 +6,7 @@ import { ClearAllConversationsDialog } from "./ClearAllConversationsDialog";
 import { SidebarConversationsList } from "./SidebarConversationsList";
 import { ActionButton } from "./ui/ActionButton";
 import { MarkdownContent } from "./ui/MarkdownContent";
+import { PrimaryViewState } from "./ui/PrimaryViewState";
 
 type ConversationsPrimaryViewProps = {
   enabled: boolean;
@@ -135,11 +136,25 @@ export const ConversationsPrimaryView = ({
 
   return (
     <section className="conversations-view" aria-label="Conversations primary view">
-      {errorMessage ? <p className="conversations-error">{errorMessage}</p> : null}
+      {errorMessage ? (
+        <PrimaryViewState
+          tone="error"
+          kanaLabel="エラー"
+          title="Conversation sync failed"
+          description={errorMessage}
+          testId="conversations-error"
+        />
+      ) : null}
 
       <section className="conversations-transcript" aria-label="Conversation transcript pane">
         {isLoadingSelectedSession ? (
-          <p className="conversations-empty">Loading conversation...</p>
+          <PrimaryViewState
+            tone="loading"
+            kanaLabel="ロード中"
+            title="Loading conversation..."
+            description="Replaying the transcript."
+            testId="conversations-loading"
+          />
         ) : selectedSession ? (
           <>
             <header className="conversations-transcript-header">
@@ -235,7 +250,13 @@ export const ConversationsPrimaryView = ({
             </ol>
           </>
         ) : (
-          <p className="conversations-empty">Select a conversation from the sidebar.</p>
+          <PrimaryViewState
+            tone="empty"
+            kanaLabel="エンプティ"
+            title="No conversation selected"
+            description="Pick a session from the sidebar to inspect the transcript."
+            testId="conversations-empty"
+          />
         )}
       </section>
     </section>

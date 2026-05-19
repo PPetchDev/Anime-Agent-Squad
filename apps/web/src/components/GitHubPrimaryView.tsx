@@ -4,6 +4,7 @@ import { GITHUB_OVERVIEW_GRAPH_HEIGHT, GITHUB_OVERVIEW_GRAPH_WIDTH } from "../ap
 import { formatGitHubCommitHoverLabel } from "../app/githubMetrics";
 import type { GitHubCommitSparkPoint, GitHubRecentCommit } from "../app/types";
 import { ActionButton } from "./ui/ActionButton";
+import { PrimaryViewState } from "./ui/PrimaryViewState";
 
 type GitHubPrimaryViewProps = {
   githubRepoLabel: string;
@@ -20,6 +21,8 @@ type GitHubPrimaryViewProps = {
   githubOverviewGraphSeries: GitHubCommitSparkPoint[];
   hoveredGitHubOverviewPointIndex: number | null;
   onHoveredGitHubOverviewPointIndexChange: (index: number | null) => void;
+  githubError?: string | null;
+  isLoadingGitHubSummary?: boolean;
 };
 
 const GITHUB_OVERVIEW_GRAPH_VIEWBOX_INSET = 8;
@@ -87,6 +90,8 @@ export const GitHubPrimaryView = ({
   githubOverviewGraphSeries,
   hoveredGitHubOverviewPointIndex,
   onHoveredGitHubOverviewPointIndexChange,
+  githubError = null,
+  isLoadingGitHubSummary = false,
 }: GitHubPrimaryViewProps) => {
   const [hoverCursorPosition, setHoverCursorPosition] = useState<{ x: number; y: number } | null>(
     null,
@@ -380,7 +385,23 @@ export const GitHubPrimaryView = ({
                 <h3>Recent commits</h3>
                 <span>{`Showing last ${GITHUB_RECENT_COMMITS_LIMIT}`}</span>
               </header>
-              {githubRecentCommits.length > 0 ? (
+              {githubError ? (
+                <PrimaryViewState
+                  tone="error"
+                  kanaLabel="エラー"
+                  title="Repository sync failed"
+                  description={githubError}
+                  testId="github-error"
+                />
+              ) : isLoadingGitHubSummary && githubRecentCommits.length === 0 ? (
+                <PrimaryViewState
+                  tone="loading"
+                  kanaLabel="ロード中"
+                  title="Loading recent activity..."
+                  description="Pulling commits from the repository."
+                  testId="github-loading"
+                />
+              ) : githubRecentCommits.length > 0 ? (
                 <ol className="github-overview-recent-list">
                   {githubRecentCommits.map((commit) => (
                     <li key={commit.hash}>
@@ -432,7 +453,13 @@ export const GitHubPrimaryView = ({
                   ))}
                 </ol>
               ) : (
-                <p className="github-overview-recent-empty">Recent commit data is unavailable.</p>
+                <PrimaryViewState
+                  tone="empty"
+                  kanaLabel="エンプティ"
+                  title="No commits yet"
+                  description="Recent commit data is unavailable for this repository."
+                  testId="github-recent-empty"
+                />
               )}
               <div
                 ref={tooltipRef}

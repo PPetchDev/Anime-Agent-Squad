@@ -4,6 +4,7 @@ import { useCodeIntelRuntime } from "../app/hooks/useCodeIntelRuntime";
 import { CodeIntelArcDiagram } from "./CodeIntelArcDiagram";
 import { CodeIntelTreemap } from "./CodeIntelTreemap";
 import { ActionButton } from "./ui/ActionButton";
+import { PrimaryViewState } from "./ui/PrimaryViewState";
 
 type CodeIntelPrimaryViewProps = {
   enabled: boolean;
@@ -16,12 +17,13 @@ export const CodeIntelPrimaryView = ({ enabled }: CodeIntelPrimaryViewProps) => 
   if (isLoading && events.length === 0) {
     return (
       <section className="code-intel-view" aria-label="Code Intel primary view">
-        <section className="code-intel-panel">
-          <header className="code-intel-panel-header">
-            <h2>Code Intel</h2>
-            <p>Loading edit events...</p>
-          </header>
-        </section>
+        <PrimaryViewState
+          tone="loading"
+          kanaLabel="ロード中"
+          title="Loading edit events..."
+          description="Watching agents touch files."
+          testId="code-intel-loading"
+        />
       </section>
     );
   }
@@ -29,12 +31,13 @@ export const CodeIntelPrimaryView = ({ enabled }: CodeIntelPrimaryViewProps) => 
   if (error) {
     return (
       <section className="code-intel-view" aria-label="Code Intel primary view">
-        <section className="code-intel-panel">
-          <header className="code-intel-panel-header">
-            <h2>Code Intel</h2>
-            <p className="code-intel-error">{error}</p>
-          </header>
-        </section>
+        <PrimaryViewState
+          tone="error"
+          kanaLabel="エラー"
+          title="Code Intel unavailable"
+          description={error}
+          testId="code-intel-error"
+        />
       </section>
     );
   }
@@ -42,12 +45,13 @@ export const CodeIntelPrimaryView = ({ enabled }: CodeIntelPrimaryViewProps) => 
   if (events.length === 0) {
     return (
       <section className="code-intel-view" aria-label="Code Intel primary view">
-        <section className="code-intel-panel">
-          <header className="code-intel-panel-header">
-            <h2>Code Intel</h2>
-            <p>No edit events recorded yet. Events are tracked as agents edit files.</p>
-          </header>
-        </section>
+        <PrimaryViewState
+          tone="empty"
+          kanaLabel="エンプティ"
+          title="No edit events yet"
+          description="Events are tracked as agents edit files."
+          testId="code-intel-empty"
+        />
       </section>
     );
   }
