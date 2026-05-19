@@ -21,6 +21,16 @@ const okResponse = (payload: unknown) => ({
   json: async () => payload,
 });
 
+const getFetchInit = (fetcher: ReturnType<typeof vi.fn>, index = 0): Record<string, unknown> => {
+  const call = fetcher.mock.calls[index];
+  expect(call).toBeDefined();
+  if (!call) {
+    throw new Error(`Expected fetcher to be called at index ${index}`);
+  }
+  const [, init] = call as [string, Record<string, unknown>];
+  return init;
+};
+
 describe("HttpTerminalSnapshotReader", () => {
   it("loads snapshots and filters out malformed payload entries", async () => {
     const reader = new HttpTerminalSnapshotReader({
@@ -190,10 +200,10 @@ describe("HttpTerminalSnapshotReader", () => {
 
     await expect(pending).rejects.toMatchObject({ name: "AbortError" });
     expect(fetcher).toHaveBeenCalledTimes(1);
-    const [, init] = fetcher.mock.calls[0]! as [string, Record<string, unknown>];
-    expect(init["signal"]).toBe(controller.signal);
-    expect(init["method"]).toBe("GET");
-    expect(init["headers"]).toEqual({ Accept: "application/json" });
+    const init = getFetchInit(fetcher);
+    expect(init.signal).toBe(controller.signal);
+    expect(init.method).toBe("GET");
+    expect(init.headers).toEqual({ Accept: "application/json" });
   });
 
   it("rejects synchronously when the signal is already aborted before the request starts", async () => {
@@ -219,8 +229,8 @@ describe("HttpTerminalSnapshotReader", () => {
       name: "AbortError",
     });
     expect(fetcher).toHaveBeenCalledTimes(1);
-    const call1 = fetcher.mock.calls[0]! as [string, Record<string, unknown>];
-    expect(call1[1]["signal"]).toBe(controller.signal);
+    const init = getFetchInit(fetcher);
+    expect(init.signal).toBe(controller.signal);
   });
 
   it("omits the signal field from the request init when no signal is configured", async () => {
@@ -233,7 +243,7 @@ describe("HttpTerminalSnapshotReader", () => {
     await reader.listTerminalSnapshots();
 
     expect(fetcher).toHaveBeenCalledTimes(1);
-    const [, init] = fetcher.mock.calls[0]! as unknown as [string, Record<string, unknown>];
+    const init = getFetchInit(fetcher);
     expect(init).not.toHaveProperty("signal");
   });
 });

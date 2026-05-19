@@ -5,9 +5,9 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 
 import {
+  type AgentRole,
   BUILT_IN_CHARACTER_TEMPLATES,
   CHARACTER_EMOTION_CATALOG,
-  type AgentRole,
   type CharacterEmotion,
   type CharacterEmotionContext,
   DEFAULT_CHARACTER_AVATAR_PATH,
@@ -253,15 +253,16 @@ describe("BUILT_IN_CHARACTER_TEMPLATES integrity", () => {
 
   it("every avatarPath matches a file the web app ships", () => {
     for (const template of BUILT_IN_CHARACTER_TEMPLATES) {
-      expect(
-        template.avatarPath,
-        `${template.characterId} must have an avatarPath`,
-      ).toBeTruthy();
-      const relativePath = template.avatarPath!.replace(/^\//, "");
+      const { avatarPath } = template;
+      expect(avatarPath, `${template.characterId} must have an avatarPath`).toBeTruthy();
+      if (!avatarPath) {
+        throw new Error(`${template.characterId} must have an avatarPath`);
+      }
+      const relativePath = avatarPath.replace(/^\//, "");
       const filePath = resolve(MONOREPO_ROOT, "apps/web/public", relativePath);
       expect(
         existsSync(filePath),
-        `${template.characterId}: avatarPath "${template.avatarPath}" not found at ${filePath}`,
+        `${template.characterId}: avatarPath "${avatarPath}" not found at ${filePath}`,
       ).toBe(true);
     }
   });
@@ -298,7 +299,10 @@ describe("resolveCharacterAvatarPath", () => {
 
   it("trims whitespace from customAvatarPath before checking emptiness", () => {
     expect(
-      resolveCharacterAvatarPath({ characterId: "mika", customAvatarPath: "  /custom/avatar.png  " }),
+      resolveCharacterAvatarPath({
+        characterId: "mika",
+        customAvatarPath: "  /custom/avatar.png  ",
+      }),
     ).toBe("/custom/avatar.png");
   });
 

@@ -49,7 +49,7 @@ describe("asNumber", () => {
   });
 
   it("returns null for NaN", () => {
-    expect(asNumber(NaN)).toBeNull();
+    expect(asNumber(Number.NaN)).toBeNull();
   });
 
   it("returns null for strings that parse to NaN", () => {
@@ -59,8 +59,8 @@ describe("asNumber", () => {
   });
 
   it("returns null for Infinity", () => {
-    expect(asNumber(Infinity)).toBeNull();
-    expect(asNumber(-Infinity)).toBeNull();
+    expect(asNumber(Number.POSITIVE_INFINITY)).toBeNull();
+    expect(asNumber(Number.NEGATIVE_INFINITY)).toBeNull();
   });
 
   it("returns null for non-number non-string types", () => {
