@@ -176,6 +176,8 @@ describe("App workspace setup", () => {
     expect(
       setupCard.querySelector('.workspace-setup-card-glyph img[src^="/characters/"]'),
     ).not.toBeNull();
+    expect(setupCard).toHaveClass("mm-hud-frame", "mm-scanline");
+    expect(within(setupCard).getByText("ブリッジ")).toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "Primary navigation" })).toBeInTheDocument();
     expect(screen.getByLabelText("Main content canvas")).toBeInTheDocument();
     expect(screen.getByLabelText("Canvas graph view")).toBeInTheDocument();

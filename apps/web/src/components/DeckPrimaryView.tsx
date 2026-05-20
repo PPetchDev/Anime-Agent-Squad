@@ -11,6 +11,10 @@ import {
   deriveDominantTentacleStatus,
   mapTentacleStatusToEmotionContext,
 } from "../app/character/tentacleEmotion";
+import {
+  deriveDeckSceneChoreography,
+  type DeckSceneChoreography,
+} from "../app/deck/sceneChoreography";
 import { useClickOutside } from "../app/hooks/useClickOutside";
 import type { TerminalAgentProvider } from "../app/types";
 import { CharacterAvatar, useCharacterEmotion } from "./character";
@@ -384,6 +388,15 @@ export const DeckPrimaryView = ({
       ? tentacles.find((t) => t.tentacleId === focus.tentacleId)
       : null;
   const mode = focus ? "detail" : "grid";
+  const sceneChoreography = useMemo<DeckSceneChoreography>(
+    () =>
+      deriveDeckSceneChoreography({
+        mode,
+        emptyViewMode,
+        hasTentacles: tentacles.length > 0,
+      }),
+    [mode, emptyViewMode, tentacles.length],
+  );
   const shouldShowWorkspaceSetup =
     !suppressWorkspaceSetupCard && tentacles.length === 0 && workspaceSetup?.shouldShowSetupCard;
 
@@ -465,6 +478,7 @@ export const DeckPrimaryView = ({
         className="deck-view mm-scanline"
         data-mode="grid"
         data-empty-mode={emptyViewMode}
+        data-scene={sceneChoreography}
         aria-label="Deck"
       >
         <div className="deck-empty-state">
@@ -518,9 +532,10 @@ export const DeckPrimaryView = ({
 
   return (
     <section
-      className="deck-view"
+      className="deck-view mm-scanline"
       data-mode={mode}
       data-has-pods={tentacles.length > 0}
+      data-scene={sceneChoreography}
       aria-label="Deck"
     >
       <div className="deck-pods-container">

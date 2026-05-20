@@ -41,6 +41,7 @@ describe("TentaclePod skill editor", () => {
     expect(
       container.querySelector('.deck-pod-octopus .character-avatar[data-emotion="idle"]'),
     ).not.toBeNull();
+    expect(container.querySelector(".deck-pod .mm-hud-frame__label")?.textContent).toContain("ポッド");
   });
 
   it("maps active status to a live character emotion", () => {
