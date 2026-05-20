@@ -149,6 +149,21 @@ export const RuntimeStatusStrip = ({
 }: RuntimeStatusStripProps) => {
   const usageBars = useMemo(() => (usageData ? buildUsageBars(usageData) : []), [usageData]);
   const claudeUsageState = usageState(claudeUsage);
+  const statusAlertLevel = claudeUsageState.loading
+    ? "scanning"
+    : (claudeUsageState.sessionPercent ?? 0) >= 85 || (claudeUsageState.weekPercent ?? 0) >= 85
+      ? "critical"
+      : (claudeUsageState.sessionPercent ?? 0) >= 60 || (claudeUsageState.weekPercent ?? 0) >= 60
+        ? "warning"
+        : "stable";
+  const missionCallout =
+    statusAlertLevel === "critical"
+      ? "MISSION ALERT"
+      : statusAlertLevel === "warning"
+        ? "SYNC WATCH"
+        : statusAlertLevel === "scanning"
+          ? "LINK SCAN"
+          : "SQUAD STABLE";
   const [showRefreshSpin, setShowRefreshSpin] = useState(false);
   const refreshStartedAtRef = useRef<number | null>(null);
   const refreshHideTimerRef = useRef<number | null>(null);
@@ -187,10 +202,17 @@ export const RuntimeStatusStrip = ({
   }, [isRefreshingClaudeUsage]);
 
   return (
-    <section className="console-status-strip" aria-label="Runtime status strip">
+    <section
+      className="console-status-strip"
+      data-alert-level={statusAlertLevel}
+      aria-label="Runtime status strip"
+    >
       <div className="console-status-main">
         <CharacterAvatar characterId="mika" size="sm" className="console-status-oracle-avatar" />
-        <span className="console-status-brand">OCTOGENT</span>
+        <div className="console-status-world">
+          <span className="console-status-brand">OCTOGENT</span>
+          <span className="console-status-callout">{missionCallout}</span>
+        </div>
       </div>
       <div className="console-status-charts">
         <div className="console-status-sparkline" aria-label="Commits per day over last 30 days">

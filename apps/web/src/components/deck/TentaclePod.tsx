@@ -203,6 +203,15 @@ export const TentaclePod = ({
         <span className={`deck-pod-status deck-pod-status--${tentacle.status}`}>
           {STATUS_LABELS[tentacle.status]}
         </span>
+        <span className="deck-pod-callout" data-status={tentacle.status}>
+          {tentacle.status === "active"
+            ? "OVERDRIVE"
+            : tentacle.status === "blocked"
+              ? "SYSTEM JAM"
+              : tentacle.status === "needs-review"
+                ? "CHECKPOINT"
+                : "STANDBY"}
+        </span>
         <div className="deck-pod-identity">
           <div className="deck-pod-octopus-col">
             <div className="deck-pod-octopus">

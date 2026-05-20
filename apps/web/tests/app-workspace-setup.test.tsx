@@ -172,6 +172,7 @@ describe("App workspace setup", () => {
 
     const setupCard = await screen.findByLabelText("Workspace setup");
     expect(setupCard).toBeInTheDocument();
+    expect(within(setupCard).getByText("Bridge Calibration")).toBeInTheDocument();
     expect(
       setupCard.querySelector('.workspace-setup-card-glyph img[src^="/characters/"]'),
     ).not.toBeNull();

@@ -79,6 +79,8 @@ describe("TentaclePod skill editor", () => {
     expect(
       container.querySelector('.deck-pod-octopus .character-avatar[data-emotion="thinking"]'),
     ).not.toBeNull();
+    expect(container.querySelector('.deck-pod-callout[data-status="active"]')).not.toBeNull();
+    expect(screen.getByText("OVERDRIVE")).toBeInTheDocument();
   });
 
   it("saves suggested skills from the deck pod", async () => {

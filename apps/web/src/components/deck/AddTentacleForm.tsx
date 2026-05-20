@@ -132,9 +132,9 @@ export const AddTentacleForm = ({
     <form className="deck-add-form" onSubmit={handleSubmit}>
       <div className="deck-add-form-header">
         <button type="button" className="deck-add-form-back" onClick={onCancel}>
-          ← Back
+          ← Return to Deck
         </button>
-        <span className="deck-add-form-title">New Tentacle</span>
+        <span className="deck-add-form-title">New Squad Tentacle</span>
       </div>
 
       <div className="deck-add-form-body">
@@ -147,31 +147,31 @@ export const AddTentacleForm = ({
         </div>
 
         <label className="deck-add-form-label">
-          Name
+          Codename
           <input
             ref={nameRef}
             type="text"
             className="deck-add-form-input"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="e.g. Database Layer"
+            placeholder="e.g. Database Vanguard"
           />
         </label>
 
         <label className="deck-add-form-label">
-          Description
+          Mission Brief
           <textarea
             className="deck-add-form-textarea"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="What this tentacle is responsible for..."
+            placeholder="Describe this specialist's battlefield role..."
             rows={3}
           />
         </label>
 
         {availableSkills.length > 0 && (
           <div className="deck-add-form-label">
-            Suggested Skills
+            Sync Skills
             <div className="deck-add-form-skills">
               {availableSkills.map((skill) => {
                 const checked = selectedSkills.includes(skill.name);
@@ -199,7 +199,7 @@ export const AddTentacleForm = ({
         )}
 
         <div className="deck-add-form-label">
-          Color
+          Signature Color
           <div className="deck-add-form-colors">
             {OCTOPUS_COLORS.map((c) => (
               <button
@@ -217,7 +217,7 @@ export const AddTentacleForm = ({
 
         <div className="deck-add-form-row">
           <div className="deck-add-form-label">
-            Expression
+            Mood
             <div className="deck-add-form-chips">
               {EXPRESSION_OPTIONS.map((opt) => (
                 <button
@@ -233,7 +233,7 @@ export const AddTentacleForm = ({
             </div>
           </div>
           <div className="deck-add-form-label">
-            Hair Style
+            Style Crest
             <div className="deck-add-form-chips">
               {ACCESSORY_OPTIONS.map((opt) => (
                 <button
@@ -249,7 +249,7 @@ export const AddTentacleForm = ({
             </div>
           </div>
           <div className="deck-add-form-label">
-            Hair Color
+            Aura Tone
             <div className="deck-add-form-colors">
               {HAIR_COLORS.map((c) => (
                 <button
@@ -273,7 +273,7 @@ export const AddTentacleForm = ({
           className="deck-add-form-submit"
           disabled={isSubmitting || name.trim().length === 0}
         >
-          {isSubmitting ? "Creating..." : "Create Tentacle"}
+          {isSubmitting ? "Forging..." : "Forge Tentacle"}
         </button>
       </div>
     </form>

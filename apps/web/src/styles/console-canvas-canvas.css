@@ -1054,6 +1054,28 @@
   white-space: nowrap;
 }
 
+.detail-combat-callout {
+  font-family: "JetBrains Mono", "IBM Plex Mono", monospace;
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(18, 18, 18, 0.86);
+  white-space: nowrap;
+}
+
+.detail-combat-callout[data-status="active"] {
+  color: #0a5f33;
+}
+
+.detail-combat-callout[data-status="blocked"] {
+  color: #7a1212;
+}
+
+.detail-combat-callout[data-status="needs-review"] {
+  color: #704f0a;
+}
+
 .detail-close {
   background: none;
   border: none;
@@ -1098,6 +1120,7 @@
   width: 96px;
   height: 96px;
   justify-content: center;
+  animation: mm-drift 3.2s ease-in-out infinite;
 }
 
 .detail-glyph--character .character-avatar__image,
@@ -1454,6 +1477,10 @@
   cursor: pointer;
   white-space: nowrap;
   transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.detail-action-btn:first-child {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-primary) 18%, transparent);
 }
 
 .detail-action-btn:hover {

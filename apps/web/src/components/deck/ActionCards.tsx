@@ -37,18 +37,18 @@ export const ActionCards = ({
         <CharacterAvatar characterId="mika" size={compact ? "md" : "lg"} />
       </div>
       <div className="deck-empty-card-text">
-        <span className="deck-empty-card-title">Create First Tentacle</span>
+        <span className="deck-empty-card-title">Awaken First Tentacle</span>
         <span className="deck-empty-card-desc">
-          Start the deck by creating a tentacle for your codebase
+          Create your first specialist and start the squad formation.
         </span>
       </div>
     </button>
     <div className="deck-empty-card">
       <span className="deck-empty-card-icon deck-empty-card-icon--terminal">&gt;_</span>
       <div className="deck-empty-card-text">
-        <span className="deck-empty-card-title">Open Agent</span>
+        <span className="deck-empty-card-title">Open Command Gate</span>
         <span className="deck-empty-card-desc">
-          Launch your coding agent to create tentacles based on your codebase
+          Launch an agent to scout your repo and suggest ready-to-run tentacles.
         </span>
         <div className="deck-empty-agent-select-row">
           <div className="deck-empty-agent-picker" ref={agentMenuRef}>
@@ -103,9 +103,9 @@ export const ActionCards = ({
     <button type="button" className="deck-empty-card" onClick={onAddManually}>
       <span className="deck-empty-card-icon deck-empty-card-icon--terminal">+</span>
       <div className="deck-empty-card-text">
-        <span className="deck-empty-card-title">Add Tentacle Manually</span>
+        <span className="deck-empty-card-title">Forge Tentacle Manually</span>
         <span className="deck-empty-card-desc">
-          Create a custom tentacle with your own configuration
+          Craft a custom specialist with your own role, style, and skills.
         </span>
       </div>
     </button>

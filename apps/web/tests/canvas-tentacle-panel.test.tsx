@@ -57,11 +57,16 @@ describe("CanvasTentaclePanel actions", () => {
       />,
     );
 
+    const invokeButton = await screen.findByRole("button", {
+      name: /invoke agent/i,
+    });
+    expect(invokeButton).toBeInTheDocument();
+
     const worktreeButton = await screen.findByRole("button", {
-      name: /summon squad \(worktrees\)/i,
+      name: /summon squad \(worktree mode\)/i,
     });
     const normalButton = await screen.findByRole("button", {
-      name: /summon squad \(shared\)/i,
+      name: /summon squad \(shared link\)/i,
     });
 
     fireEvent.click(worktreeButton);
@@ -188,6 +193,8 @@ describe("CanvasTentaclePanel actions", () => {
       />,
     );
 
+    expect(screen.getByText("Command Deck")).toBeInTheDocument();
+    expect(screen.getByText("SPELLCAST")).toBeInTheDocument();
     expect(screen.getByText("Suggested Skills")).toBeInTheDocument();
     expect(screen.getByText("docs-writer")).toBeInTheDocument();
     expect(screen.getByText("release-helper")).toBeInTheDocument();

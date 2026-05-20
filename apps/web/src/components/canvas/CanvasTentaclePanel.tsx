@@ -231,6 +231,17 @@ export const CanvasTentaclePanel = ({
             {STATUS_LABELS[tentacle.status] ?? tentacle.status}
           </span>
         )}
+        {tentacle && (
+          <span className="detail-combat-callout" data-status={tentacle.status}>
+            {tentacle.status === "active"
+              ? "SPELLCAST"
+              : tentacle.status === "blocked"
+                ? "ALERT"
+                : tentacle.status === "needs-review"
+                  ? "REVIEW"
+                  : "IDLE"}
+          </span>
+        )}
         <button className="detail-close" type="button" onClick={onClose} aria-label="Close panel">
           <X size={14} />
         </button>
@@ -262,7 +273,7 @@ export const CanvasTentaclePanel = ({
 
         {/* Actions section */}
         <div className="detail-section">
-          <div className="detail-section-title">Actions</div>
+          <div className="detail-section-title">Command Deck</div>
           <CharacterPicker
             selectedCharacterId={selectedCharacterId}
             onChange={setSelectedCharacterId}
@@ -273,21 +284,21 @@ export const CanvasTentaclePanel = ({
               className="detail-action-btn"
               onClick={() => onCreateAgent?.(node.tentacleId, { characterId: selectedCharacterId })}
             >
-              &gt;_ Create Agent
+              ✦ Invoke Agent
             </button>
             <button
               type="button"
               className="detail-action-btn"
               onClick={() => onSpawnSwarm?.(node.tentacleId, "worktree")}
             >
-              ✦ Summon Squad (Worktrees)
+              ✦ Summon Squad (Worktree Mode)
             </button>
             <button
               type="button"
               className="detail-action-btn"
               onClick={() => onSpawnSwarm?.(node.tentacleId, "shared")}
             >
-              ✧ Summon Squad (Shared)
+              ✧ Summon Squad (Shared Link)
             </button>
           </div>
         </div>

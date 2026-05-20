@@ -89,6 +89,10 @@
     color-mix(in srgb, var(--accent-primary) 52%, #ff9fd8 48%);
 }
 
+.deck-empty-octopus .character-avatar {
+  animation: mm-drift 3.8s ease-in-out infinite;
+}
+
 .deck-empty-actions {
   display: flex;
   flex-direction: column;
@@ -863,6 +867,7 @@
   width: 88px;
   height: 88px;
   justify-content: center;
+  animation: mm-drift 3.2s ease-in-out infinite;
 }
 
 .deck-pod-octopus .character-avatar__image,
@@ -881,6 +886,33 @@
   padding: 0.1rem 0.36rem;
   border-radius: 2px;
   z-index: 1;
+}
+
+.deck-pod-callout {
+  position: absolute;
+  top: 1.95rem;
+  right: 0.4rem;
+  font-family: "JetBrains Mono", "IBM Plex Mono", monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  color: #8da0ba;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.deck-pod-callout[data-status="active"] {
+  color: #96f5b7;
+  text-shadow: 0 0 10px rgba(114, 238, 155, 0.42);
+}
+
+.deck-pod-callout[data-status="blocked"] {
+  color: #ff9d9d;
+  text-shadow: 0 0 10px rgba(255, 120, 120, 0.4);
+}
+
+.deck-pod-callout[data-status="needs-review"] {
+  color: #ffd978;
+  text-shadow: 0 0 10px rgba(255, 215, 120, 0.36);
 }
 
 .deck-pod-status--idle {

@@ -39,10 +39,10 @@ export const WorkspaceSetupCard = ({
         <CharacterAvatar characterId="mika" size={compact ? "md" : "lg"} />
       </div>
       <div className="workspace-setup-card-copy">
-        <h2 className="workspace-setup-card-title">Workspace Setup</h2>
+        <h2 className="workspace-setup-card-title">Bridge Calibration</h2>
         <p className="workspace-setup-card-desc">
-          Run each step explicitly. Octogent only marks it done after the workspace is checked
-          again.
+          Run each ritual step explicitly. Octogent confirms completion only after the workspace
+          scan reports green.
         </p>
       </div>
     </header>

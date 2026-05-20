@@ -12,6 +12,7 @@ describe("RuntimeStatusStrip", () => {
     const usage = screen.getByLabelText("Claude usage limits");
     expect(within(usage).getAllByText("···")).toHaveLength(2);
     expect(container.querySelector('.console-status-main img[src^="/characters/"]')).not.toBeNull();
+    expect(screen.getByText("LINK SCAN")).toBeInTheDocument();
   });
 
   it("uses a 5h label for oauth-backed usage", () => {
@@ -33,6 +34,7 @@ describe("RuntimeStatusStrip", () => {
     expect(within(usage).getByText("5h")).toBeInTheDocument();
     expect(within(usage).getByText("14%")).toBeInTheDocument();
     expect(within(usage).getByText("52%")).toBeInTheDocument();
+    expect(screen.getByText("SQUAD STABLE")).toBeInTheDocument();
   });
 
   it("shows unavailable values instead of a permanent loading state", () => {
@@ -52,6 +54,7 @@ describe("RuntimeStatusStrip", () => {
     const usage = screen.getByLabelText("Claude usage limits");
     expect(within(usage).getAllByText("NA")).toHaveLength(2);
     expect(within(usage).queryByText("···")).toBeNull();
+    expect(screen.getByText("SQUAD STABLE")).toBeInTheDocument();
   });
 
   it("marks the refresh button as rotating while Claude usage is refreshing", () => {
