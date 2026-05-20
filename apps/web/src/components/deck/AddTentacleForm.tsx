@@ -64,7 +64,6 @@ const toCharacterEmotion = (expression: OctopusExpression): CharacterEmotion => 
       return "surprised";
     case "sleepy":
       return "sleepy";
-    case "normal":
     default:
       return "idle";
   }

@@ -274,7 +274,7 @@ export const OctopusNode = ({
       {showFocus && <circle className="canvas-node-focus-glow" r={node.radius - 4} fill={color} />}
 
       {isOctoboss && (
-        <g className="canvas-squad-oracle-aura" aria-hidden="true">
+        <g className="canvas-squad-oracle-aura">
           <circle
             className="canvas-squad-oracle-aura__ring canvas-squad-oracle-aura__ring--outer"
             r={46}
