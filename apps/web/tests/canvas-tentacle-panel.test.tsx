@@ -191,8 +191,14 @@ describe("CanvasTentaclePanel actions", () => {
     expect(screen.getByText("Suggested Skills")).toBeInTheDocument();
     expect(screen.getByText("docs-writer")).toBeInTheDocument();
     expect(screen.getByText("release-helper")).toBeInTheDocument();
-    expect(container.querySelector('.detail-glyph--character img[src^="/characters/"]')).not.toBeNull();
-    expect(container.querySelector('.detail-glyph--character .character-avatar[data-emotion="thinking"]')).not.toBeNull();
+    expect(
+      container.querySelector('.detail-glyph--character img[src^="/characters/"]'),
+    ).not.toBeNull();
+    expect(
+      container.querySelector(
+        '.detail-glyph--character .character-avatar[data-emotion="thinking"]',
+      ),
+    ).not.toBeNull();
   });
 
   it("maps blocked status to a blocked character emotion", () => {
@@ -222,6 +228,8 @@ describe("CanvasTentaclePanel actions", () => {
       />,
     );
 
-    expect(container.querySelector('.detail-glyph--character .character-avatar[data-emotion="angry"]')).not.toBeNull();
+    expect(
+      container.querySelector('.detail-glyph--character .character-avatar[data-emotion="angry"]'),
+    ).not.toBeNull();
   });
 });

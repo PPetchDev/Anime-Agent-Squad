@@ -180,48 +180,36 @@
 
 .canvas-squad-oracle-avatar .character-avatar__image {
   border-color: rgba(255, 170, 228, 0.9);
-  box-shadow:
-    0 0 0 1px rgba(255, 230, 246, 0.7),
-    0 0 16px rgba(255, 139, 216, 0.7);
+  box-shadow: 0 0 0 1px rgba(255, 230, 246, 0.7), 0 0 16px rgba(255, 139, 216, 0.7);
 }
 
 .canvas-squad-oracle-avatar .character-avatar[data-emotion="thinking"] .character-avatar__image {
   border-color: rgba(171, 196, 255, 0.95);
-  box-shadow:
-    0 0 0 1px rgba(214, 228, 255, 0.75),
-    0 0 16px rgba(171, 196, 255, 0.75);
+  box-shadow: 0 0 0 1px rgba(214, 228, 255, 0.75), 0 0 16px rgba(171, 196, 255, 0.75);
 }
 
 .canvas-squad-oracle-avatar .character-avatar[data-emotion="surprised"] .character-avatar__image,
 .canvas-squad-oracle-avatar .character-avatar[data-emotion="excited"] .character-avatar__image {
   border-color: rgba(255, 221, 120, 0.95);
-  box-shadow:
-    0 0 0 1px rgba(255, 244, 190, 0.78),
-    0 0 16px rgba(255, 211, 102, 0.82);
+  box-shadow: 0 0 0 1px rgba(255, 244, 190, 0.78), 0 0 16px rgba(255, 211, 102, 0.82);
 }
 
 .canvas-squad-oracle-avatar .character-avatar[data-emotion="angry"] .character-avatar__image,
 .canvas-squad-oracle-avatar .character-avatar[data-emotion="crying"] .character-avatar__image {
   border-color: rgba(255, 142, 142, 0.95);
-  box-shadow:
-    0 0 0 1px rgba(255, 205, 205, 0.78),
-    0 0 16px rgba(255, 116, 116, 0.82);
+  box-shadow: 0 0 0 1px rgba(255, 205, 205, 0.78), 0 0 16px rgba(255, 116, 116, 0.82);
 }
 
 .canvas-squad-oracle-avatar .character-avatar[data-emotion="victory"] .character-avatar__image,
 .canvas-squad-oracle-avatar .character-avatar[data-emotion="happy"] .character-avatar__image {
   border-color: rgba(150, 245, 183, 0.95);
-  box-shadow:
-    0 0 0 1px rgba(202, 255, 220, 0.8),
-    0 0 16px rgba(114, 238, 155, 0.84);
+  box-shadow: 0 0 0 1px rgba(202, 255, 220, 0.8), 0 0 16px rgba(114, 238, 155, 0.84);
 }
 
 .canvas-squad-oracle-avatar .character-avatar[data-emotion="sleepy"] .character-avatar__image,
 .canvas-squad-oracle-avatar .character-avatar[data-emotion="idle"] .character-avatar__image {
   border-color: rgba(201, 177, 255, 0.9);
-  box-shadow:
-    0 0 0 1px rgba(227, 214, 255, 0.76),
-    0 0 14px rgba(191, 159, 255, 0.72);
+  box-shadow: 0 0 0 1px rgba(227, 214, 255, 0.76), 0 0 14px rgba(191, 159, 255, 0.72);
 }
 
 .canvas-tentacle-character-avatar .character-avatar {
@@ -238,48 +226,46 @@
 
 .canvas-tentacle-character-avatar .character-avatar__image {
   border-color: rgba(255, 188, 120, 0.82);
-  box-shadow:
-    0 0 0 1px rgba(255, 228, 190, 0.65),
-    0 0 13px rgba(255, 172, 92, 0.55);
+  box-shadow: 0 0 0 1px rgba(255, 228, 190, 0.65), 0 0 13px rgba(255, 172, 92, 0.55);
 }
 
-.canvas-tentacle-character-avatar .character-avatar[data-emotion="thinking"] .character-avatar__image {
+.canvas-tentacle-character-avatar
+  .character-avatar[data-emotion="thinking"]
+  .character-avatar__image {
   border-color: rgba(171, 196, 255, 0.85);
-  box-shadow:
-    0 0 0 1px rgba(213, 226, 255, 0.7),
-    0 0 13px rgba(160, 185, 255, 0.62);
+  box-shadow: 0 0 0 1px rgba(213, 226, 255, 0.7), 0 0 13px rgba(160, 185, 255, 0.62);
 }
 
-.canvas-tentacle-character-avatar .character-avatar[data-emotion="surprised"] .character-avatar__image,
-.canvas-tentacle-character-avatar .character-avatar[data-emotion="excited"] .character-avatar__image {
+.canvas-tentacle-character-avatar
+  .character-avatar[data-emotion="surprised"]
+  .character-avatar__image,
+.canvas-tentacle-character-avatar
+  .character-avatar[data-emotion="excited"]
+  .character-avatar__image {
   border-color: rgba(255, 224, 120, 0.9);
-  box-shadow:
-    0 0 0 1px rgba(255, 243, 190, 0.74),
-    0 0 13px rgba(255, 209, 96, 0.68);
+  box-shadow: 0 0 0 1px rgba(255, 243, 190, 0.74), 0 0 13px rgba(255, 209, 96, 0.68);
 }
 
 .canvas-tentacle-character-avatar .character-avatar[data-emotion="angry"] .character-avatar__image,
-.canvas-tentacle-character-avatar .character-avatar[data-emotion="crying"] .character-avatar__image {
+.canvas-tentacle-character-avatar
+  .character-avatar[data-emotion="crying"]
+  .character-avatar__image {
   border-color: rgba(255, 142, 142, 0.9);
-  box-shadow:
-    0 0 0 1px rgba(255, 205, 205, 0.72),
-    0 0 13px rgba(255, 116, 116, 0.68);
+  box-shadow: 0 0 0 1px rgba(255, 205, 205, 0.72), 0 0 13px rgba(255, 116, 116, 0.68);
 }
 
-.canvas-tentacle-character-avatar .character-avatar[data-emotion="victory"] .character-avatar__image,
+.canvas-tentacle-character-avatar
+  .character-avatar[data-emotion="victory"]
+  .character-avatar__image,
 .canvas-tentacle-character-avatar .character-avatar[data-emotion="happy"] .character-avatar__image {
   border-color: rgba(150, 245, 183, 0.9);
-  box-shadow:
-    0 0 0 1px rgba(202, 255, 220, 0.74),
-    0 0 13px rgba(114, 238, 155, 0.7);
+  box-shadow: 0 0 0 1px rgba(202, 255, 220, 0.74), 0 0 13px rgba(114, 238, 155, 0.7);
 }
 
 .canvas-tentacle-character-avatar .character-avatar[data-emotion="sleepy"] .character-avatar__image,
 .canvas-tentacle-character-avatar .character-avatar[data-emotion="idle"] .character-avatar__image {
   border-color: rgba(201, 177, 255, 0.84);
-  box-shadow:
-    0 0 0 1px rgba(227, 214, 255, 0.72),
-    0 0 12px rgba(191, 159, 255, 0.64);
+  box-shadow: 0 0 0 1px rgba(227, 214, 255, 0.72), 0 0 12px rgba(191, 159, 255, 0.64);
 }
 
 .canvas-squad-oracle-aura__ring {

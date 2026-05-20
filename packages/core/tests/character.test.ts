@@ -14,9 +14,9 @@ import {
   getCharacterTemplate,
   isBuiltInCharacterId,
   resolveCharacterAvatarPath,
-  resolveCharacterIdForTask,
   resolveCharacterEmotion,
   resolveCharacterEmotionImagePath,
+  resolveCharacterIdForTask,
 } from "../src/domain/character";
 
 const MONOREPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
@@ -203,7 +203,9 @@ describe("resolveCharacterEmotionImagePath", () => {
       "/characters/mika/04-thinking.jpg",
     );
     expect(resolveCharacterEmotionImagePath("aki", "sleepy")).toBe("/characters/aki/07-sleepy.jpg");
-    expect(resolveCharacterEmotionImagePath("ren", "victory")).toBe("/characters/ren/02-victory.jpg");
+    expect(resolveCharacterEmotionImagePath("ren", "victory")).toBe(
+      "/characters/ren/02-victory.jpg",
+    );
     expect(resolveCharacterEmotionImagePath("yui", "surprised")).toBe(
       "/characters/yui/09-surprised.jpg",
     );
@@ -320,7 +322,9 @@ describe("resolveCharacterAvatarPath", () => {
   });
 
   it("falls back to template avatarPath when customAvatarPath is absent", () => {
-    expect(resolveCharacterAvatarPath({ characterId: "mika" })).toBe("/characters/mika/01-idle.jpg");
+    expect(resolveCharacterAvatarPath({ characterId: "mika" })).toBe(
+      "/characters/mika/01-idle.jpg",
+    );
     expect(resolveCharacterAvatarPath({ characterId: "ren" })).toBe("/characters/ren/01-idle.jpg");
     expect(resolveCharacterAvatarPath({ characterId: "yui" })).toBe("/characters/yui/01-idle.jpg");
     expect(resolveCharacterAvatarPath({ characterId: "aki" })).toBe("/characters/aki/01-idle.jpg");

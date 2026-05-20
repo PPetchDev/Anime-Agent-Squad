@@ -38,7 +38,9 @@ describe("TentaclePod skill editor", () => {
     );
 
     expect(container.querySelector('.deck-pod-octopus img[src^="/characters/"]')).not.toBeNull();
-    expect(container.querySelector('.deck-pod-octopus .character-avatar[data-emotion="idle"]')).not.toBeNull();
+    expect(
+      container.querySelector('.deck-pod-octopus .character-avatar[data-emotion="idle"]'),
+    ).not.toBeNull();
   });
 
   it("maps active status to a live character emotion", () => {
@@ -74,7 +76,9 @@ describe("TentaclePod skill editor", () => {
       />,
     );
 
-    expect(container.querySelector('.deck-pod-octopus .character-avatar[data-emotion="thinking"]')).not.toBeNull();
+    expect(
+      container.querySelector('.deck-pod-octopus .character-avatar[data-emotion="thinking"]'),
+    ).not.toBeNull();
   });
 
   it("saves suggested skills from the deck pod", async () => {

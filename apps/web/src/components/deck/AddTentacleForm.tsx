@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
-import { CharacterAvatar } from "../character";
-import { type CharacterEmotion, type DeckAvailableSkill } from "@octogent/core";
+import type { CharacterEmotion, DeckAvailableSkill } from "@octogent/core";
 import type { OctopusAccessory, OctopusAnimation, OctopusExpression } from "../EmptyOctopus";
+import { CharacterAvatar } from "../character";
 import { ACCESSORIES, ANIMATIONS, EXPRESSIONS, OCTOPUS_COLORS } from "./octopusVisuals";
 
 // ─── Add tentacle form ───────────────────────────────────────────────────────
@@ -64,7 +64,6 @@ const toCharacterEmotion = (expression: OctopusExpression): CharacterEmotion => 
       return "surprised";
     case "sleepy":
       return "sleepy";
-    case "normal":
     default:
       return "idle";
   }
@@ -140,7 +139,11 @@ export const AddTentacleForm = ({
 
       <div className="deck-add-form-body">
         <div className="deck-add-form-preview">
-          <CharacterAvatar characterId="mika" size="lg" emotion={toCharacterEmotion(selectedExpression)} />
+          <CharacterAvatar
+            characterId="mika"
+            size="lg"
+            emotion={toCharacterEmotion(selectedExpression)}
+          />
         </div>
 
         <label className="deck-add-form-label">

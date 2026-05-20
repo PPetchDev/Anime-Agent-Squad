@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
+import type { OctopusExpression } from "../EmptyOctopus";
 import { CharacterAvatar } from "../character";
-import { type OctopusExpression } from "../EmptyOctopus";
 
 type PrimaryViewStateTone = "empty" | "error" | "loading";
 

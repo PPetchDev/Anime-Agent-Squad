@@ -29,7 +29,9 @@ describe("AddTentacleForm", () => {
     );
 
     fireEvent.change(screen.getByLabelText("Name"), { target: { value: "docs" } });
-    expect(container.querySelector('.deck-add-form-preview img[src^="/characters/"]')).not.toBeNull();
+    expect(
+      container.querySelector('.deck-add-form-preview img[src^="/characters/"]'),
+    ).not.toBeNull();
     fireEvent.click(screen.getByLabelText(/docs-writer/i));
     fireEvent.click(screen.getByRole("button", { name: /create tentacle/i }));
 

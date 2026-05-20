@@ -915,7 +915,8 @@ export const handleDeckTentacleSwarmRoute: ApiRouteHandler = async (
           terminalId: parentTerminalId,
           apiPort,
         }),
-        characterResult.characterId ?? resolveCharacterIdForTask("review and coordinate swarm merge"),
+        characterResult.characterId ??
+          resolveCharacterIdForTask("review and coordinate swarm merge"),
       );
 
       runtime.createTerminal({
