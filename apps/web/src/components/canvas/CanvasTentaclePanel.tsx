@@ -18,6 +18,10 @@ import {
   buildDeckTodoSolveUrl,
   buildDeckTodoToggleUrl,
 } from "../../runtime/runtimeEndpoints";
+import {
+  deriveCharacterSceneSignature,
+  deriveTentacleSceneBeat,
+} from "../../app/character/sceneSignature";
 import { CharacterAvatar, CharacterPicker, useCharacterEmotion } from "../character";
 
 function hashStr(str: string): number {
@@ -104,6 +108,8 @@ export const CanvasTentaclePanel = ({
     characterId: panelCharacterId,
     ...mapTentacleStatusToEmotionContext(tentacle?.status ?? "idle"),
   });
+  const panelSignature = deriveCharacterSceneSignature(panelCharacterId);
+  const panelBeat = deriveTentacleSceneBeat(tentacle?.status ?? "idle");
   const refreshTentacleData = useCallback(async () => {
     await onRefreshTentacleData?.();
   }, [onRefreshTentacleData]);
@@ -215,6 +221,8 @@ export const CanvasTentaclePanel = ({
     <div
       ref={panelRef}
       className={`detail-panel${isFocused ? " detail-panel--focused" : ""}`}
+      data-signature={panelSignature}
+      data-beat={panelBeat}
       tabIndex={-1}
       onPointerDown={() => onFocus?.()}
     >
