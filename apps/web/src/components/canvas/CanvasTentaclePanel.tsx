@@ -3,12 +3,12 @@ import { type Ref, useCallback, useMemo, useState } from "react";
 
 import {
   BUILT_IN_CHARACTER_TEMPLATES,
-  resolveCharacterIdForTask,
   type DeckTentacleSummary,
   type TentacleWorkspaceMode,
+  resolveCharacterIdForTask,
 } from "@octogent/core";
-import { mapTentacleStatusToEmotionContext } from "../../app/character/tentacleEmotion";
 import type { GraphNode } from "../../app/canvas/types";
+import { mapTentacleStatusToEmotionContext } from "../../app/character/tentacleEmotion";
 import type { CreateTerminalCharacterOptions } from "../../app/hooks/useTerminalMutations";
 import type { ConversationSessionSummary } from "../../app/types";
 import {
@@ -96,7 +96,9 @@ export const CanvasTentaclePanel = ({
     if (node.characterId) {
       return node.characterId;
     }
-    return resolveCharacterIdForTask(`${node.label} ${node.tentacleId} ${tentacle?.description ?? ""}`);
+    return resolveCharacterIdForTask(
+      `${node.label} ${node.tentacleId} ${tentacle?.description ?? ""}`,
+    );
   }, [node.characterId, node.label, node.tentacleId, tentacle?.description]);
   const panelEmotion = useCharacterEmotion({
     characterId: panelCharacterId,

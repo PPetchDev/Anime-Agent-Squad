@@ -1,16 +1,19 @@
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import {
-  type DeckAvailableSkill,
-  type DeckTentacleSummary,
+import type {
+  DeckAvailableSkill,
+  DeckTentacleSummary,
   WorkspaceSetupSnapshot,
   WorkspaceSetupStepId,
 } from "@octogent/core";
 import { resolveCharacterIdForTask } from "@octogent/core";
-import { deriveDominantTentacleStatus, mapTentacleStatusToEmotionContext } from "../app/character/tentacleEmotion";
-import { CharacterAvatar, useCharacterEmotion } from "./character";
+import {
+  deriveDominantTentacleStatus,
+  mapTentacleStatusToEmotionContext,
+} from "../app/character/tentacleEmotion";
 import { useClickOutside } from "../app/hooks/useClickOutside";
 import type { TerminalAgentProvider } from "../app/types";
+import { CharacterAvatar, useCharacterEmotion } from "./character";
 
 import {
   buildDeckSkillsUrl,
@@ -67,7 +70,14 @@ const DeckEmptyOracleAvatar = ({ characterId, tentacles }: DeckEmptyOracleAvatar
     ...mapTentacleStatusToEmotionContext(topStatus),
   });
 
-  return <CharacterAvatar characterId={characterId} size="lg" className="deck-empty-oracle-avatar" emotion={emotion} />;
+  return (
+    <CharacterAvatar
+      characterId={characterId}
+      size="lg"
+      className="deck-empty-oracle-avatar"
+      emotion={emotion}
+    />
+  );
 };
 
 type DeckPrimaryViewProps = {

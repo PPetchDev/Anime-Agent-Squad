@@ -3,8 +3,8 @@ import { useMemo } from "react";
 import { resolveCharacterIdForTask } from "@octogent/core";
 import type { AgentRuntimeState, AgentState } from "@octogent/core";
 
-import { deriveTentacleEmotionContextFromConnectedNodes } from "../../app/character/tentacleEmotion";
 import type { GraphNode } from "../../app/canvas/types";
+import { deriveTentacleEmotionContextFromConnectedNodes } from "../../app/character/tentacleEmotion";
 import { CharacterAvatar, useCharacterEmotion } from "../character";
 
 const LINE_MAX = 22;
@@ -29,7 +29,6 @@ const splitLabel = (label: string): [string] | [string, string] => {
     label.slice(LINE_MAX - 1, LINE_MAX * 2 - 2) + (label.length > LINE_MAX * 2 - 2 ? "…" : ""),
   ];
 };
-
 
 type OctopusNodeProps = {
   node: GraphNode;
@@ -206,7 +205,9 @@ export const OctopusNode = ({
   const tentacleCharacterId = useMemo(
     () =>
       node.characterId ??
-      resolveCharacterIdForTask(`${node.label} ${node.tentacleId} ${node.octopus?.expression ?? ""}`) ??
+      resolveCharacterIdForTask(
+        `${node.label} ${node.tentacleId} ${node.octopus?.expression ?? ""}`,
+      ) ??
       "mika",
     [node.characterId, node.label, node.tentacleId, node.octopus?.expression],
   );
@@ -274,15 +275,30 @@ export const OctopusNode = ({
 
       {isOctoboss && (
         <g className="canvas-squad-oracle-aura" aria-hidden="true">
-          <circle className="canvas-squad-oracle-aura__ring canvas-squad-oracle-aura__ring--outer" r={46} />
-          <circle className="canvas-squad-oracle-aura__ring canvas-squad-oracle-aura__ring--inner" r={34} />
+          <circle
+            className="canvas-squad-oracle-aura__ring canvas-squad-oracle-aura__ring--outer"
+            r={46}
+          />
+          <circle
+            className="canvas-squad-oracle-aura__ring canvas-squad-oracle-aura__ring--inner"
+            r={34}
+          />
           <path
             className="canvas-squad-oracle-aura__sigil"
             d="M0 -28 L6 -6 L28 0 L6 6 L0 28 L-6 6 L-28 0 L-6 -6 Z"
           />
-          <circle className="canvas-squad-oracle-aura__spark canvas-squad-oracle-aura__spark--top" r={2.2} />
-          <circle className="canvas-squad-oracle-aura__spark canvas-squad-oracle-aura__spark--left" r={1.8} />
-          <circle className="canvas-squad-oracle-aura__spark canvas-squad-oracle-aura__spark--right" r={1.8} />
+          <circle
+            className="canvas-squad-oracle-aura__spark canvas-squad-oracle-aura__spark--top"
+            r={2.2}
+          />
+          <circle
+            className="canvas-squad-oracle-aura__spark canvas-squad-oracle-aura__spark--left"
+            r={1.8}
+          />
+          <circle
+            className="canvas-squad-oracle-aura__spark canvas-squad-oracle-aura__spark--right"
+            r={1.8}
+          />
         </g>
       )}
 

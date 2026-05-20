@@ -85,9 +85,8 @@
 .deck-empty-oracle-avatar .character-avatar__image,
 .deck-empty-oracle-avatar .character-avatar__image-stack {
   border-color: color-mix(in srgb, var(--accent-primary) 78%, #ffd89d 22%);
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--accent-primary) 64%, #fff 36%),
-    0 0 28px color-mix(in srgb, var(--accent-primary) 52%, #ff9fd8 48%);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-primary) 64%, #fff 36%), 0 0 28px
+    color-mix(in srgb, var(--accent-primary) 52%, #ff9fd8 48%);
 }
 
 .deck-empty-actions {
