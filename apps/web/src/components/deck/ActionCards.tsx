@@ -32,7 +32,11 @@ export const ActionCards = ({
   isLaunchingAgent,
 }: ActionCardsProps) => (
   <div className={`deck-empty-actions${compact ? " deck-empty-actions--compact" : ""}`}>
-    <button type="button" className="deck-empty-card" onClick={onAddManually}>
+    <button
+      type="button"
+      className="deck-empty-card mm-hud-frame mm-sparkle-host"
+      onClick={onAddManually}
+    >
       <div className="deck-empty-card-icon">
         <CharacterAvatar characterId="mika" size={compact ? "md" : "lg"} />
       </div>
@@ -43,7 +47,12 @@ export const ActionCards = ({
         </span>
       </div>
     </button>
-    <div className="deck-empty-card">
+    <div className="deck-empty-card mm-hud-frame mm-sparkle-host mm-scanline">
+      <span aria-hidden="true" className="mm-hud-frame__label">
+        コマンド
+      </span>
+      <span aria-hidden="true" className="mm-hud-frame__corner-bl" />
+      <span aria-hidden="true" className="mm-hud-frame__corner-br" />
       <span className="deck-empty-card-icon deck-empty-card-icon--terminal">&gt;_</span>
       <div className="deck-empty-card-text">
         <span className="deck-empty-card-title">Open Command Gate</span>
@@ -100,7 +109,16 @@ export const ActionCards = ({
         </div>
       </div>
     </div>
-    <button type="button" className="deck-empty-card" onClick={onAddManually}>
+    <button
+      type="button"
+      className="deck-empty-card mm-hud-frame mm-hud-frame--warning mm-sparkle-host mm-sparkle-host--subtle"
+      onClick={onAddManually}
+    >
+      <span aria-hidden="true" className="mm-hud-frame__label">
+        クラフト
+      </span>
+      <span aria-hidden="true" className="mm-hud-frame__corner-bl" />
+      <span aria-hidden="true" className="mm-hud-frame__corner-br" />
       <span className="deck-empty-card-icon deck-empty-card-icon--terminal">+</span>
       <div className="deck-empty-card-text">
         <span className="deck-empty-card-title">Forge Tentacle Manually</span>

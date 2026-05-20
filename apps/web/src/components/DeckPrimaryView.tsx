@@ -462,7 +462,7 @@ export const DeckPrimaryView = ({
   if (tentacles.length === 0 && focus?.type !== "terminal") {
     return (
       <section
-        className="deck-view"
+        className="deck-view mm-scanline"
         data-mode="grid"
         data-empty-mode={emptyViewMode}
         aria-label="Deck"

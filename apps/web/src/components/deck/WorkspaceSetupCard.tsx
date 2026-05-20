@@ -31,9 +31,14 @@ export const WorkspaceSetupCard = ({
   isRunningStepId,
 }: WorkspaceSetupCardProps) => (
   <section
-    className={`workspace-setup-card${compact ? " workspace-setup-card--compact" : ""}`}
+    className={`workspace-setup-card mm-hud-frame mm-scanline${compact ? " workspace-setup-card--compact" : ""}`}
     aria-label="Workspace setup"
   >
+    <span aria-hidden="true" className="mm-hud-frame__label">
+      ブリッジ
+    </span>
+    <span aria-hidden="true" className="mm-hud-frame__corner-bl" />
+    <span aria-hidden="true" className="mm-hud-frame__corner-br" />
     <header className="workspace-setup-card-header">
       <div className="workspace-setup-card-glyph">
         <CharacterAvatar characterId="mika" size={compact ? "md" : "lg"} />

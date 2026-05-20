@@ -134,10 +134,15 @@ export const TentaclePod = ({
 
   return (
     <article
-      className={`deck-pod${isFocused ? " deck-pod--focused" : ""}`}
+      className={`deck-pod mm-hud-frame mm-sparkle-host${isFocused ? " deck-pod--focused" : ""}`}
       data-status={tentacle.status}
       style={{ borderColor: "var(--accent-primary)" }}
     >
+      <span aria-hidden="true" className="mm-hud-frame__label">
+        ポッド
+      </span>
+      <span aria-hidden="true" className="mm-hud-frame__corner-bl" />
+      <span aria-hidden="true" className="mm-hud-frame__corner-br" />
       <header className="deck-pod-header">
         {isFocused && (
           <button type="button" className="deck-pod-btn deck-pod-btn--secondary" onClick={onClose}>

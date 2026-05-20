@@ -127,6 +127,8 @@
   gap: 0.44rem;
   padding: 0.18rem 0.44rem;
   min-width: 0;
+  position: relative;
+  overflow: hidden;
 }
 
 .console-shell .console-status-strip[data-alert-level="warning"] {
@@ -143,6 +145,8 @@
   align-items: center;
   gap: 0.36rem;
   min-width: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .console-status-world {
@@ -187,12 +191,24 @@
   opacity: 0.85;
 }
 
+.console-status-threat {
+  color: color-mix(in srgb, #e6f2ff 74%, #9dc2ff 26%);
+  font-family: "JetBrains Mono", "IBM Plex Mono", monospace;
+  font-size: 0.54rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0.72;
+}
+
 .console-status-charts {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
   min-width: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .console-status-sparkline {
@@ -267,6 +283,8 @@
   justify-self: end;
   min-width: 280px;
   max-width: 400px;
+  position: relative;
+  z-index: 1;
 }
 
 .console-status-claude-usage-refresh {
@@ -381,12 +399,53 @@
   }
 }
 
+@keyframes console-status-speedlines-scan {
+  from {
+    transform: translateX(-42%);
+  }
+
+  to {
+    transform: translateX(42%);
+  }
+}
+
+.console-status-speedlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -64deg,
+    transparent 0 18px,
+    color-mix(in srgb, var(--accent-primary) 18%, transparent) 18px 22px,
+    transparent 22px 42px
+  );
+  opacity: 0.18;
+  pointer-events: none;
+  animation: console-status-speedlines-scan 2.8s linear infinite;
+}
+
+.console-shell .console-status-strip[data-alert-level="warning"] .console-status-speedlines {
+  opacity: 0.24;
+  animation-duration: 2.1s;
+}
+
+.console-shell .console-status-strip[data-alert-level="critical"] .console-status-speedlines {
+  opacity: 0.34;
+  animation-duration: 1.45s;
+}
+
 .console-status-usage-row-value {
   color: color-mix(in srgb, var(--accent-primary) 62%, #f0dcb2 38%);
   font-size: 0.68rem;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.05em;
   white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .console-status-speedlines,
+  .console-status-claude-usage-refresh[data-refreshing="true"] {
+    animation: none;
+  }
 }
 
 .console-status-usage-tooltip {

@@ -164,6 +164,16 @@ export const RuntimeStatusStrip = ({
         : statusAlertLevel === "scanning"
           ? "LINK SCAN"
           : "SQUAD STABLE";
+  const threatCallout =
+    claudeUsageState.loading || statusAlertLevel === "scanning"
+      ? "THREAT: LOW"
+      : claudeUsage?.status !== "ok"
+        ? "THREAT: UNKNOWN"
+        : statusAlertLevel === "critical"
+          ? "THREAT: HIGH"
+          : statusAlertLevel === "warning"
+            ? "THREAT: GUARDED"
+            : "THREAT: LOW";
   const [showRefreshSpin, setShowRefreshSpin] = useState(false);
   const refreshStartedAtRef = useRef<number | null>(null);
   const refreshHideTimerRef = useRef<number | null>(null);
@@ -207,11 +217,13 @@ export const RuntimeStatusStrip = ({
       data-alert-level={statusAlertLevel}
       aria-label="Runtime status strip"
     >
+      <span className="console-status-speedlines" aria-hidden="true" />
       <div className="console-status-main">
         <CharacterAvatar characterId="mika" size="sm" className="console-status-oracle-avatar" />
         <div className="console-status-world">
           <span className="console-status-brand">OCTOGENT</span>
           <span className="console-status-callout">{missionCallout}</span>
+          <span className="console-status-threat">{threatCallout}</span>
         </div>
       </div>
       <div className="console-status-charts">
