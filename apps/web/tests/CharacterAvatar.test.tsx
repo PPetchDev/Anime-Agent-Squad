@@ -60,7 +60,7 @@ describe("CharacterAvatar — emotion + cross-fade", () => {
     expect(container.querySelector(".character-avatar__image-stack")).toBeNull();
     const img = container.querySelector<HTMLImageElement>(".character-avatar__image");
     expect(img).not.toBeNull();
-    expect(img?.getAttribute("src")).toBe("/characters/mika.svg");
+    expect(img?.getAttribute("src")).toBe("/characters/mika/01-idle.jpg");
   });
 
   it("renders an image-stack with active layer for a known emotion", () => {

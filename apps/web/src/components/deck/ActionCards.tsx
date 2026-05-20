@@ -1,7 +1,7 @@
 import { Check } from "lucide-react";
 
 import type { TerminalAgentProvider } from "../../app/types";
-import { OctopusGlyph } from "../EmptyOctopus";
+import { CharacterAvatar } from "../character";
 
 export const AGENT_PROVIDER_OPTIONS: { value: TerminalAgentProvider; label: string }[] = [
   { value: "claude-code", label: "Claude Code" },
@@ -34,13 +34,7 @@ export const ActionCards = ({
   <div className={`deck-empty-actions${compact ? " deck-empty-actions--compact" : ""}`}>
     <button type="button" className="deck-empty-card" onClick={onAddManually}>
       <div className="deck-empty-card-icon">
-        <OctopusGlyph
-          color="#d4a017"
-          animation="idle"
-          expression="normal"
-          accessory="none"
-          scale={compact ? 3 : 4}
-        />
+        <CharacterAvatar characterId="mika" size={compact ? "md" : "lg"} />
       </div>
       <div className="deck-empty-card-text">
         <span className="deck-empty-card-title">Create First Tentacle</span>

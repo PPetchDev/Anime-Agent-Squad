@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { GITHUB_SPARKLINE_HEIGHT, GITHUB_SPARKLINE_WIDTH } from "../app/constants";
 import type { UsageChartData } from "../app/hooks/useUsageHeatmapPolling";
 import type { ClaudeUsageSnapshot } from "../app/types";
-import { OctopusGlyph } from "./EmptyOctopus";
+import { CharacterAvatar } from "./character";
 
 type RuntimeStatusStripProps = {
   sparklinePoints: string;
@@ -189,12 +189,7 @@ export const RuntimeStatusStrip = ({
   return (
     <section className="console-status-strip" aria-label="Runtime status strip">
       <div className="console-status-main">
-        <OctopusGlyph
-          className="console-status-octopus-icon"
-          animation="sway"
-          expression="normal"
-          scale={2}
-        />
+        <CharacterAvatar characterId="mika" size="sm" className="console-status-oracle-avatar" />
         <span className="console-status-brand">OCTOGENT</span>
       </div>
       <div className="console-status-charts">

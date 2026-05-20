@@ -1,5 +1,5 @@
 import type { WorkspaceSetupSnapshot, WorkspaceSetupStepId } from "@octogent/core";
-import { OctopusGlyph } from "../EmptyOctopus";
+import { CharacterAvatar } from "../character";
 
 type WorkspaceSetupCardProps = {
   compact?: boolean;
@@ -36,13 +36,7 @@ export const WorkspaceSetupCard = ({
   >
     <header className="workspace-setup-card-header">
       <div className="workspace-setup-card-glyph">
-        <OctopusGlyph
-          color="#d4a017"
-          animation={compact ? "idle" : "walk"}
-          expression="happy"
-          accessory="none"
-          scale={compact ? 4 : 7}
-        />
+        <CharacterAvatar characterId="mika" size={compact ? "md" : "lg"} />
       </div>
       <div className="workspace-setup-card-copy">
         <h2 className="workspace-setup-card-title">Workspace Setup</h2>

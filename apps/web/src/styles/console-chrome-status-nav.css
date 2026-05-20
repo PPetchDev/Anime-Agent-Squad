@@ -141,6 +141,15 @@
   image-rendering: pixelated;
 }
 
+.console-status-oracle-avatar {
+  flex-shrink: 0;
+}
+
+.console-status-oracle-avatar .character-avatar__image,
+.console-status-oracle-avatar .character-avatar__image-stack {
+  width: 34px;
+  height: 34px;
+}
 .console-status-brand {
   color: var(--accent-primary);
   font-size: 1.05rem;

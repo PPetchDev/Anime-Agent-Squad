@@ -5,10 +5,11 @@ import { RuntimeStatusStrip } from "../src/components/RuntimeStatusStrip";
 
 describe("RuntimeStatusStrip", () => {
   it("shows loading placeholders before claude usage loads", () => {
-    render(<RuntimeStatusStrip sparklinePoints="" usageData={null} claudeUsage={null} />);
+    const { container } = render(<RuntimeStatusStrip sparklinePoints="" usageData={null} claudeUsage={null} />);
 
     const usage = screen.getByLabelText("Claude usage limits");
     expect(within(usage).getAllByText("···")).toHaveLength(2);
+    expect(container.querySelector('.console-status-main img[src^="/characters/"]')).not.toBeNull();
   });
 
   it("uses a 5h label for oauth-backed usage", () => {

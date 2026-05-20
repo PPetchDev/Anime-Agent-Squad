@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
-import { type OctopusExpression, OctopusGlyph } from "../EmptyOctopus";
+import { CharacterAvatar } from "../character";
+import { type OctopusExpression } from "../EmptyOctopus";
 
 type PrimaryViewStateTone = "empty" | "error" | "loading";
 
@@ -68,12 +69,26 @@ export const PrimaryViewState = ({
       <span aria-hidden="true" className="mm-hud-frame__corner-bl" />
       <span aria-hidden="true" className="mm-hud-frame__corner-br" />
       <div className="primary-view-state__inner">
-        <div className="primary-view-state__glyph" aria-hidden="true">
-          <OctopusGlyph
-            animation={tone === "loading" ? "float" : "sway"}
-            expression={expression ?? defaults.expression}
-            scale={6}
-            {...(testId ? { testId: `${testId}-glyph` } : {})}
+        <div
+          className="primary-view-state__glyph"
+          aria-hidden="true"
+          {...(testId ? { "data-testid": `${testId}-glyph` } : {})}
+        >
+          <CharacterAvatar
+            characterId="mika"
+            size="lg"
+            className="primary-view-state__glyph-avatar"
+            emotion={
+              tone === "loading"
+                ? "thinking"
+                : (expression ?? defaults.expression) === "surprised"
+                  ? "surprised"
+                  : (expression ?? defaults.expression) === "happy"
+                    ? "happy"
+                    : (expression ?? defaults.expression) === "angry"
+                      ? "angry"
+                      : "sleepy"
+            }
           />
         </div>
         <div className="primary-view-state__copy">
