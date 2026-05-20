@@ -290,6 +290,13 @@ export const CanvasPrimaryView = ({
     edges,
     centerX: 0,
     centerY: 0,
+    params: {
+      ...DEFAULT_FORCE_PARAMS,
+      linkDistance: 130,
+      collisionPadding: 60,
+      repelStrength: -520,
+      repelDistanceMax: 760,
+    },
   });
 
   const nodesById = useMemo(() => {

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { DeckTentacleSummary } from "@octogent/core";
+import { resolveCharacterIdForTask } from "@octogent/core";
 import { buildConversationsUrl, buildDeckTentaclesUrl } from "../../runtime/runtimeEndpoints";
 import type { GraphEdge, GraphNode } from "../canvas/types";
 import { normalizeConversationSessionSummary } from "../conversationNormalizers";
@@ -274,7 +275,7 @@ export const useCanvasGraphData = ({
     const label = deck?.displayName ?? firstActiveTerminal?.tentacleName ?? tentacleId;
 
     const angle = (2 * Math.PI * i) / Math.max(totalTentacles, 1);
-    const spread = 300;
+    const spread = 380;
 
     const node: GraphNode = {
       id: tentacleNodeId,
@@ -288,6 +289,7 @@ export const useCanvasGraphData = ({
       tentacleId,
       label,
       color,
+      characterId: resolveCharacterIdForTask(`${label} ${deck?.description ?? ""}`),
       ...(firstActiveTerminal ? { workspaceMode: firstActiveTerminal.workspaceMode } : {}),
       ...(deck?.octopus ? { octopus: deck.octopus } : {}),
     };
@@ -429,6 +431,7 @@ export const useCanvasGraphData = ({
       ...(session.firstUserTurnPreview !== null
         ? { firstPromptPreview: session.firstUserTurnPreview }
         : {}),
+      ...(parentNode?.characterId ? { characterId: parentNode.characterId } : {}),
     };
     nodes.push(sessionNode);
     currentNodesById.set(sessionNodeId, sessionNode);
