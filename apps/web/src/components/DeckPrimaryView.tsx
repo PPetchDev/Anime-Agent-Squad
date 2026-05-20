@@ -7,6 +7,7 @@ import type {
   WorkspaceSetupStepId,
 } from "@octogent/core";
 import { resolveCharacterIdForTask } from "@octogent/core";
+import { deriveCharacterSceneSignature } from "../app/character/sceneSignature";
 import {
   deriveDominantTentacleStatus,
   mapTentacleStatusToEmotionContext,
@@ -187,6 +188,10 @@ export const DeckPrimaryView = ({
   const deckEmptyCharacterId = useMemo(
     () => resolveCharacterIdForTask("orchestrator planning squad oracle mika"),
     [],
+  );
+  const deckSceneSignature = useMemo(
+    () => deriveCharacterSceneSignature(deckEmptyCharacterId),
+    [deckEmptyCharacterId],
   );
 
   // Fetch vault file content when focus changes
@@ -479,6 +484,7 @@ export const DeckPrimaryView = ({
         data-mode="grid"
         data-empty-mode={emptyViewMode}
         data-scene={sceneChoreography}
+        data-signature={deckSceneSignature}
         aria-label="Deck"
       >
         <div className="deck-empty-state">
@@ -536,6 +542,7 @@ export const DeckPrimaryView = ({
       data-mode={mode}
       data-has-pods={tentacles.length > 0}
       data-scene={sceneChoreography}
+      data-signature={deckSceneSignature}
       aria-label="Deck"
     >
       <div className="deck-pods-container">

@@ -80,6 +80,9 @@ describe("TentaclePod skill editor", () => {
     expect(
       container.querySelector('.deck-pod-octopus .character-avatar[data-emotion="thinking"]'),
     ).not.toBeNull();
+    const pod = container.querySelector<HTMLElement>(".deck-pod");
+    expect(["starlight", "blade", "ribbon", "gear", "neutral"]).toContain(pod?.dataset.signature);
+    expect(pod?.dataset.beat).toBe("charge");
     expect(container.querySelector('.deck-pod-callout[data-status="active"]')).not.toBeNull();
     expect(screen.getByText("OVERDRIVE")).toBeInTheDocument();
   });

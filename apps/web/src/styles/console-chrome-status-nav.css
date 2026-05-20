@@ -140,6 +140,20 @@
     color-mix(in srgb, #ff7575 24%, transparent);
 }
 
+.console-shell .console-status-strip[data-signature="starlight"] {
+  border-bottom-color: color-mix(in srgb, var(--accent-primary) 58%, #2d1f42 42%);
+}
+
+.console-shell .console-status-strip[data-beat="charge"] .console-status-callout,
+.console-shell .console-status-strip[data-beat="charge"] .console-status-threat {
+  animation: mm-pulse-glow 1.2s ease-in-out infinite;
+}
+
+.console-shell .console-status-strip[data-beat="alert"] .console-status-callout,
+.console-shell .console-status-strip[data-beat="alert"] .console-status-threat {
+  animation: mm-pulse-warning 920ms ease-in-out infinite;
+}
+
 .console-status-main {
   display: flex;
   align-items: center;
@@ -423,6 +437,18 @@
   animation: console-status-speedlines-scan 2.8s linear infinite;
 }
 
+.console-shell .console-status-strip[data-beat="calm"] .console-status-speedlines {
+  opacity: 0.1;
+}
+
+.console-shell .console-status-strip[data-beat="charge"] .console-status-speedlines {
+  opacity: 0.2;
+}
+
+.console-shell .console-status-strip[data-beat="alert"] .console-status-speedlines {
+  opacity: 0.28;
+}
+
 .console-shell .console-status-strip[data-alert-level="warning"] .console-status-speedlines {
   opacity: 0.24;
   animation-duration: 2.1s;
@@ -443,7 +469,11 @@
 
 @media (prefers-reduced-motion: reduce) {
   .console-status-speedlines,
-  .console-status-claude-usage-refresh[data-refreshing="true"] {
+  .console-status-claude-usage-refresh[data-refreshing="true"],
+  .console-shell .console-status-strip[data-beat="charge"] .console-status-callout,
+  .console-shell .console-status-strip[data-beat="charge"] .console-status-threat,
+  .console-shell .console-status-strip[data-beat="alert"] .console-status-callout,
+  .console-shell .console-status-strip[data-beat="alert"] .console-status-threat {
     animation: none;
   }
 }

@@ -78,6 +78,8 @@ describe("RuntimeStatusStrip", () => {
 
     const strip = screen.getByLabelText("Runtime status strip");
     expect(strip).toHaveAttribute("data-alert-level", "warning");
+    expect(strip).toHaveAttribute("data-signature", "starlight");
+    expect(strip).toHaveAttribute("data-beat", "charge");
     expect(screen.getByText("SYNC WATCH")).toBeInTheDocument();
     expect(screen.getByText("THREAT: GUARDED")).toBeInTheDocument();
   });

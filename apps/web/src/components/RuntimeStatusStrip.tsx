@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { GITHUB_SPARKLINE_HEIGHT, GITHUB_SPARKLINE_WIDTH } from "../app/constants";
+import {
+  deriveCharacterSceneSignature,
+  deriveRuntimeSceneBeat,
+} from "../app/character/sceneSignature";
 import type { UsageChartData } from "../app/hooks/useUsageHeatmapPolling";
 import type { ClaudeUsageSnapshot } from "../app/types";
 import { CharacterAvatar } from "./character";
@@ -174,6 +178,9 @@ export const RuntimeStatusStrip = ({
           : statusAlertLevel === "warning"
             ? "THREAT: GUARDED"
             : "THREAT: LOW";
+  const oracleCharacterId = "mika";
+  const statusSignature = deriveCharacterSceneSignature(oracleCharacterId);
+  const statusBeat = deriveRuntimeSceneBeat(statusAlertLevel);
   const [showRefreshSpin, setShowRefreshSpin] = useState(false);
   const refreshStartedAtRef = useRef<number | null>(null);
   const refreshHideTimerRef = useRef<number | null>(null);
@@ -215,11 +222,17 @@ export const RuntimeStatusStrip = ({
     <section
       className="console-status-strip"
       data-alert-level={statusAlertLevel}
+      data-signature={statusSignature}
+      data-beat={statusBeat}
       aria-label="Runtime status strip"
     >
       <span className="console-status-speedlines" aria-hidden="true" />
       <div className="console-status-main">
-        <CharacterAvatar characterId="mika" size="sm" className="console-status-oracle-avatar" />
+        <CharacterAvatar
+          characterId={oracleCharacterId}
+          size="sm"
+          className="console-status-oracle-avatar"
+        />
         <div className="console-status-world">
           <span className="console-status-brand">OCTOGENT</span>
           <span className="console-status-callout">{missionCallout}</span>

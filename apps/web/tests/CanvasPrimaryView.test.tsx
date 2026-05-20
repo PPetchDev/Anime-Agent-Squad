@@ -2,6 +2,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { CanvasPrimaryView } from "../src/components/CanvasPrimaryView";
+import { DeckPrimaryView } from "../src/components/DeckPrimaryView";
 
 type MockCanvasNode = {
   id: string;
@@ -407,6 +408,58 @@ describe("CanvasPrimaryView", () => {
 
     await waitFor(() => {
       expect(onTentacleAction).toHaveBeenCalledWith("tentacle-a", "tentacle-reorganize-todos");
+    });
+  });
+});
+
+describe("DeckPrimaryView choreography metadata", () => {
+  it("exposes signature + scene attributes on the empty deck root", async () => {
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.includes("/api/deck/tentacles")) {
+        return new Response(JSON.stringify([]), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+      if (url.includes("/api/deck/skills")) {
+        return new Response(JSON.stringify([]), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+      if (url.includes("/api/workspace/setup")) {
+        return new Response(
+          JSON.stringify({
+            shouldShowSetupCard: false,
+            steps: [],
+          }),
+          {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+      }
+      return new Response("not-found", { status: 404 });
+    });
+
+    vi.stubGlobal("fetch", fetchMock);
+
+    render(
+      <DeckPrimaryView
+        isClaudeDangerouslySkipPermissionsEnabled={false}
+        workspaceSetup={null}
+        isWorkspaceSetupLoading={false}
+        workspaceSetupError={null}
+        onRefreshWorkspaceSetup={async () => null}
+        onRunWorkspaceSetupStep={async () => null}
+      />,
+    );
+
+    await waitFor(() => {
+      const deck = screen.getByLabelText("Deck");
+      expect(deck).toHaveAttribute("data-signature", "blade");
+      expect(deck).toHaveAttribute("data-scene", "orbit-idle");
     });
   });
 });

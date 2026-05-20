@@ -14,6 +14,18 @@
   animation: mm-fade-in 240ms ease-out;
 }
 
+.deck-view[data-signature="starlight"] .deck-empty-oracle-avatar .character-avatar__image,
+.deck-view[data-signature="starlight"] .deck-empty-oracle-avatar .character-avatar__image-stack {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-primary) 64%, #fff 36%), 0 0 28px
+    color-mix(in srgb, var(--accent-primary) 52%, #ff9fd8 48%);
+}
+
+.deck-view[data-signature="blade"] .deck-empty-oracle-avatar .character-avatar__image,
+.deck-view[data-signature="blade"] .deck-empty-oracle-avatar .character-avatar__image-stack {
+  box-shadow: 0 0 0 1px color-mix(in srgb, #8fc4ff 64%, #fff 36%), 0 0 26px
+    color-mix(in srgb, #5aa4ff 50%, transparent 50%);
+}
+
 .deck-view[data-scene="summon-sequence"] {
   animation: mm-fade-in 180ms ease-out;
 }
@@ -76,7 +88,11 @@
   .deck-view[data-scene="summon-sequence"],
   .deck-view[data-scene="summon-sequence"] .deck-empty-left,
   .deck-view[data-scene="focus-lock"] .deck-pods-container,
-  .deck-view[data-scene="focus-lock"] .deck-detail-main {
+  .deck-view[data-scene="focus-lock"] .deck-detail-main,
+  .deck-pod[data-signature="starlight"] .deck-pod-octopus .character-avatar,
+  .deck-pod[data-signature="ribbon"] .deck-pod-octopus .character-avatar,
+  .deck-pod[data-signature="blade"] .deck-pod-octopus .character-avatar,
+  .deck-pod[data-signature="gear"] .deck-pod-octopus .character-avatar {
     animation: none;
   }
 }
@@ -805,6 +821,25 @@
 
 .deck-pod:hover {
   filter: brightness(1.15);
+}
+
+.deck-pod[data-beat="charge"] {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-primary) 24%, transparent), 0 0 20px
+    color-mix(in srgb, var(--accent-primary) 12%, transparent);
+}
+
+.deck-pod[data-beat="alert"] {
+  box-shadow: inset 0 0 0 1px rgba(255, 126, 126, 0.34), 0 0 22px rgba(255, 120, 120, 0.18);
+}
+
+.deck-pod[data-signature="starlight"] .deck-pod-octopus .character-avatar,
+.deck-pod[data-signature="ribbon"] .deck-pod-octopus .character-avatar {
+  animation-duration: 3.1s;
+}
+
+.deck-pod[data-signature="blade"] .deck-pod-octopus .character-avatar,
+.deck-pod[data-signature="gear"] .deck-pod-octopus .character-avatar {
+  animation-duration: 2.5s;
 }
 
 /* ─── Focused pod modifier ───────────────────────────────────────────────── */

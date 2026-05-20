@@ -2,6 +2,10 @@ import { useEffect, useRef, useState } from "react";
 
 import type { DeckAvailableSkill, DeckTentacleSummary } from "@octogent/core";
 import { resolveCharacterIdForTask } from "@octogent/core";
+import {
+  deriveCharacterSceneSignature,
+  deriveTentacleSceneBeat,
+} from "../../app/character/sceneSignature";
 import { mapTentacleStatusToEmotionContext } from "../../app/character/tentacleEmotion";
 import { CharacterAvatar, useCharacterEmotion } from "../character";
 import type { OctopusVisuals } from "./octopusVisuals";
@@ -107,6 +111,8 @@ export const TentaclePod = ({
     characterId: podCharacterId,
     ...mapTentacleStatusToEmotionContext(tentacle.status),
   });
+  const podSignature = deriveCharacterSceneSignature(podCharacterId);
+  const podBeat = deriveTentacleSceneBeat(tentacle.status);
 
   useEffect(() => {
     setDraftSkills(tentacle.suggestedSkills);
@@ -136,6 +142,8 @@ export const TentaclePod = ({
     <article
       className={`deck-pod mm-hud-frame mm-sparkle-host${isFocused ? " deck-pod--focused" : ""}`}
       data-status={tentacle.status}
+      data-signature={podSignature}
+      data-beat={podBeat}
       style={{ borderColor: "var(--accent-primary)" }}
     >
       <span aria-hidden="true" className="mm-hud-frame__label">
