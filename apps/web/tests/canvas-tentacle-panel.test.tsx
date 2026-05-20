@@ -167,7 +167,7 @@ describe("CanvasTentaclePanel actions", () => {
   });
 
   it("shows suggested skills in the tentacle detail panel", async () => {
-    render(
+    const { container } = render(
       <CanvasTentaclePanel
         node={{
           id: "docs-knowledge",
@@ -191,5 +191,37 @@ describe("CanvasTentaclePanel actions", () => {
     expect(screen.getByText("Suggested Skills")).toBeInTheDocument();
     expect(screen.getByText("docs-writer")).toBeInTheDocument();
     expect(screen.getByText("release-helper")).toBeInTheDocument();
+    expect(container.querySelector('.detail-glyph--character img[src^="/characters/"]')).not.toBeNull();
+    expect(container.querySelector('.detail-glyph--character .character-avatar[data-emotion="thinking"]')).not.toBeNull();
+  });
+
+  it("maps blocked status to a blocked character emotion", () => {
+    const { container } = render(
+      <CanvasTentaclePanel
+        node={{
+          id: "docs-blocked",
+          type: "tentacle",
+          x: 0,
+          y: 0,
+          vx: 0,
+          vy: 0,
+          pinned: false,
+          radius: 48,
+          tentacleId: "docs-blocked",
+          label: "Docs Blocked",
+          color: "#ff6b2b",
+        }}
+        tentacle={{
+          ...tentacle,
+          tentacleId: "docs-blocked",
+          displayName: "Docs Blocked",
+          status: "blocked",
+        }}
+        sessions={[]}
+        onClose={() => {}}
+      />,
+    );
+
+    expect(container.querySelector('.detail-glyph--character .character-avatar[data-emotion="angry"]')).not.toBeNull();
   });
 });

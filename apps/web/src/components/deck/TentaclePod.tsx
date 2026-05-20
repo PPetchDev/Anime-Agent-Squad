@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
 import type { DeckAvailableSkill, DeckTentacleSummary } from "@octogent/core";
-import { OctopusGlyph } from "../EmptyOctopus";
+import { resolveCharacterIdForTask } from "@octogent/core";
+import { mapTentacleStatusToEmotionContext } from "../../app/character/tentacleEmotion";
+import { CharacterAvatar, useCharacterEmotion } from "../character";
 import type { OctopusVisuals } from "./octopusVisuals";
 
 // ─── Status styling ──────────────────────────────────────────────────────────
@@ -98,6 +100,13 @@ export const TentaclePod = ({
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [isEditingSkills, setIsEditingSkills] = useState(false);
   const [draftSkills, setDraftSkills] = useState<string[]>(tentacle.suggestedSkills);
+  const podCharacterId = resolveCharacterIdForTask(
+    `${tentacle.displayName} ${tentacle.tentacleId} ${tentacle.description ?? ""}`,
+  );
+  const podEmotion = useCharacterEmotion({
+    characterId: podCharacterId,
+    ...mapTentacleStatusToEmotionContext(tentacle.status),
+  });
 
   useEffect(() => {
     setDraftSkills(tentacle.suggestedSkills);
@@ -197,14 +206,7 @@ export const TentaclePod = ({
         <div className="deck-pod-identity">
           <div className="deck-pod-octopus-col">
             <div className="deck-pod-octopus">
-              <OctopusGlyph
-                color={visuals.color}
-                animation={visuals.animation}
-                expression={visuals.expression}
-                accessory={visuals.accessory}
-                {...(visuals.hairColor ? { hairColor: visuals.hairColor } : {})}
-                scale={5}
-              />
+              <CharacterAvatar characterId={podCharacterId} size="lg" emotion={podEmotion} />
             </div>
           </div>
           <div className="deck-pod-identity-text">

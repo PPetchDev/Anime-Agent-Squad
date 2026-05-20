@@ -3,9 +3,11 @@ import { type Ref, useCallback, useMemo, useState } from "react";
 
 import {
   BUILT_IN_CHARACTER_TEMPLATES,
+  resolveCharacterIdForTask,
   type DeckTentacleSummary,
   type TentacleWorkspaceMode,
 } from "@octogent/core";
+import { mapTentacleStatusToEmotionContext } from "../../app/character/tentacleEmotion";
 import type { GraphNode } from "../../app/canvas/types";
 import type { CreateTerminalCharacterOptions } from "../../app/hooks/useTerminalMutations";
 import type { ConversationSessionSummary } from "../../app/types";
@@ -16,29 +18,7 @@ import {
   buildDeckTodoSolveUrl,
   buildDeckTodoToggleUrl,
 } from "../../runtime/runtimeEndpoints";
-import {
-  type OctopusAccessory,
-  type OctopusAnimation,
-  type OctopusExpression,
-  OctopusGlyph,
-} from "../EmptyOctopus";
-import { CharacterPicker } from "../character";
-
-const OCTOPUS_COLORS = [
-  "#ff6b2b",
-  "#ff2d6b",
-  "#00ffaa",
-  "#bf5fff",
-  "#00c8ff",
-  "#ffee00",
-  "#39ff14",
-  "#ff4df0",
-  "#00fff7",
-  "#ff9500",
-];
-const ANIMATIONS: OctopusAnimation[] = ["heroic", "sway", "walk", "jog", "bounce", "float", "swim-up"];
-const EXPRESSIONS: OctopusExpression[] = ["normal", "happy", "angry", "surprised"];
-const ACCESSORIES: OctopusAccessory[] = ["none", "none", "long", "mohawk", "side-sweep", "curly"];
+import { CharacterAvatar, CharacterPicker, useCharacterEmotion } from "../character";
 
 function hashStr(str: string): number {
   let h = 0;
@@ -46,34 +26,6 @@ function hashStr(str: string): number {
     h = ((h << 5) - h + str.charCodeAt(i)) | 0;
   }
   return Math.abs(h);
-}
-
-function seededRng(seed: number): () => number {
-  let s = seed;
-  return () => {
-    s = (s * 16807 + 0) % 2147483647;
-    return (s - 1) / 2147483646;
-  };
-}
-
-function deriveVisuals(tentacle: DeckTentacleSummary) {
-  const rng = seededRng(hashStr(tentacle.tentacleId));
-  const stored = tentacle.octopus;
-  return {
-    color:
-      tentacle.color ??
-      (OCTOPUS_COLORS[hashStr(tentacle.tentacleId) % OCTOPUS_COLORS.length] as string),
-    animation:
-      (stored?.animation as OctopusAnimation | null) ??
-      (ANIMATIONS[Math.floor(rng() * ANIMATIONS.length)] as OctopusAnimation),
-    expression:
-      (stored?.expression as OctopusExpression | null) ??
-      (EXPRESSIONS[Math.floor(rng() * EXPRESSIONS.length)] as OctopusExpression),
-    accessory:
-      (stored?.accessory as OctopusAccessory | null) ??
-      (ACCESSORIES[Math.floor(rng() * ACCESSORIES.length)] as OctopusAccessory),
-    hairColor: stored?.hairColor ?? undefined,
-  };
 }
 
 type CanvasTentaclePanelProps = {
@@ -130,7 +82,6 @@ export const CanvasTentaclePanel = ({
   onNavigateToConversation,
   onRefreshTentacleData,
 }: CanvasTentaclePanelProps) => {
-  const visuals = useMemo(() => (tentacle ? deriveVisuals(tentacle) : null), [tentacle]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editText, setEditText] = useState("");
   const [addingTodo, setAddingTodo] = useState(false);
@@ -141,6 +92,16 @@ export const CanvasTentaclePanel = ({
     return BUILT_IN_CHARACTER_TEMPLATES[index]?.characterId ?? "mika";
   }, [node.tentacleId]);
   const [selectedCharacterId, setSelectedCharacterId] = useState(defaultCharacterId);
+  const panelCharacterId = useMemo(() => {
+    if (node.characterId) {
+      return node.characterId;
+    }
+    return resolveCharacterIdForTask(`${node.label} ${node.tentacleId} ${tentacle?.description ?? ""}`);
+  }, [node.characterId, node.label, node.tentacleId, tentacle?.description]);
+  const panelEmotion = useCharacterEmotion({
+    characterId: panelCharacterId,
+    ...mapTentacleStatusToEmotionContext(tentacle?.status ?? "idle"),
+  });
   const refreshTentacleData = useCallback(async () => {
     await onRefreshTentacleData?.();
   }, [onRefreshTentacleData]);
@@ -277,16 +238,9 @@ export const CanvasTentaclePanel = ({
       <div className="detail-content">
         {/* Identity: glyph + info side by side */}
         <div className="detail-identity">
-          {visuals && (
-            <div className="detail-glyph">
-              <OctopusGlyph
-                color={visuals.color}
-                animation={visuals.animation}
-                expression={visuals.expression}
-                accessory={visuals.accessory}
-                {...(visuals.hairColor ? { hairColor: visuals.hairColor } : {})}
-                scale={6}
-              />
+          {panelCharacterId && (
+            <div className="detail-glyph detail-glyph--character">
+              <CharacterAvatar characterId={panelCharacterId} size="lg" emotion={panelEmotion} />
             </div>
           )}
           <div className="detail-identity-info">

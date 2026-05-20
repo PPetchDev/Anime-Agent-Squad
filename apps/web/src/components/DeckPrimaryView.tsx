@@ -1,13 +1,17 @@
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import type {
-  DeckAvailableSkill,
-  DeckTentacleSummary,
+import {
+  type DeckAvailableSkill,
+  type DeckTentacleSummary,
   WorkspaceSetupSnapshot,
   WorkspaceSetupStepId,
 } from "@octogent/core";
+import { resolveCharacterIdForTask } from "@octogent/core";
+import { deriveDominantTentacleStatus, mapTentacleStatusToEmotionContext } from "../app/character/tentacleEmotion";
+import { CharacterAvatar, useCharacterEmotion } from "./character";
 import { useClickOutside } from "../app/hooks/useClickOutside";
 import type { TerminalAgentProvider } from "../app/types";
+
 import {
   buildDeckSkillsUrl,
   buildDeckTentacleSkillsUrl,
@@ -17,7 +21,6 @@ import {
   buildDeckVaultFileUrl,
   buildTerminalsUrl,
 } from "../runtime/runtimeEndpoints";
-import { OctopusGlyph } from "./EmptyOctopus";
 import { Terminal } from "./Terminal";
 import { ActionCards } from "./deck/ActionCards";
 import { AddTentacleForm } from "./deck/AddTentacleForm";
@@ -50,6 +53,22 @@ type FocusState =
   | { type: "terminal"; agentId: string; terminalLabel: string };
 
 type EmptyViewMode = "idle" | "adding";
+
+type DeckEmptyOracleAvatarProps = {
+  characterId: string;
+  tentacles: DeckTentacleSummary[];
+};
+
+const DeckEmptyOracleAvatar = ({ characterId, tentacles }: DeckEmptyOracleAvatarProps) => {
+  const topStatus = useMemo(() => deriveDominantTentacleStatus(tentacles), [tentacles]);
+
+  const emotion = useCharacterEmotion({
+    characterId,
+    ...mapTentacleStatusToEmotionContext(topStatus),
+  });
+
+  return <CharacterAvatar characterId={characterId} size="lg" className="deck-empty-oracle-avatar" emotion={emotion} />;
+};
 
 type DeckPrimaryViewProps = {
   isClaudeDangerouslySkipPermissionsEnabled: boolean;
@@ -151,6 +170,10 @@ export const DeckPrimaryView = ({
     }
     return map;
   }, [tentacles]);
+  const deckEmptyCharacterId = useMemo(
+    () => resolveCharacterIdForTask("orchestrator planning squad oracle mika"),
+    [],
+  );
 
   // Fetch vault file content when focus changes
   useEffect(() => {
@@ -437,13 +460,7 @@ export const DeckPrimaryView = ({
         <div className="deck-empty-state">
           <div className="deck-empty-left">
             <div className="deck-empty-octopus">
-              <OctopusGlyph
-                color="#d4a017"
-                animation="walk"
-                expression="happy"
-                accessory="none"
-                scale={20}
-              />
+              <DeckEmptyOracleAvatar characterId={deckEmptyCharacterId} tentacles={tentacles} />
             </div>
             {shouldShowWorkspaceSetup ? (
               <WorkspaceSetupCard

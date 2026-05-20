@@ -170,7 +170,9 @@ describe("App workspace setup", () => {
 
     render(<App />);
 
-    expect(await screen.findByLabelText("Workspace setup")).toBeInTheDocument();
+    const setupCard = await screen.findByLabelText("Workspace setup");
+    expect(setupCard).toBeInTheDocument();
+    expect(setupCard.querySelector('.workspace-setup-card-glyph img[src^="/characters/"]')).not.toBeNull();
     expect(screen.getByRole("navigation", { name: "Primary navigation" })).toBeInTheDocument();
     expect(screen.getByLabelText("Main content canvas")).toBeInTheDocument();
     expect(screen.getByLabelText("Canvas graph view")).toBeInTheDocument();

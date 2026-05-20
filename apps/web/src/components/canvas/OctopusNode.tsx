@@ -1,12 +1,11 @@
 import { useMemo } from "react";
 
+import { resolveCharacterIdForTask } from "@octogent/core";
+import type { AgentRuntimeState, AgentState } from "@octogent/core";
+
+import { deriveTentacleEmotionContextFromConnectedNodes } from "../../app/character/tentacleEmotion";
 import type { GraphNode } from "../../app/canvas/types";
-import {
-  type OctopusAccessory,
-  type OctopusAnimation,
-  type OctopusExpression,
-  OctopusGlyph,
-} from "../EmptyOctopus";
+import { CharacterAvatar, useCharacterEmotion } from "../character";
 
 const LINE_MAX = 22;
 
@@ -31,49 +30,6 @@ const splitLabel = (label: string): [string] | [string, string] => {
   ];
 };
 
-const ANIMATIONS: OctopusAnimation[] = ["heroic", "sway", "walk", "jog", "bounce", "float", "swim-up"];
-const EXPRESSIONS: OctopusExpression[] = ["normal", "happy", "angry", "surprised"];
-const ACCESSORIES: OctopusAccessory[] = ["none", "none", "long", "mohawk", "side-sweep", "curly"];
-
-function hashString(str: string): number {
-  let h = 0;
-  for (let i = 0; i < str.length; i++) {
-    h = ((h << 5) - h + str.charCodeAt(i)) | 0;
-  }
-  return Math.abs(h);
-}
-
-function seededRandom(seed: number): () => number {
-  let s = seed;
-  return () => {
-    s = (s * 16807 + 0) % 2147483647;
-    return (s - 1) / 2147483646;
-  };
-}
-
-type OctopusVisuals = {
-  animation: OctopusAnimation;
-  expression: OctopusExpression;
-  accessory: OctopusAccessory;
-  hairColor?: string | undefined;
-};
-
-function deriveOctopusVisuals(node: GraphNode): OctopusVisuals {
-  const rng = seededRandom(hashString(node.tentacleId));
-  const stored = node.octopus;
-  return {
-    animation:
-      (stored?.animation as OctopusAnimation | null) ??
-      (ANIMATIONS[Math.floor(rng() * ANIMATIONS.length)] as OctopusAnimation),
-    expression:
-      (stored?.expression as OctopusExpression | null) ??
-      (EXPRESSIONS[Math.floor(rng() * EXPRESSIONS.length)] as OctopusExpression),
-    accessory:
-      (stored?.accessory as OctopusAccessory | null) ??
-      (ACCESSORIES[Math.floor(rng() * ACCESSORIES.length)] as OctopusAccessory),
-    hairColor: stored?.hairColor ?? undefined,
-  };
-}
 
 type OctopusNodeProps = {
   node: GraphNode;
@@ -129,6 +85,45 @@ const isEdgeActivityVisible = (target: GraphNode): boolean =>
   target.hasUserPrompt !== false &&
   target.agentRuntimeState !== undefined &&
   target.agentRuntimeState !== "idle";
+
+const ORACLE_RUNTIME_PRIORITY: AgentRuntimeState[] = [
+  "waiting_for_permission",
+  "waiting_for_user",
+  "processing",
+  "idle",
+];
+
+const ORACLE_AGENT_PRIORITY: AgentState[] = [
+  "blocked",
+  "live",
+  "queued",
+  "exited",
+  "stale",
+  "stopped",
+  "idle",
+];
+
+const resolveOracleCharacterState = (
+  oracleTentacleId: string,
+  connectedNodes: GraphNode[],
+): { agentState?: AgentState; agentRuntimeState?: AgentRuntimeState } => {
+  const oracleSessions = connectedNodes.filter(
+    (n) => n.type === "active-session" && n.tentacleId === oracleTentacleId,
+  );
+
+  const agentRuntimeState = ORACLE_RUNTIME_PRIORITY.find((state) =>
+    oracleSessions.some((session) => session.agentRuntimeState === state),
+  );
+
+  const agentState = ORACLE_AGENT_PRIORITY.find((state) =>
+    oracleSessions.some((session) => session.agentState === state),
+  );
+
+  return {
+    ...(agentState ? { agentState } : {}),
+    ...(agentRuntimeState ? { agentRuntimeState } : {}),
+  };
+};
 
 const renderEdgeActivityDots = (path: string, color: string, keyPrefix: string) =>
   [0, 1, 2].flatMap((index) => [
@@ -192,17 +187,37 @@ export const OctopusNode = ({
   const showFocus = isSelected;
   const isOctoboss = node.type === "octoboss";
   const lines = useMemo(() => splitLabel(node.label), [node.label]);
-  const visuals = useMemo(
-    () =>
-      isOctoboss
-        ? ({ animation: "heroic", expression: "normal", accessory: "none" } as OctopusVisuals)
-        : deriveOctopusVisuals(node),
-    [node, isOctoboss],
-  );
   const glyphScale = isOctoboss ? 5 : GLYPH_SCALE;
   const glyphW = Math.round(GLYPH_W * (glyphScale / GLYPH_SCALE));
   const glyphH = Math.round(GLYPH_H * (glyphScale / GLYPH_SCALE));
   const color = node.color;
+  const oracleState = useMemo(
+    () =>
+      isOctoboss
+        ? resolveOracleCharacterState(node.tentacleId, connectedNodes)
+        : { agentState: undefined, agentRuntimeState: undefined },
+    [connectedNodes, isOctoboss, node.tentacleId],
+  );
+  const oracleEmotion = useCharacterEmotion({
+    characterId: "mika",
+    ...(oracleState.agentState ? { agentState: oracleState.agentState } : {}),
+    ...(oracleState.agentRuntimeState ? { agentRuntimeState: oracleState.agentRuntimeState } : {}),
+  });
+  const tentacleCharacterId = useMemo(
+    () =>
+      node.characterId ??
+      resolveCharacterIdForTask(`${node.label} ${node.tentacleId} ${node.octopus?.expression ?? ""}`) ??
+      "mika",
+    [node.characterId, node.label, node.tentacleId, node.octopus?.expression],
+  );
+  const tentacleEmotionContext = useMemo(
+    () => deriveTentacleEmotionContextFromConnectedNodes(connectedNodes),
+    [connectedNodes],
+  );
+  const tentacleEmotion = useCharacterEmotion({
+    characterId: tentacleCharacterId,
+    ...tentacleEmotionContext,
+  });
 
   return (
     <g
@@ -271,34 +286,33 @@ export const OctopusNode = ({
         </g>
       )}
 
-      {/* Octopus glyph via foreignObject */}
-      <foreignObject
-        x={-glyphW / 2}
-        y={-glyphH / 2}
-        width={glyphW}
-        height={glyphH}
-        style={{ overflow: "visible", pointerEvents: "none" }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "100%",
-            height: "100%",
-            pointerEvents: "none",
-          }}
+      {/* Oracle avatar from character assets */}
+      {isOctoboss && (
+        <foreignObject
+          x={-glyphW / 2}
+          y={-glyphH / 2}
+          width={glyphW}
+          height={glyphH}
+          className="canvas-node-character-avatar canvas-squad-oracle-avatar"
+          style={{ overflow: "visible", pointerEvents: "none" }}
         >
-          <OctopusGlyph
-            {...(isOctoboss ? {} : { color })}
-            animation={visuals.animation}
-            expression={visuals.expression}
-            accessory={visuals.accessory}
-            {...(visuals.hairColor ? { hairColor: visuals.hairColor } : {})}
-            scale={glyphScale}
-          />
-        </div>
-      </foreignObject>
+          <CharacterAvatar characterId="mika" size="lg" emotion={oracleEmotion} />
+        </foreignObject>
+      )}
+
+      {/* Tentacle avatar from character assets */}
+      {!isOctoboss && tentacleCharacterId && (
+        <foreignObject
+          x={-glyphW / 2}
+          y={-glyphH / 2}
+          width={glyphW}
+          height={glyphH}
+          className="canvas-node-character-avatar canvas-tentacle-character-avatar"
+          style={{ overflow: "visible", pointerEvents: "none" }}
+        >
+          <CharacterAvatar characterId={tentacleCharacterId} size="lg" emotion={tentacleEmotion} />
+        </foreignObject>
+      )}
 
       {/* Label — always visible, up to two lines */}
       <text
