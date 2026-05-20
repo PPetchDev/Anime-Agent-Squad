@@ -46,12 +46,12 @@ const cases: CharRow[] = [
   {
     label: "agentRuntimeState=waiting_for_permission",
     ctx: { agentRuntimeState: "waiting_for_permission" },
-    expected: { aki: "listening", mika: "surprised", ren: "surprised", yui: "surprised" },
+    expected: { aki: "surprised", mika: "surprised", ren: "surprised", yui: "surprised" },
   },
   {
     label: "agentRuntimeState=waiting_for_user",
     ctx: { agentRuntimeState: "waiting_for_user" },
-    expected: { aki: "listening", mika: "thinking", ren: "thinking", yui: "thinking" },
+    expected: { aki: "thinking", mika: "thinking", ren: "thinking", yui: "thinking" },
   },
   {
     label: "state=blocked",
@@ -61,7 +61,7 @@ const cases: CharRow[] = [
   {
     label: "state=queued",
     ctx: { agentState: "queued" },
-    expected: { aki: "listening", mika: "idle", ren: "idle", yui: "idle" },
+    expected: { aki: "idle", mika: "idle", ren: "idle", yui: "idle" },
   },
   {
     label: "state=stopped",
@@ -71,7 +71,7 @@ const cases: CharRow[] = [
   {
     label: "state=exited & exitCode=0",
     ctx: { agentState: "exited", exitCode: 0 },
-    expected: { aki: "done", mika: "victory", ren: "happy", yui: "happy" },
+    expected: { aki: "victory", mika: "victory", ren: "victory", yui: "victory" },
   },
   {
     label: "state=exited & exitCode=1",
@@ -86,7 +86,7 @@ const cases: CharRow[] = [
   {
     label: "state=idle & idleTier=fresh",
     ctx: { agentState: "idle", idleTier: "fresh" },
-    expected: { aki: "listening", mika: "idle", ren: "idle", yui: "idle" },
+    expected: { aki: "idle", mika: "idle", ren: "idle", yui: "idle" },
   },
   {
     label: "state=idle & idleTier=lingering",
@@ -96,7 +96,7 @@ const cases: CharRow[] = [
   {
     label: "state=idle & idleTier=deep",
     ctx: { agentState: "idle", idleTier: "deep" },
-    expected: { aki: "snack", mika: "sleepy", ren: "love", yui: "love" },
+    expected: { aki: "sleepy", mika: "sleepy", ren: "sleepy", yui: "sleepy" },
   },
 ];
 
@@ -191,7 +191,7 @@ describe("resolveCharacterEmotion — fallback semantics", () => {
 
   it("uses defaultEmotion when context yields no specific signal", () => {
     expect(resolveCharacterEmotion("mika", {})).toBe("idle");
-    expect(resolveCharacterEmotion("aki", {})).toBe("listening");
+    expect(resolveCharacterEmotion("aki", {})).toBe("idle");
     expect(resolveCharacterEmotion("ren", {})).toBe("idle");
     expect(resolveCharacterEmotion("yui", {})).toBe("idle");
   });
@@ -202,8 +202,8 @@ describe("resolveCharacterEmotionImagePath", () => {
     expect(resolveCharacterEmotionImagePath("mika", "thinking")).toBe(
       "/characters/mika/04-thinking.jpg",
     );
-    expect(resolveCharacterEmotionImagePath("aki", "snack")).toBe("/characters/aki/08-snack.jpg");
-    expect(resolveCharacterEmotionImagePath("ren", "love")).toBe("/characters/ren/05-love.jpg");
+    expect(resolveCharacterEmotionImagePath("aki", "sleepy")).toBe("/characters/aki/07-sleepy.jpg");
+    expect(resolveCharacterEmotionImagePath("ren", "victory")).toBe("/characters/ren/02-victory.jpg");
     expect(resolveCharacterEmotionImagePath("yui", "surprised")).toBe(
       "/characters/yui/09-surprised.jpg",
     );
@@ -309,21 +309,21 @@ describe("resolveCharacterAvatarPath", () => {
 
   it("ignores customAvatarPath that is only whitespace and falls back to template", () => {
     expect(resolveCharacterAvatarPath({ characterId: "ren", customAvatarPath: "   " })).toBe(
-      "/characters/ren.svg",
+      "/characters/ren/01-idle.jpg",
     );
   });
 
   it("ignores empty string customAvatarPath and falls back to template", () => {
     expect(resolveCharacterAvatarPath({ characterId: "aki", customAvatarPath: "" })).toBe(
-      "/characters/aki.svg",
+      "/characters/aki/01-idle.jpg",
     );
   });
 
   it("falls back to template avatarPath when customAvatarPath is absent", () => {
-    expect(resolveCharacterAvatarPath({ characterId: "mika" })).toBe("/characters/mika.svg");
-    expect(resolveCharacterAvatarPath({ characterId: "ren" })).toBe("/characters/ren.svg");
-    expect(resolveCharacterAvatarPath({ characterId: "yui" })).toBe("/characters/yui.svg");
-    expect(resolveCharacterAvatarPath({ characterId: "aki" })).toBe("/characters/aki.svg");
+    expect(resolveCharacterAvatarPath({ characterId: "mika" })).toBe("/characters/mika/01-idle.jpg");
+    expect(resolveCharacterAvatarPath({ characterId: "ren" })).toBe("/characters/ren/01-idle.jpg");
+    expect(resolveCharacterAvatarPath({ characterId: "yui" })).toBe("/characters/yui/01-idle.jpg");
+    expect(resolveCharacterAvatarPath({ characterId: "aki" })).toBe("/characters/aki/01-idle.jpg");
   });
 
   it("falls back to DEFAULT_CHARACTER_AVATAR_PATH when characterId is unknown and no custom path", () => {
