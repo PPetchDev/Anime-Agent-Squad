@@ -16,6 +16,11 @@ Running ten coding agents in parallel shouldn't feel like juggling ten identical
 
 The point isn't to hide the agents behind decoration. The point is to give multi-agent work a visual rhythm you can actually read at a glance.
 
+## Latest Release
+
+- [v0.1.0 — Anime Character-First UI Rollout](https://github.com/PPetchDev/Anime-Agent-Squad/releases/tag/v0.1.0)
+- Release notes in-repo: [`docs/releases/v0.1.0.md`](docs/releases/v0.1.0.md)
+
 ## The Magical Mecha Re-skin
 
 This fork keeps the underlying multi-agent runtime intact and replaces every visible surface with a Symphogear-inspired aesthetic:
@@ -98,6 +103,8 @@ The magical-mecha CSS primitives are documented in [apps/web/AGENTS.md](apps/web
 
 ## Credits
 
-The underlying multi-agent orchestration runtime — tentacles, PTY session model, worktree lifecycle, monitor service, inter-agent messaging — comes from [**Octogent**](https://github.com/hesamsheikh/octogent) by [@hesamsheikh](https://github.com/hesamsheikh). The magical-mecha re-skin (palette, HUD primitives, sync rings, lock indicators, every `magicalmecha-*` module, plus the `CharacterAvatar` sync-ratio props and `TerminalLockIndicator` component) is the contribution of this fork.
+Anime Agent Squad is a continuation project built on top of [**Octogent**](https://github.com/hesamsheikh/octogent). The core multi-agent orchestration runtime — tentacles, PTY session model, worktree lifecycle, monitor service, and inter-agent messaging — originates from Octogent by [@hesamsheikh](https://github.com/hesamsheikh).
+
+This repository extends that foundation with an anime-forward operator layer: character-first rendering via real `/characters/*` assets, magical-mecha HUD primitives, sync rings, lock indicators, and state-driven emotion mapping across canvas/deck/detail/status surfaces.
 
 If you want the upstream operator experience without the anime layer, use Octogent directly. If you want pastel terminals that announce when they are casting a spell, you are in the right repo.
